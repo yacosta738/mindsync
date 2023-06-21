@@ -1,0 +1,5 @@
+.env
+
+# ignore all files in the directory neo4j except the file neo4j.yml
+neo4j/*
+!neo4j/neo4j.yml
