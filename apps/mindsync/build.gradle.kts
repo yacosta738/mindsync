@@ -4,7 +4,6 @@ plugins {
     id("dokka-conventions")
 //  id("publishing-conventions") // If everything was configured correctly, you could use it to publish the artifacts. But it is not working with Spring as I thought.
     id("spring-conventions")
-    id("sonarqube-conventions")
 }
 
 val testcontainers_version: String by project
