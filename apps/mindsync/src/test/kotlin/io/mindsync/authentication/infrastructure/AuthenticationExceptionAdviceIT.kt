@@ -11,28 +11,28 @@ import org.springframework.test.web.reactive.server.WebTestClient
 @AutoConfigureWebTestClient
 class AuthenticationExceptionAdviceIT {
 
-  @Autowired
-  private lateinit var webTestClient: WebTestClient
+    @Autowired
+    private lateinit var webTestClient: WebTestClient
 
-  @Test
-  fun shouldHandleNotAuthenticatedUserException() {
-    webTestClient.get().uri("/api/account-exceptions/not-authenticated")
-      .exchange()
-      .expectStatus().isUnauthorized
-      .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
-      .expectBody()
-      .jsonPath("$.message").isEqualTo("error.http.401")
-      .jsonPath("$.title").isEqualTo("not authenticated")
-  }
+    @Test
+    fun shouldHandleNotAuthenticatedUserException() {
+        webTestClient.get().uri("/api/account-exceptions/not-authenticated")
+            .exchange()
+            .expectStatus().isUnauthorized
+            .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
+            .expectBody()
+            .jsonPath("$.message").isEqualTo("error.http.401")
+            .jsonPath("$.title").isEqualTo("not authenticated")
+    }
 
-  @Test
-  fun shouldHandleUnknownAuthenticationException() {
-    webTestClient.get().uri("/api/account-exceptions/unknown-authentication")
-      .exchange()
-      .expectStatus().is5xxServerError
-      .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
-      .expectBody()
-      .jsonPath("$.message").isEqualTo("error.http.500")
-      .jsonPath("$.title").isEqualTo("unknown authentication")
-  }
+    @Test
+    fun shouldHandleUnknownAuthenticationException() {
+        webTestClient.get().uri("/api/account-exceptions/unknown-authentication")
+            .exchange()
+            .expectStatus().is5xxServerError
+            .expectHeader().contentType(MediaType.APPLICATION_PROBLEM_JSON)
+            .expectBody()
+            .jsonPath("$.message").isEqualTo("error.http.500")
+            .jsonPath("$.title").isEqualTo("unknown authentication")
+    }
 }

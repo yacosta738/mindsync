@@ -9,11 +9,10 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping("/api/profile")
 class DummyController {
-  @GetMapping
-  fun profile():Mono<String> = Mono.just("OK")
+    @GetMapping
+    fun profile(): Mono<String> = Mono.just("OK")
 
-  @GetMapping("/secure-admin")
-  @PreAuthorize("hasRole('ADMIN')")
-  fun secureAdmin():Mono<String> = Mono.just("You are admin")
-
+    @GetMapping("/secure-admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    fun secureAdmin(): Mono<String> = Mono.just("You are admin")
 }

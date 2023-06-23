@@ -1,40 +1,37 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
-    ":prHourlyLimitNone",
-    "group:recommended",
-    ":reviewer(arg0)"
-  ],
-  "stabilityDays": 14,
-  "prCreation": "not-pending",
-  "baseBranches": [
-    "develop"
-  ],
-  "labels": [
-    "dependencies"
-  ],
-  "reviewers": [
-    "renovate-bot"
-  ],
-  "packageRules": [
-    {
-      "groupName": "kotlin",
-      "matchPackagePrefixes": [
-        "org.jetbrains.kotlin:"
-      ]
-    },
-    {
-      "groupName": "dokka",
-      "matchPackagePrefixes": [
-        "org.jetbrains.dokka:"
-      ]
-    },
-    {
-      "groupName": "detekt",
-      "matchPackagePrefixes": [
-        "io.gitlab.arturbosch.detekt:"
-      ]
-    }
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:base",
+        ":prHourlyLimitNone",
+        "group:recommended",
+        ":reviewer(arg0)"
+    ],
+    "stabilityDays": 14,
+    "prCreation": "not-pending",
+    "labels": [
+        "dependencies"
+    ],
+    "reviewers": [
+        "renovate-bot"
+    ],
+    "packageRules": [
+        {
+            "groupName": "kotlin",
+            "matchPackagePrefixes": [
+                "org.jetbrains.kotlin:"
+            ]
+        },
+        {
+            "groupName": "dokka",
+            "matchPackagePrefixes": [
+                "org.jetbrains.dokka:"
+            ]
+        },
+        {
+            "groupName": "detekt",
+            "matchPackagePrefixes": [
+                "io.gitlab.arturbosch.detekt:"
+            ]
+        }
+    ]
 }

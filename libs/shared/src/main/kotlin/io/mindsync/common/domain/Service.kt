@@ -4,4 +4,3 @@ package io.mindsync.common.domain
 @Target(AnnotationTarget.CLASS)
 @MustBeDocumented
 annotation class Service
-

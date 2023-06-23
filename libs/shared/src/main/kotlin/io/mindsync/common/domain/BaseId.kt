@@ -1,6 +1,6 @@
 package io.mindsync.common.domain
 
-
+@Suppress("unused")
 abstract class BaseId<T> protected constructor(val value: T) {
     init {
         require(value != null) { "The id cannot be null" }

@@ -2,7 +2,6 @@ package io.mindsync.common.domain
 
 import java.io.Serializable
 
-
 abstract class BaseValueObject<T> protected constructor(val value: T) :
     Comparable<BaseValueObject<T>>, Serializable {
 

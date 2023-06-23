@@ -1,5 +1,6 @@
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
+
 plugins {
     // Support convention plugins written in Kotlin. Convention plugins are build scripts in 'src/main'
     // that automatically become available as plugins in the main build.
@@ -42,4 +43,6 @@ dependencies {
     // https://detekt.dev/docs/gettingstarted/gradle/
     // A static code analyzer for Kotlin
     add("implementation", libs.findLibrary("detekt-gradle").get())
+
+    implementation("org.sonarsource.scanner.gradle", "sonarqube-gradle-plugin", "4.2.1.3168")
 }

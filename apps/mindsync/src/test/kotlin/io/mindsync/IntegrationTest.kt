@@ -9,7 +9,6 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import java.lang.annotation.Inherited
 
-
 @WithMockUser
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
@@ -17,6 +16,9 @@ import java.lang.annotation.Inherited
 @DisplayNameGeneration(ReplaceCamelCase::class)
 @Inherited
 @Tag("integration")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [MindsyncApp::class, TestSecurityConfiguration::class])
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [MindsyncApp::class, TestSecurityConfiguration::class]
+)
 @ActiveProfiles("test")
 annotation class IntegrationTest(@get:AliasFor(annotation = SpringBootTest::class) val properties: Array<String> = [])

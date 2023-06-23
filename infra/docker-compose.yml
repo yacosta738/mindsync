@@ -1,70 +1,70 @@
 version: '3.8'
 
 services:
-  neo4j:
-    image: neo4j:${NEO4J_VERSION}
-    container_name: neo4j
-    restart: unless-stopped
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-    volumes:
-      - ./neo4j:/conf:ro
-      - ./neo4j:/data:rw
-      - ./neo4j:/var/lib/neo4j/import
-      - ./neo4j:/logs:rw
-      - ./neo4j:/plugins:rw
-    environment:
-      # Raise memory limits
-      - NEO4J_server.memory.pagecache.size=1G
-      - NEO4J_dbms.memory.heap.initial_size=1G
-      - NEO4J_server.memory.heap.max_size=1G
-    networks:
-      - local-mindsync
-  redis:
-    image: redis:6.0.8
-    container_name: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - local-mindsync
+    neo4j:
+        image: neo4j:${NEO4J_VERSION}
+        container_name: neo4j
+        restart: unless-stopped
+        ports:
+            - "7474:7474"
+            - "7687:7687"
+        volumes:
+            - ./neo4j:/conf:ro
+            - ./neo4j:/data:rw
+            - ./neo4j:/var/lib/neo4j/import
+            - ./neo4j:/logs:rw
+            - ./neo4j:/plugins:rw
+        environment:
+            # Raise memory limits
+            - NEO4J_server.memory.pagecache.size=1G
+            - NEO4J_dbms.memory.heap.initial_size=1G
+            - NEO4J_server.memory.heap.max_size=1G
+        networks:
+            - local-mindsync
+    redis:
+        image: redis:6.0.8
+        container_name: redis
+        ports:
+            - "6379:6379"
+        networks:
+            - local-mindsync
 
-  postgres:
-    image: postgres:${POSTGRESQL_VERSION}
-    container_name: postgres
-    environment:
-      POSTGRES_DB: ${POSTGRESQL_DB}
-      POSTGRES_USER: ${POSTGRESQL_USER}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
-    networks:
-      - local-mindsync
+    postgres:
+        image: postgres:${POSTGRESQL_VERSION}
+        container_name: postgres
+        environment:
+            POSTGRES_DB: ${POSTGRESQL_DB}
+            POSTGRES_USER: ${POSTGRESQL_USER}
+            POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+        networks:
+            - local-mindsync
 
-  keycloak:
-    depends_on:
-      - postgres
-    container_name: keycloak
-    command: [ 'start-dev --import-realm' ]
-    volumes:
-        - ./keycloak/realm-config:/opt/keycloak/data/import
-        - ./keycloak/themes:/opt/keycloak/themes
-#        - ./keycloak/server.keystore:/opt/keycloak/conf/server.keystore:ro
-    environment:
-      DB_VENDOR: postgres
-      DB_ADDR: postgres
-      DB_DATABASE: ${POSTGRESQL_DB}
-      DB_USER: ${POSTGRESQL_USER}
-      DB_PASSWORD: ${POSTGRESQL_PASS}
-      DB_SCHEMA: public
-      KC_HTTP_PORT: 9080
-      KC_HTTPS_PORT: 9443
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
-    ports:
-      - "7080:9080"
-      - "7443:9443"
-    networks:
-      - local-mindsync
+    keycloak:
+        depends_on:
+            - postgres
+        container_name: keycloak
+        command: [ 'start-dev --import-realm' ]
+        volumes:
+            - ./keycloak/realm-config:/opt/keycloak/data/import
+            - ./keycloak/themes:/opt/keycloak/themes
+        #        - ./keycloak/server.keystore:/opt/keycloak/conf/server.keystore:ro
+        environment:
+            DB_VENDOR: postgres
+            DB_ADDR: postgres
+            DB_DATABASE: ${POSTGRESQL_DB}
+            DB_USER: ${POSTGRESQL_USER}
+            DB_PASSWORD: ${POSTGRESQL_PASS}
+            DB_SCHEMA: public
+            KC_HTTP_PORT: 9080
+            KC_HTTPS_PORT: 9443
+            KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+            KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+        image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+        ports:
+            - "7080:9080"
+            - "7443:9443"
+        networks:
+            - local-mindsync
 
 networks:
-  local-mindsync:
+    local-mindsync:
