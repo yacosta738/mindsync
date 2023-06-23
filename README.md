@@ -1,4 +1,8 @@
-# Why Spring Webflux?
+# Mindsync 
+
+![coverage](.github/badges/jacoco.svg)
+
+## Why Spring Webflux?
 
 There are several reasons why you might choose to use WebFlux (Project Reactor) instead of the traditional Spring MVC in
 your application:
@@ -18,7 +22,7 @@ it comes to testing asynchronous code.
 That being said, Spring MVC is still a good choice for many types of applications, especially those with simpler
 requirements or where performance is not as critical.
 
-# Technologies
+## Technologies
 
 - SpringBoot ( Webflux )
 - Using NoSQl db Neo4j ) 

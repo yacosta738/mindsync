@@ -1,6 +1,8 @@
 plugins {
     idea
     id("sonarqube-conventions")
+    id("jacoco-report-aggregation")
+    jacoco
 }
 
 idea {
@@ -19,5 +21,17 @@ subprojects {
 
     tasks.withType<Jar> {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+tasks.withType<Test> {
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(true)
     }
 }
