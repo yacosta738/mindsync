@@ -5,7 +5,8 @@ import io.mindsync.authentication.domain.Role
 import io.mindsync.authentication.domain.Username
 import io.mindsync.authentication.domain.error.NotAuthenticatedUserException
 import io.mindsync.authentication.domain.error.UnknownAuthenticationException
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -28,184 +29,184 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import java.time.Instant
 import java.util.stream.Stream
 
-
 @UnitTest
 internal class AuthenticatedUserTest {
-  @BeforeEach
-  @AfterEach
-  fun cleanup() {
-    SecurityContextHolder.clearContext()
-  }
-
-  @Nested
-  @DisplayName("Username")
-  inner class AuthenticatedUserUsernameTest {
-    @Test
-    fun shouldNotGetNotAuthenticatedUserUsername() {
-      assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
-        NotAuthenticatedUserException::class.java
-      )
+    @BeforeEach
+    @AfterEach
+    fun cleanup() {
+        SecurityContextHolder.clearContext()
     }
 
-    @Test
-    fun shouldNotGetUsernameForUnknownAuthentication() {
-      authenticate(TestingAuthenticationToken(null, null))
-      assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
-        UnknownAuthenticationException::class.java
-      )
+    @Nested
+    @DisplayName("Username")
+    inner class AuthenticatedUserUsernameTest {
+        @Test
+        fun shouldNotGetNotAuthenticatedUserUsername() {
+            assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
+                NotAuthenticatedUserException::class.java
+            )
+        }
+
+        @Test
+        fun shouldNotGetUsernameForUnknownAuthentication() {
+            authenticate(TestingAuthenticationToken(null, null))
+            assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
+                UnknownAuthenticationException::class.java
+            )
+        }
+
+        @Test
+        fun shouldNotGetUsernameForOAuthUserWithoutUsername() {
+            authenticate(oAuth2AuthenticationTokenWithoutUsername())
+            assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
+                NotAuthenticatedUserException::class.java
+            )
+        }
+
+        @ParameterizedTest
+        @MethodSource("io.mindsync.authentication.application.AuthenticatedUserTest#allValidAuthentications")
+        fun shouldGetAuthenticatedUserUsername(authentication: Authentication) {
+            authenticate(authentication)
+            assertThat(AuthenticatedUser.username()).isEqualTo(Username("admin"))
+        }
+
+        @Test
+        fun shouldGetEmptyAuthenticatedUsernameForNotAuthenticatedUser() {
+            assertThat(AuthenticatedUser.optionalUsername()).isEmpty()
+        }
+
+        @ParameterizedTest
+        @MethodSource("io.mindsync.authentication.application.AuthenticatedUserTest#allValidAuthentications")
+        fun shouldGetOptionalAuthenticatedUserUsername(authentication: Authentication) {
+            authenticate(authentication)
+            assertThat(AuthenticatedUser.optionalUsername()).contains(Username("admin"))
+        }
+
+        @Test
+        fun shouldNotGetOptionalUsernameForUnknownAuthentication() {
+            authenticate(TestingAuthenticationToken(null, null))
+            assertThatThrownBy { AuthenticatedUser.optionalUsername() }.isExactlyInstanceOf(
+                UnknownAuthenticationException::class.java
+            )
+        }
     }
 
-    @Test
-    fun shouldNotGetUsernameForOAuthUserWithoutUsername() {
-      authenticate(oAuth2AuthenticationTokenWithoutUsername())
-      assertThatThrownBy { AuthenticatedUser.username() }.isExactlyInstanceOf(
-        NotAuthenticatedUserException::class.java
-      )
+    @Nested
+    @DisplayName("Roles")
+    internal inner class AuthenticatedUserRolesTest {
+        @Test
+        fun shouldGetEmptyRolesForNotAuthenticatedUser() {
+            assertThat(AuthenticatedUser.roles().hasRole()).isFalse()
+        }
+
+        @Test
+        fun shouldGetRolesFromClaim() {
+            authenticate(oAuth2AuthenticationTokenWithUsername())
+            assertThat(AuthenticatedUser.roles().roles).containsExactly(Role.USER)
+        }
     }
 
-    @ParameterizedTest
-    @MethodSource("io.mindsync.authentication.application.AuthenticatedUserTest#allValidAuthentications")
-    fun shouldGetAuthenticatedUserUsername(authentication: Authentication) {
-      authenticate(authentication)
-      assertThat(AuthenticatedUser.username()).isEqualTo(Username("admin"))
+    @Nested
+    @DisplayName("Attributes")
+    internal inner class AuthenticatedUserAttributesTest {
+        @Test
+        @DisplayName("should get attributes for OAuth2")
+        fun shouldGetAttributesForOAuth2() {
+            authenticate(oAuth2AuthenticationTokenWithUsername())
+            assertThat(AuthenticatedUser.attributes()).containsEntry("preferred_username", "admin")
+        }
+
+        @Test
+        @DisplayName("should get attributes for JWT")
+        fun shouldGetAttributesForJWT() {
+            authenticate(jwtAuthenticationToken())
+            assertThat(AuthenticatedUser.attributes()).containsEntry("preferred_username", "admin")
+        }
+
+        @Test
+        fun shouldNotGetAttributesForAnotherToken() {
+            authenticate(usernamePasswordAuthenticationToken())
+            assertThatThrownBy { AuthenticatedUser.attributes() }.isExactlyInstanceOf(
+                UnknownAuthenticationException::class.java
+            )
+        }
+
+        @Test
+        fun shouldNotGetAttributesForNotAuthenticatedUser() {
+            assertThatThrownBy { AuthenticatedUser.attributes() }.isExactlyInstanceOf(
+                NotAuthenticatedUserException::class.java
+            )
+        }
     }
 
-    @Test
-    fun shouldGetEmptyAuthenticatedUsernameForNotAuthenticatedUser() {
-      assertThat(AuthenticatedUser.optionalUsername()).isEmpty()
+    private fun authenticate(token: Authentication) {
+        val securityContext = SecurityContextHolder.createEmptyContext()
+        securityContext.authentication = token
+        SecurityContextHolder.setContext(securityContext)
     }
 
-    @ParameterizedTest
-    @MethodSource("io.mindsync.authentication.application.AuthenticatedUserTest#allValidAuthentications")
-    fun shouldGetOptionalAuthenticatedUserUsername(authentication: Authentication) {
-      authenticate(authentication)
-      assertThat(AuthenticatedUser.optionalUsername()).contains(Username("admin"))
-    }
+    companion object {
+        private fun oAuth2AuthenticationTokenWithUsername(): OAuth2AuthenticationToken {
+            return oAuth2AuthenticationToken(
+                mapOf(
+                    "groups" to Role.USER.key(),
+                    "sub" to 123,
+                    "preferred_username" to "admin"
+                )
+            )
+        }
 
-    @Test
-    fun shouldNotGetOptionalUsernameForUnknownAuthentication() {
-      authenticate(TestingAuthenticationToken(null, null))
-      assertThatThrownBy { AuthenticatedUser.optionalUsername() }.isExactlyInstanceOf(
-        UnknownAuthenticationException::class.java
-      )
-    }
-  }
+        private fun oAuth2AuthenticationTokenWithoutUsername(): OAuth2AuthenticationToken {
+            return oAuth2AuthenticationToken(
+                mapOf(
+                    "groups" to Role.USER.key(),
+                    "sub" to 123
+                )
+            )
+        }
 
-  @Nested
-  @DisplayName("Roles")
-  internal inner class AuthenticatedUserRolesTest {
-    @Test
-    fun shouldGetEmptyRolesForNotAuthenticatedUser() {
-      assertThat(AuthenticatedUser.roles().hasRole()).isFalse()
-    }
+        private fun oAuth2AuthenticationToken(claims: Map<String, Any>): OAuth2AuthenticationToken {
+            val idToken = OidcIdToken(OidcParameterNames.ID_TOKEN, Instant.now(), Instant.now().plusSeconds(60), claims)
+            val authorities: Collection<GrantedAuthority> = listOf<GrantedAuthority>(
+                SimpleGrantedAuthority(
+                    Role.USER.key()
+                )
+            )
+            val user: OidcUser = DefaultOidcUser(authorities, idToken)
+            return OAuth2AuthenticationToken(user, authorities, "oidc")
+        }
 
-    @Test
-    fun shouldGetRolesFromClaim() {
-      authenticate(oAuth2AuthenticationTokenWithUsername())
-      assertThat(AuthenticatedUser.roles().roles).containsExactly(Role.USER)
-    }
-  }
+        private fun jwtAuthenticationToken(): JwtAuthenticationToken {
+            val jwt = Jwt
+                .withTokenValue("token")
+                .header("alg", JwsAlgorithms.RS256)
+                .subject("jhipster")
+                .claim("preferred_username", "admin")
+                .build()
+            return JwtAuthenticationToken(jwt, adminAuthorities())
+        }
 
-  @Nested
-  @DisplayName("Attributes")
-  internal inner class AuthenticatedUserAttributesTest {
-    @Test
-    @DisplayName("should get attributes for OAuth2")
-    fun shouldGetAttributesForOAuth2() {
-      authenticate(oAuth2AuthenticationTokenWithUsername())
-      assertThat(AuthenticatedUser.attributes()).containsEntry("preferred_username", "admin")
-    }
+        private fun usernamePasswordAuthenticationToken(): UsernamePasswordAuthenticationToken {
+            val authorities: Collection<GrantedAuthority> =
+                adminAuthorities()
+            val user =
+                User("admin", "admin", authorities)
+            return UsernamePasswordAuthenticationToken(user, "admin", authorities)
+        }
 
-    @Test
-    @DisplayName("should get attributes for JWT")
-    fun shouldGetAttributesForJWT() {
-      authenticate(jwtAuthenticationToken())
-      assertThat(AuthenticatedUser.attributes()).containsEntry("preferred_username", "admin")
-    }
+        private fun adminAuthorities(): List<GrantedAuthority> {
+            return listOf<GrantedAuthority>(SimpleGrantedAuthority(Role.ADMIN.key()))
+        }
 
-    @Test
-    fun shouldNotGetAttributesForAnotherToken() {
-      authenticate(usernamePasswordAuthenticationToken())
-      assertThatThrownBy { AuthenticatedUser.attributes() }.isExactlyInstanceOf(
-        UnknownAuthenticationException::class.java
-      )
+        @Suppress("unused")
+        @JvmStatic
+        private fun allValidAuthentications(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of(usernamePasswordAuthenticationToken()),
+                Arguments.of(oAuth2AuthenticationTokenWithUsername()),
+                Arguments.of(jwtAuthenticationToken()),
+                Arguments.of(UsernamePasswordAuthenticationToken("admin", "admin"))
+            )
+        }
     }
-
-    @Test
-    fun shouldNotGetAttributesForNotAuthenticatedUser() {
-     assertThatThrownBy { AuthenticatedUser.attributes() }.isExactlyInstanceOf(
-        NotAuthenticatedUserException::class.java
-      )
-    }
-  }
-
-  private fun authenticate(token: Authentication) {
-    val securityContext = SecurityContextHolder.createEmptyContext()
-    securityContext.authentication = token
-    SecurityContextHolder.setContext(securityContext)
-  }
-
-  companion object {
-    private fun oAuth2AuthenticationTokenWithUsername(): OAuth2AuthenticationToken {
-      return oAuth2AuthenticationToken(
-        mapOf(
-          "groups" to Role.USER.key(),
-          "sub" to 123,
-          "preferred_username" to "admin"
-        )
-      )
-    }
-
-    private fun oAuth2AuthenticationTokenWithoutUsername(): OAuth2AuthenticationToken {
-      return oAuth2AuthenticationToken(
-        mapOf(
-          "groups" to Role.USER.key(),
-          "sub" to 123
-        )
-      )
-    }
-
-    private fun oAuth2AuthenticationToken(claims: Map<String, Any>): OAuth2AuthenticationToken {
-      val idToken = OidcIdToken(OidcParameterNames.ID_TOKEN, Instant.now(), Instant.now().plusSeconds(60), claims)
-      val authorities: Collection<GrantedAuthority> = listOf<GrantedAuthority>(
-        SimpleGrantedAuthority(
-          Role.USER.key()
-        )
-      )
-      val user: OidcUser = DefaultOidcUser(authorities, idToken)
-      return OAuth2AuthenticationToken(user, authorities, "oidc")
-    }
-
-    private fun jwtAuthenticationToken(): JwtAuthenticationToken {
-      val jwt = Jwt
-        .withTokenValue("token")
-        .header("alg", JwsAlgorithms.RS256)
-        .subject("jhipster")
-        .claim("preferred_username", "admin")
-        .build()
-      return JwtAuthenticationToken(jwt, adminAuthorities())
-    }
-
-    private fun usernamePasswordAuthenticationToken(): UsernamePasswordAuthenticationToken {
-      val authorities: Collection<GrantedAuthority> =
-        adminAuthorities()
-      val user =
-        User("admin", "admin", authorities)
-      return UsernamePasswordAuthenticationToken(user, "admin", authorities)
-    }
-
-    private fun adminAuthorities(): List<GrantedAuthority> {
-      return listOf<GrantedAuthority>(SimpleGrantedAuthority(Role.ADMIN.key()))
-    }
-    @JvmStatic
-    private fun allValidAuthentications(): Stream<Arguments> {
-      return Stream.of(
-        Arguments.of(usernamePasswordAuthenticationToken()),
-        Arguments.of(oAuth2AuthenticationTokenWithUsername()),
-        Arguments.of(jwtAuthenticationToken()),
-        Arguments.of(UsernamePasswordAuthenticationToken("admin", "admin"))
-      )
-    }
-  }
 }
-

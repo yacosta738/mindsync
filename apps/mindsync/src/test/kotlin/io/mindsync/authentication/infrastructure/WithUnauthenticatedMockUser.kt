@@ -12,7 +12,7 @@ annotation class WithUnauthenticatedMockUser
 
 class WithUnauthenticatedMockUserFactory : WithSecurityContextFactory<WithUnauthenticatedMockUser> {
 
-  override fun createSecurityContext(annotation: WithUnauthenticatedMockUser): SecurityContext {
-    return SecurityContextHolder.createEmptyContext()
-  }
+    override fun createSecurityContext(annotation: WithUnauthenticatedMockUser): SecurityContext {
+        return SecurityContextHolder.createEmptyContext()
+    }
 }

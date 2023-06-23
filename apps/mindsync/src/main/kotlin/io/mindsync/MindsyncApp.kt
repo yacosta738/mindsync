@@ -17,11 +17,9 @@ class MindsyncApp
 private val log: Logger = LoggerFactory.getLogger(MindsyncApp::class.java)
 
 fun main(args: Array<String>) {
-  val environment = runApplication<MindsyncApp>(*args).environment
+    val environment = runApplication<MindsyncApp>(args = args).environment
 
-  if (log.isInfoEnabled) {
-    log.info(ApplicationStartupTraces.of(environment))
-  }
+    if (log.isInfoEnabled) {
+        log.info(ApplicationStartupTraces.of(environment))
+    }
 }
-
-

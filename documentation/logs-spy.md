@@ -4,7 +4,8 @@ LogsSpy is a JUnit5 extension used to assert logs.
 
 ## Usage
 
-Sometimes it's a good idea to test logs (as they can be important information for our system). It's not always needed though, as for everything, it depends!
+Sometimes it's a good idea to test logs (as they can be important information for our system). It's not always needed
+though, as for everything, it depends!
 
 So, here's how to use it:
 

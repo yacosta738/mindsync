@@ -1,23 +1,14 @@
 plugins {
     id("kotlin-conventions")
-    id("testing-conventions")
+    id("spring-testing-conventions")
     id("dokka-conventions")
 //  id("publishing-conventions") // If everything was configured correctly, you could use it to publish the artifacts. But it is not working with Spring as I thought.
     id("spring-conventions")
+    id("sonarqube-conventions")
 }
 
 val testcontainers_version: String by project
 val json_web_token_version: String by project
-
-tasks {
-    named<Copy>("processResources") {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
-
-    named<Copy>("processTestResources") {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    }
-}
 
 dependencies {
     // L O C A L   D E P E N D E N C I E S
@@ -42,7 +33,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
-  implementation("org.reflections:reflections:0.10.2")
+    implementation("org.reflections:reflections:0.10.2")
     implementation(libs.bundles.arrow)
 
     // D A T A B A S E S
@@ -62,8 +53,7 @@ dependencies {
     testImplementation("io.jsonwebtoken:jjwt-impl:$json_web_token_version")
     testImplementation("io.jsonwebtoken:jjwt-jackson:$json_web_token_version")
 
-
-  val os =
+    val os =
         org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentOperatingSystem()
     val arch =
         org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentArchitecture()
@@ -74,9 +64,7 @@ dependencies {
             }
         }
     }
-
 }
-
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src/main")
 kotlin.sourceSets["test"].kotlin.srcDirs("src/test")

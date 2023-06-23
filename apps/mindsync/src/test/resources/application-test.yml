@@ -1,16 +1,16 @@
 # File: application-test.yml
 spring:
-  main:
-    banner-mode: off
-    allow-bean-definition-overriding: true
-  security:
-    oauth2:
-      client:
-        registration:
-          oidc:
-            client-secret: web_app
-            client-id: web_app
-            scope: openid,profile,email
-        provider:
-          oidc:
-            issuer-uri: http://DO_NOT_CALL:9080/realms/mindsync
+    main:
+        banner-mode: off
+        allow-bean-definition-overriding: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    oidc:
+                        client-secret: web_app
+                        client-id: web_app
+                        scope: openid,profile,email
+                provider:
+                    oidc:
+                        issuer-uri: http://DO_NOT_CALL:9080/realms/mindsync

@@ -2,7 +2,7 @@ package io.mindsync.authentication.infrastructure
 
 import io.mindsync.UnitTest
 import io.mindsync.authentication.domain.Role
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -11,31 +11,30 @@ import org.springframework.security.oauth2.jose.jws.JwsAlgorithms
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
-
 private const val SUBJECT = "mindsync"
 
 @UnitTest
 @ExtendWith(SpringExtension::class)
 internal class JwtGrantedAuthorityConverterTest {
-  @InjectMocks
-  lateinit var jwtGrantedAuthorityConverter: JwtGrantedAuthorityConverter
-  @Test
-  fun shouldConvert() {
-    val jwt = Jwt
-      .withTokenValue("token")
-      .header("alg", JwsAlgorithms.RS256)
-      .subject(SUBJECT)
-      .claim("roles", listOf("ROLE_ADMIN"))
-      .build()
-    val result = jwtGrantedAuthorityConverter.convert(jwt)
-    assertThat(result).containsExactly(SimpleGrantedAuthority(Role.ADMIN.key()))
-  }
+    @InjectMocks
+    lateinit var jwtGrantedAuthorityConverter: JwtGrantedAuthorityConverter
 
-  @Test
-  fun shouldConvertButEmpty() {
-    val jwt = Jwt.withTokenValue("token").header("alg", JwsAlgorithms.RS256).subject(SUBJECT).build()
-    val result = jwtGrantedAuthorityConverter.convert(jwt)
-    assertThat(result).isEmpty()
-  }
+    @Test
+    fun shouldConvert() {
+        val jwt = Jwt
+            .withTokenValue("token")
+            .header("alg", JwsAlgorithms.RS256)
+            .subject(SUBJECT)
+            .claim("roles", listOf("ROLE_ADMIN"))
+            .build()
+        val result = jwtGrantedAuthorityConverter.convert(jwt)
+        assertThat(result).containsExactly(SimpleGrantedAuthority(Role.ADMIN.key()))
+    }
+
+    @Test
+    fun shouldConvertButEmpty() {
+        val jwt = Jwt.withTokenValue("token").header("alg", JwsAlgorithms.RS256).subject(SUBJECT).build()
+        val result = jwtGrantedAuthorityConverter.convert(jwt)
+        assertThat(result).isEmpty()
+    }
 }
-
