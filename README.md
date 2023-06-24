@@ -1,6 +1,18 @@
 # Mindsync 
 
 ![coverage](.github/badges/jacoco.svg)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=bugs)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=yacosta738_mindsync)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
 
 ## Why Spring Webflux?
 
