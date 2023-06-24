@@ -7,9 +7,11 @@ It will allow you to use a new `can('action', #element)` expression in `@PreAuth
 Java Version:
 
 ```java
-@PreAuthorize("can('update', #dummy)")
-public void update(AuthDummy dummy) {
-  // ...
+class AuthDummyService {
+    @PreAuthorize("can('update', #dummy)")
+    public void update(AuthDummy dummy) {
+        // ...
+    }
 }
 ```
 
@@ -18,7 +20,7 @@ Kotlin Version:
 ```kotlin
 @PreAuthorize("can('update', #dummy)")
 fun update(dummy: AuthDummy) {
-  // ...
+    // ...
 }
 ```
 
