@@ -24,7 +24,7 @@ subprojects {
             property("sonar.jacoco.reportPaths", "build/jacoco/test.exec")
             property(
                 "sonar.coverage.jacoco.xmlReportPaths",
-                "build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+                "${projectDir.parentFile.path}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
             )
             property(
                 "sonar.exclusions",
