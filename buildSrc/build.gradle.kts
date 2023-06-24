@@ -45,4 +45,5 @@ dependencies {
     add("implementation", libs.findLibrary("detekt-gradle").get())
 
     implementation("org.sonarsource.scanner.gradle", "sonarqube-gradle-plugin", "4.2.1.3168")
+    implementation("org.jacoco:org.jacoco.core:0.8.8")
 }

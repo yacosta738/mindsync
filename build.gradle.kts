@@ -1,5 +1,6 @@
 plugins {
     idea
+    id("sonarqube-conventions")
 }
 
 idea {
@@ -13,7 +14,7 @@ subprojects {
         options.encoding = "UTF-8"
     }
     tasks.withType<Copy> {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
     tasks.withType<Jar> {
