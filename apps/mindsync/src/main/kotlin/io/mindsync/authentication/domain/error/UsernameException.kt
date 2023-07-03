@@ -1,6 +1,6 @@
 package io.mindsync.authentication.domain.error
 
-import io.mindsync.common.domain.error.InvalidArgumentException
+import io.mindsync.common.domain.error.BusinessRuleValidationException
 
 class UsernameException(override val message: String, override val cause: Throwable? = null) :
-    InvalidArgumentException(message, cause)
+    BusinessRuleValidationException(message, cause)

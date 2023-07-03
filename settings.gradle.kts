@@ -1,6 +1,6 @@
 rootProject.name = "mindsync"
 plugins {
-    id("com.gradle.enterprise") version ("3.10.3")
+    id("com.gradle.enterprise") version ("3.13.4")
 }
 
 val apps = File("apps")

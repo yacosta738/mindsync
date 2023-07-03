@@ -7,12 +7,10 @@ plugins {
     id("sonarqube-conventions")
 }
 
-val testcontainers_version: String by project
-val json_web_token_version: String by project
-
 dependencies {
     // L O C A L   D E P E N D E N C I E S
     implementation(project(":shared"))
+    implementation(project(":event"))
 
     // S P R I N G
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -34,24 +32,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
     implementation("org.reflections:reflections:0.10.2")
-    implementation(libs.bundles.arrow)
 
     // D A T A B A S E S
     implementation("org.springframework.boot:spring-boot-starter-data-neo4j")
 
     // D E V   D E P E N D E N C I E S
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-
-    // T E S T   D E P E N D E N C I E S
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
-    testImplementation("org.testcontainers:junit-jupiter:$testcontainers_version")
-    testImplementation("com.github.dasniko:testcontainers-keycloak:2.5.0")
-    testImplementation("org.testcontainers:neo4j:$testcontainers_version")
-    testImplementation("io.jsonwebtoken:jjwt-api:$json_web_token_version")
-    testImplementation("io.jsonwebtoken:jjwt-impl:$json_web_token_version")
-    testImplementation("io.jsonwebtoken:jjwt-jackson:$json_web_token_version")
 
     val os =
         org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.getCurrentOperatingSystem()

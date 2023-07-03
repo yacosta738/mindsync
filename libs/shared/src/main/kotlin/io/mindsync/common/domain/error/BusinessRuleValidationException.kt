@@ -1,6 +1,6 @@
 package io.mindsync.common.domain.error
 
-abstract class InvalidArgumentException(
+abstract class BusinessRuleValidationException(
     override val message: String,
     override val cause: Throwable? = null
-) : IllegalArgumentException(message, cause)
+) : RuntimeException(message, cause)

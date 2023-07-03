@@ -2,14 +2,12 @@ package io.mindsync.authentication.domain
 
 import io.mindsync.authentication.domain.error.UsernameException
 import io.mindsync.common.domain.BaseValidateValueObject
-import io.mindsync.common.domain.BaseValueObject
 import java.util.*
 
 private const val MAX_LENGTH = 100
 private const val MIN_LENGTH = 3
 
 data class Username(val username: String) : BaseValidateValueObject<String>(username) {
-    override fun compareTo(other: BaseValueObject<String>): Int = username.compareTo(other.value)
 
     override fun validate(value: String) {
         if (value.isBlank()) {

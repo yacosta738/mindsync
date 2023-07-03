@@ -1,3 +1,5 @@
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
 plugins {
     id("java-conventions")
     id("org.sonarqube")
@@ -34,9 +36,9 @@ subprojects {
     }
 }
 
-jacoco {
-    toolVersion = "0.8.8"
-}
+//jacoco {
+//    toolVersion = libs.findVersion("jacoco").get().strictVersion
+//}
 
 tasks.withType<Test> {
     finalizedBy("codeCoverageReport")

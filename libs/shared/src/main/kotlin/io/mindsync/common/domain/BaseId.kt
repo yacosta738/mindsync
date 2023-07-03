@@ -16,4 +16,8 @@ abstract class BaseId<T> protected constructor(val value: T) {
     override fun hashCode(): Int {
         return value?.hashCode() ?: 0
     }
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }

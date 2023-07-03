@@ -5,8 +5,6 @@ import io.mindsync.gradle.constant.JDK_VERSION
 import io.mindsync.gradle.constant.KOTLIN_VERSION
 import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 
-val coroutines_version: String by project
-
 plugins {
     id("java-conventions")
 
@@ -72,10 +70,8 @@ dependencies {
     }
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version")
+    add("implementation", libs.findBundle("kotlinx-coroutines").get())
+    add("implementation", libs.findBundle("arrow").get())
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 

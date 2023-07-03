@@ -53,7 +53,7 @@ object AuthenticatedUser {
 
      @throws UnknownAuthenticationException if the authentication can't be read (unknown token type)
      */
-    private fun readPrincipal(authentication: Authentication): String {
+    fun readPrincipal(authentication: Authentication): String {
         return when {
             authentication.principal is UserDetails -> (authentication.principal as UserDetails).username
             authentication is JwtAuthenticationToken -> authentication.token.claims[PREFERRED_USERNAME]?.toString()

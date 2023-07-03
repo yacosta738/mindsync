@@ -97,6 +97,7 @@ class SecurityConfiguration(
                 auth
                     .pathMatchers("/health-check").permitAll()
                     .pathMatchers("/api/authenticate").permitAll()
+                    .pathMatchers("/api/register").permitAll()
                     .pathMatchers("/api/auth-info").permitAll()
                     .pathMatchers("/api/admin/**").hasAuthority(Role.ADMIN.key())
                     .pathMatchers("/api/**").authenticated()
@@ -153,7 +154,7 @@ class SecurityConfiguration(
     ): ReactiveJwtDecoder {
         val jwtDecoder = NimbusReactiveJwtDecoder.withIssuerLocation(issuerUri).build()
         val audienceValidator: OAuth2TokenValidator<Jwt> =
-            AudienceValidator(applicationSecurityProperties.oauth2.getAudience())
+            AudienceValidator(applicationSecurityProperties.oauth2.audience)
         val withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri)
         val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer, audienceValidator)
         jwtDecoder.setJwtValidator(withAudience)
