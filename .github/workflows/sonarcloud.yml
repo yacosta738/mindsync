@@ -1,5 +1,10 @@
 name: SonarCloud
 on:
+    workflow_run:
+        workflows: [ "Code Quality Checks", "Run Gradle on PRs" ]
+        branches: [ 'master', 'main', 'develop' ]
+        types:
+            - completed
     push:
         branches:
             - main
