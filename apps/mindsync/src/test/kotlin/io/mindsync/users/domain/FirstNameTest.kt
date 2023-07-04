@@ -28,7 +28,6 @@ internal class FirstNameTest {
             "abc²def", "abc³def", "abc¼def", "abc½def", "yuniel-acosta", "yuniel_acosta"
         )
         invalidFirstNames.forEach {
-            println("First Name: $it")
             assertThrows(FirstNameNotValidException::class.java) {
                 FirstName(it)
             }

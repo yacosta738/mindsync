@@ -1,6 +1,4 @@
 [versions]
-lorem = "2.1"
-j2html = "1.6.0"
 kotlin = "1.7.20"
 kotlinCoroutines = "1.6.4"
 springBoot = "3.1.0"
@@ -22,8 +20,6 @@ jsonwebtoken = "0.11.5"
 
 [libraries]
 # project dependencies
-lorem = { module = "com.thedeanda:lorem", version.ref = "lorem" }
-j2html = { module = "com.j2html:j2html", version.ref = "j2html" }
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 
@@ -33,6 +29,8 @@ kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref =
 kotlin-noarg = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin" }
 springBoot-gradle = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
 springBoot-dependencyManagement = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBoot" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
@@ -67,8 +65,7 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonweb
 
 
 [bundles]
-lorem = ["lorem"]
-j2html = ["j2html"]
+spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux"]
 arrow = ["arrow-core", "arrow-fx-coroutines"]
 kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
 junit = ["junit-jupiter-api", "junit-jupiter-engine"]

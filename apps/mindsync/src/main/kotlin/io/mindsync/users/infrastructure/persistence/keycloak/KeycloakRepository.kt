@@ -2,6 +2,7 @@ package io.mindsync.users.infrastructure.persistence.keycloak
 
 import arrow.core.Either
 import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties
+import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
@@ -69,7 +70,7 @@ class KeycloakRepository(
                     Mono.just(Either.Right(user.copy(id = UserId(userId))))
                 }
             }
-        } catch (exception: Exception) {
+        } catch (exception: BusinessRuleValidationException) {
             log.error(
                 "Error saving user with email: ${user.email.value} with cause: ${exception.cause} and message: ${exception.message}"
             )

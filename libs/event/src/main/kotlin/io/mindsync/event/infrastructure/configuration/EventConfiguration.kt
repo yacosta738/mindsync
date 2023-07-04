@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 
 @Suppress("UNCHECKED_CAST")
 @Configuration
-class EventConfiguration(
+open class EventConfiguration(
     private val applicationContext: ApplicationContext
 ) {
     @Autowired(required = true)

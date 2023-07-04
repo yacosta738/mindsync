@@ -136,7 +136,7 @@ class UserRegistratorTest {
     fun `should not register new user with wrong lastname`() {
         val charUppercase = 'A'..'Z'
         val charLowercase = 'a'..'z'
-        val invalidLastname = (charUppercase + charLowercase).shuffled().joinToString("").repeat(100)
+        val invalidLastname = (charUppercase + charLowercase).shuffled().joinToString("").repeat(4)
         val registerUserCommand = createRegisterUserCommand(lastname = invalidLastname)
 
         runBlocking {
