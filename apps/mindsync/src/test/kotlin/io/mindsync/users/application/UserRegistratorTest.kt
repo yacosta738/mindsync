@@ -8,6 +8,7 @@ import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.Response
 import io.mindsync.users.domain.event.UserCreatedEvent
 import io.mindsync.users.domain.exceptions.UserStoreException
+import net.datafaker.Faker
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import reactor.core.publisher.Mono
@@ -22,7 +23,7 @@ class UserRegistratorTest {
     private val userRepository = InMemoryUserRepository()
     private val eventPublisher = InMemoryEventPublisher<UserCreatedEvent>()
     private val userRegistrator = UserRegistrator(userRepository, eventPublisher)
-
+    private val faker = Faker()
     @Test
     fun `should register new user`() {
         val registerUserCommand = createRegisterUserCommand()
@@ -157,7 +158,7 @@ class UserRegistratorTest {
 
     @Test
     fun `should not register new user with existing username`() {
-        val registerUserCommand = createRegisterUserCommand()
+        val registerUserCommand = createRegisterUserCommand(username = "test")
 
         runBlocking {
             val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
@@ -179,7 +180,7 @@ class UserRegistratorTest {
             assertEquals(registerUserCommand.lastname, data?.lastname)
         }
 
-        val registerUserCommand2 = createRegisterUserCommand(email = "test1@mindsync.com")
+        val registerUserCommand2 = createRegisterUserCommand(username = "test")
 
         runBlocking {
             val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
@@ -199,7 +200,7 @@ class UserRegistratorTest {
 
     @Test
     fun `should not register new user with existing email`() {
-        val registerUserCommand = createRegisterUserCommand()
+        val registerUserCommand = createRegisterUserCommand(email = "test@google.com")
 
         runBlocking {
             val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
@@ -221,7 +222,7 @@ class UserRegistratorTest {
             assertEquals(registerUserCommand.lastname, data?.lastname)
         }
 
-        val registerUserCommand2 = createRegisterUserCommand(username = "mindsync1")
+        val registerUserCommand2 = createRegisterUserCommand(email = "test@google.com")
 
         runBlocking {
             val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
@@ -273,11 +274,11 @@ class UserRegistratorTest {
     }
 
     private fun createRegisterUserCommand(
-        username: String = "mindsync",
-        email: String = "test@mindsync.com",
+        username: String = faker.name().username(),
+        email: String = faker.internet().emailAddress(),
         password: String = Credential.generateRandomCredentialPassword(),
-        firstname: String = "Mindsync",
-        lastname: String = "Test"
+        firstname: String = faker.name().firstName(),
+        lastname: String = faker.name().lastName()
     ) = RegisterUserCommand(
         username = username,
         email = email,

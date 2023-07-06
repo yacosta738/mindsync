@@ -61,7 +61,8 @@ class TestSecurityConfiguration {
     }
 
     @Bean
-    fun authorizedClientService(clientRegistrationRepository: ClientRegistrationRepository): OAuth2AuthorizedClientService {
+    fun authorizedClientService(clientRegistrationRepository: ClientRegistrationRepository)
+        : OAuth2AuthorizedClientService {
         return InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository)
     }
 }

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
+import javax.ws.rs.WebApplicationException
 
 @Repository
 class KeycloakRepository(
@@ -26,6 +27,7 @@ class KeycloakRepository(
     override suspend fun create(user: User): Mono<Either<UserStoreException, User>> {
         log.info("Saving user with email: {}", user.email.value)
 
+        val errorSavingUser = "Error saving user with email: ${user.email.value}"
         return try {
             val password =
                 user.credentials.firstOrNull()?.credentialValue ?: Credential.generateRandomCredentialPassword()
@@ -43,40 +45,51 @@ class KeycloakRepository(
                 log.error("User with username: {} already exists", user.username.value)
                 Mono.just(Either.Left(UserStoreException("User with username: ${user.username.value} already exists")))
             } else {
-                val userRepresentation = UserRepresentation().apply {
-                    username = user.username.value
-                    email = user.email.value
-                    firstName = user.name?.firstName?.value
-                    lastName = user.name?.lastName?.value
-                    isEnabled = true
-                    groups = listOf(USER_GROUP_NAME)
-                    credentials = listOf(credentialRepresentation)
-                }
+                val userRepresentation = getUserRepresentation(user, credentialRepresentation)
 
                 val response = keycloakRealm.users().create(userRepresentation)
 
                 if (response.status != HttpStatus.CREATED.value()) {
-                    log.error("Error saving user with email: {}", user.email.value)
-                    Mono.just(
-                        Either.Left(
-                            UserStoreException(
-                                "Error saving user with email: ${user.email.value}. Is possible that the user already exists"
-                            )
-                        )
-                    )
+                    errorCreatingUser(user, errorSavingUser)
                 } else {
                     val userId = response.location.path.replace(".*/([^/]+)$".toRegex(), "$1")
-                    sendEmailVerification(userId)
+                    run { sendEmailVerification(userId) }
                     Mono.just(Either.Right(user.copy(id = UserId(userId))))
                 }
             }
         } catch (exception: BusinessRuleValidationException) {
-            log.error(
-                "Error saving user with email: ${user.email.value} with cause: ${exception.cause} and message: ${exception.message}"
-            )
+            log.error("$errorSavingUser with cause: ${exception.cause} and message: ${exception.message}")
             val businessRuleException = UserStoreException(user.email.value, exception)
             Mono.just(Either.Left(businessRuleException))
         }
+    }
+
+    private fun getUserRepresentation(
+        user: User,
+        credentialRepresentation: CredentialRepresentation
+    ) = UserRepresentation().apply {
+        username = user.username.value
+        email = user.email.value
+        firstName = user.name?.firstName?.value
+        lastName = user.name?.lastName?.value
+        isEnabled = true
+        groups = listOf(USER_GROUP_NAME)
+        credentials = listOf(credentialRepresentation)
+    }
+
+
+    private fun errorCreatingUser(
+        user: User,
+        errorSavingUser: String
+    ): Mono<Either<UserStoreException, User>> {
+        log.error("Error saving user with email: {}", user.email.value)
+        return Mono.just(
+            Either.Left(
+                UserStoreException(
+                    "$errorSavingUser. Is possible that the user already exists"
+                )
+            )
+        )
     }
 
     private fun getUserByEmail(email: String): UserRepresentation? =
@@ -91,7 +104,11 @@ class KeycloakRepository(
 
     private suspend fun sendEmailVerification(userId: String) {
         log.info("Sending email verification to user with id: {}", userId)
-        keycloakRealm.users()[userId].sendVerifyEmail()
+        try {
+            keycloakRealm.users()[userId].sendVerifyEmail()
+        } catch (_: WebApplicationException) {
+            log.error("Error sending email verification to user with id: {}", userId)
+        }
     }
 
     companion object {
