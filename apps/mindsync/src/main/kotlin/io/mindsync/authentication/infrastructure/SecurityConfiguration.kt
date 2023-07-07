@@ -74,7 +74,8 @@ class SecurityConfiguration(
         // @formatter:off
         return http
             .csrf {
-                    csrf -> csrf
+                    csrf ->
+                csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // See https://stackoverflow.com/q/74447118/65681
                     .csrfTokenRequestHandler(XorServerCsrfTokenRequestAttributeHandler())
             }
@@ -91,10 +92,11 @@ class SecurityConfiguration(
                 headers.permissionsPolicy { permissions -> permissions.policy(POLICY) }
             }
             .authorizeExchange {
-                    auth -> auth
-                .pathMatchers("/health-check").permitAll()
-                .pathMatchers("/api/register").permitAll()
-                .pathMatchers("/api/**").authenticated()
+                    auth ->
+                auth
+                    .pathMatchers("/health-check").permitAll()
+                    .pathMatchers("/api/register").permitAll()
+                    .pathMatchers("/api/**").authenticated()
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())

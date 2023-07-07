@@ -27,7 +27,7 @@ abstract class KeycloakTestContainers {
         try {
             val authServerUrl = removeLastSlash(keycloakContainer.authServerUrl)
             val openIdConnectToken = "protocol/openid-connect/token"
-            val authorizationURI = URI("${authServerUrl}/realms/$REALM/$openIdConnectToken")
+            val authorizationURI = URI("$authServerUrl/realms/$REALM/$openIdConnectToken")
             val webclient = WebClient.builder().build()
             val formData: MultiValueMap<String, String> = LinkedMultiValueMap()
             formData.add("grant_type", "password")
@@ -95,7 +95,7 @@ abstract class KeycloakTestContainers {
 
             registry.add(
                 "application.security.oauth2.issuer-uri"
-            ) { "${authServerUrl}/realms/$REALM" }
+            ) { "$authServerUrl/realms/$REALM" }
 
             registry.add(
                 "application.security.oauth2.realm"

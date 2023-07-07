@@ -8,7 +8,6 @@ import org.springframework.core.annotation.AliasFor
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import java.lang.annotation.Inherited
-import kotlin.reflect.KClass
 
 @WithMockUser
 @Target(AnnotationTarget.CLASS)

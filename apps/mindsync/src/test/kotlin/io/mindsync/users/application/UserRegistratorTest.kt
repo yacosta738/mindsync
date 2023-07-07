@@ -24,6 +24,7 @@ class UserRegistratorTest {
     private val eventPublisher = InMemoryEventPublisher<UserCreatedEvent>()
     private val userRegistrator = UserRegistrator(userRepository, eventPublisher)
     private val faker = Faker()
+
     @Test
     fun `should register new user`() {
         val registerUserCommand = createRegisterUserCommand()

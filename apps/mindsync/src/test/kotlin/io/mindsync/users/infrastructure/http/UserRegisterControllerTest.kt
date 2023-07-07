@@ -258,5 +258,4 @@ class UserRegisterControllerTest : KeycloakTestContainers() {
                 println(it.responseBody?.print())
             }
     }
-
 }
