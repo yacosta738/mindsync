@@ -25,7 +25,8 @@ import reactor.core.publisher.Mono
 class UserRegisterController(private val userRegistrator: UserRegistrator) {
 
     @PostMapping("/api/register")
-    suspend fun registerUser(@RequestBody @Validated registerUserRequest: RegisterUserRequest): Mono<ResponseEntity<Response<UserResponse>>> {
+    suspend fun registerUser(@RequestBody @Validated registerUserRequest: RegisterUserRequest):
+        Mono<ResponseEntity<Response<UserResponse>>> {
         log.info("Registering new user with email: {}", registerUserRequest.email)
 
         return userRegistrator.registerNewUser(registerUserRequest.toRegisterUserCommand())
@@ -33,7 +34,8 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
             .onErrorResume(::handleRegistrationError)
     }
 
-    private fun mapRegistrationResult(result: Either<UserStoreException, Response<UserResponse>>): Mono<ResponseEntity<Response<UserResponse>>> {
+    private fun mapRegistrationResult(result: Either<UserStoreException, Response<UserResponse>>):
+        Mono<ResponseEntity<Response<UserResponse>>> {
         return result.fold(
             { error ->
                 log.error("Error: {}", error.message)

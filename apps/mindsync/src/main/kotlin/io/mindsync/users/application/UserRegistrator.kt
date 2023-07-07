@@ -32,7 +32,8 @@ class UserRegistrator(
         this.eventPublisher.use(eventPublisher)
     }
 
-    suspend fun registerNewUser(registerUserCommand: RegisterUserCommand): Mono<Either<UserStoreException, Response<UserResponse>>> {
+    suspend fun registerNewUser(registerUserCommand: RegisterUserCommand):
+        Mono<Either<UserStoreException, Response<UserResponse>>> {
         log.info(
             "Registering new user with email: {} and username: {}",
             registerUserCommand.email,

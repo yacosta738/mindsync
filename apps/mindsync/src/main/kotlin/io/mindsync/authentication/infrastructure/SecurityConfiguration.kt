@@ -1,6 +1,5 @@
 package io.mindsync.authentication.infrastructure
 
-import io.mindsync.authentication.domain.Role
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -31,11 +30,15 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository
-import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler
+import org.springframework.security.web.server.csrf.XorServerCsrfTokenRequestAttributeHandler
+import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
+
+private const val POLICY =
+    "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
 
 @Configuration
 @EnableWebFluxSecurity
@@ -71,10 +74,9 @@ class SecurityConfiguration(
         // @formatter:off
         return http
             .csrf {
-                    csrf ->
-                csrf
+                    csrf -> csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // See https://stackoverflow.com/q/74447118/65681
-                    .csrfTokenRequestHandler(ServerCsrfTokenRequestAttributeHandler())
+                    .csrfTokenRequestHandler(XorServerCsrfTokenRequestAttributeHandler())
             }
             .headers {
                     headers ->
@@ -82,30 +84,17 @@ class SecurityConfiguration(
                 headers.referrerPolicy {
                         referrerPolicy ->
                     referrerPolicy.policy(
-                        org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN
+                        ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN
                     )
                 }
 
-                headers.permissionsPolicy { permissions ->
-                    permissions.policy(
-                        "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
-                    )
-                }
+                headers.permissionsPolicy { permissions -> permissions.policy(POLICY) }
             }
             .authorizeExchange {
-                    auth ->
-                auth
-                    .pathMatchers("/health-check").permitAll()
-                    .pathMatchers("/api/authenticate").permitAll()
-                    .pathMatchers("/api/register").permitAll()
-                    .pathMatchers("/api/auth-info").permitAll()
-                    .pathMatchers("/api/admin/**").hasAuthority(Role.ADMIN.key())
-                    .pathMatchers("/api/**").authenticated()
-                    .pathMatchers("/management/health").permitAll()
-                    .pathMatchers("/management/health/**").permitAll()
-                    .pathMatchers("/management/info").permitAll()
-                    .pathMatchers("/management/prometheus").permitAll()
-                    .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
+                    auth -> auth
+                .pathMatchers("/health-check").permitAll()
+                .pathMatchers("/api/register").permitAll()
+                .pathMatchers("/api/**").authenticated()
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())

@@ -2509,6 +2509,33 @@
             "groups": [
                 "/Users"
             ]
+        },
+        {
+            "username": "janedoe",
+            "email": "jane.doe@mindsync.com",
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "enabled": true,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "s3cr3t"
+                }
+            ],
+            "realmRoles": [
+                "offline_access",
+                "uma_authorization"
+            ],
+            "clientRoles": {
+                "account": [
+                    "view-profile",
+                    "manage-account"
+                ]
+            },
+            "groups": [
+                "/Admins",
+                "/Users"
+            ]
         }
     ]
 }

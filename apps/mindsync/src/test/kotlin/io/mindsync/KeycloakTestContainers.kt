@@ -1,16 +1,10 @@
 package io.mindsync
 
 import dasniko.testcontainers.keycloak.KeycloakContainer
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl
 import org.junit.jupiter.api.BeforeAll
-import org.keycloak.OAuth2Constants
-import org.keycloak.admin.client.Keycloak
-import org.keycloak.admin.client.KeycloakBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.boot.json.JacksonJsonParser
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.util.LinkedMultiValueMap
@@ -22,25 +16,25 @@ import java.net.URI
 import java.net.URISyntaxException
 
 @Suppress("unused")
-@DirtiesContext
 @Testcontainers
 @IntegrationTest
 abstract class KeycloakTestContainers {
-
     init {
         startKeycloak()
     }
 
-    protected fun getJaneDoeBearer(): String? {
+    protected fun getAdminBearer(): String? {
         try {
-            val openIdConnectToken = "/protocol/openid-connect/token"
-            val authorizationURI = URI("${keycloakContainer.authServerUrl}/realms/$REALM/$openIdConnectToken")
+            val authServerUrl = removeLastSlash(keycloakContainer.authServerUrl)
+            val openIdConnectToken = "protocol/openid-connect/token"
+            val authorizationURI = URI("${authServerUrl}/realms/$REALM/$openIdConnectToken")
             val webclient = WebClient.builder().build()
             val formData: MultiValueMap<String, String> = LinkedMultiValueMap()
             formData.add("grant_type", "password")
-            formData.add("client_id", "web_app")
-            formData.add("username", "admin@localhost")
-            formData.add("password", "admin")
+            formData.add("client_id", CLIENT_ID)
+            formData.add("username", "jane.doe@mindsync.com")
+            val password = "s3cr3t"
+            formData.add("password", password)
 
             val result = webclient.post()
                 .uri(authorizationURI)

@@ -1,4 +1,7 @@
 # File: application-test.yml
+logging:
+    level:
+        io.mindsync: DEBUG
 spring:
     main:
         banner-mode: off
