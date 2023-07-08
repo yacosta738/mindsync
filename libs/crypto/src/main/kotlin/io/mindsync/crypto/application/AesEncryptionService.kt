@@ -9,6 +9,14 @@ import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * A class that provides AES encryption and decryption services.
+ *
+ * @param salt the salt string used for key derivation
+ * @param key the key string used for encryption and decryption
+ *
+ * @author Yuniel Acosta
+ */
 class AesEncryptionService(salt: String, key: String) :
     EncryptionService {
     private val saltBytes: ByteArray = hexStringToByteArray(salt)
@@ -68,6 +76,12 @@ class AesEncryptionService(salt: String, key: String) :
         return String(decryptedBytes)
     }
 
+    /**
+     * Converts a hexadecimal string to a byte array.
+     *
+     * @param hexString The hexadecimal string to convert.
+     * @return The byte array representing the hexadecimal string.
+     */
     private fun hexStringToByteArray(hexString: String): ByteArray {
         val len = hexString.length / 2
         val result = ByteArray(len)
