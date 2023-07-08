@@ -22,5 +22,4 @@ class JwtGrantedAuthorityConverter :
     override fun convert(jwt: Jwt): Collection<GrantedAuthority> {
         return Claims.extractAuthorityFromClaims(jwt.claims)
     }
-
 }
