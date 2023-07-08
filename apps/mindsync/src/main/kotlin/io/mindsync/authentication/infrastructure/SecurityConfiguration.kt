@@ -40,6 +40,23 @@ import java.time.Duration
 private const val POLICY =
     "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
 
+/**
+ * Configuration class for setting up security in a Spring WebFlux application.
+ *
+ * This class is responsible for configuring the security settings in the application.
+ * It also configures the security filter chain that will be used to protect the application.
+ * @param applicationSecurityProperties the application security properties
+ * @since 1.0.0
+ * @author Yuniel Acosta
+ * @see EnableWebFluxSecurity for enabling Spring Security in a WebFlux application
+ * @see EnableReactiveMethodSecurity for enabling Spring Security method security in a WebFlux application
+ * @see WebSecurityCustomizer for customizing the WebSecurity configuration
+ * @see SecurityWebFilterChain for configuring the security filter chain
+ * @see ServerHttpSecurity for configuring the security filter chain
+ * @see ReactiveClientRegistrationRepository for managing OAuth 2.0 Client Registration
+ * @see ReactiveJwtDecoder for decoding a JSON Web Token (JWT) from a Bearer Token request
+ * @see WebClient for performing HTTP requests
+ */
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -53,6 +70,11 @@ class SecurityConfiguration(
         private const val TIMEOUT = 2000
     }
 
+    /**
+     * Creates a customizer for configuring web security settings.
+     *
+     * @return the WebSecurityCustomizer instance
+     */
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web: WebSecurity ->
@@ -69,6 +91,12 @@ class SecurityConfiguration(
         }
     }
 
+    /**
+     * Builds a SecurityWebFilterChain for the provided ServerHttpSecurity instance.
+     *
+     * @param http The ServerHttpSecurity instance to configure the filter chain.
+     * @return The configured SecurityWebFilterChain.
+     */
     @Bean
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         // @formatter:off
@@ -111,6 +139,11 @@ class SecurityConfiguration(
         // @formatter:on
     }
 
+    /**
+     * Converts a Jwt token into a Mono of AbstractAuthenticationToken, using a ReactiveJwtAuthenticationConverterAdapter.
+     *
+     * @return Converter<Jwt, Mono<AbstractAuthenticationToken>> the authentication converter.
+     */
     fun authenticationConverter(): Converter<Jwt, Mono<AbstractAuthenticationToken>> {
         val jwtAuthenticationConverter = JwtAuthenticationConverter()
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(JwtGrantedAuthorityConverter())
@@ -138,6 +171,12 @@ class SecurityConfiguration(
         }
     }
 
+    /**
+     * Creates a ReactiveJwtDecoder instance for decoding JWT tokens.
+     *
+     * @param clientRegistrationRepository The repository containing client registrations.
+     * @return A ReactiveJwtDecoder instance.
+     */
     @Bean
     @Generated(reason = "Only called with a valid client registration repository")
     fun jwtDecoder(

@@ -16,10 +16,6 @@ private const val NAME_LEN = 150
  * @author Yuniel Acosta
  */
 data class FirstName(val firstname: String) : BaseValidateValueObject<String>(firstname) {
-    companion object {
-        private const val serialVersionUID = 1L
-    }
-
     /**
      * Validate first name value object with regex
      * @param value first name value

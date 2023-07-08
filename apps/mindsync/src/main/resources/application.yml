@@ -8,6 +8,8 @@ logging:
 spring:
     application:
         name: mindsync
+    main:
+        allow-bean-definition-overriding: true
     profiles:
         active: dev
     security:
@@ -28,6 +30,7 @@ spring:
             password: ${NEO4J_PASSWORD:margin-saturn-presto-saga-slogan-8117}
 
 application:
+    version: 0.0.1-SNAPSHOT
     security:
         oauth2:
             base-url: ${OAUTH2_SERVER_URL:http://localhost:7080}

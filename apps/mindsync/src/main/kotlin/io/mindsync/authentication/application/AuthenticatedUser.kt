@@ -16,42 +16,42 @@ import java.util.*
 import java.util.stream.Collectors
 
 /**
-
-This is an utility class to get authenticated user information
+ *
+ * The AuthenticatedUser class provides methods to retrieve information about the authenticated user. It handles various authentication schemes.
+ * This is an utility class to get authenticated user information
+ *
+ * @author Yuniel Acosta
  */
 object AuthenticatedUser {
     private const val PREFERRED_USERNAME = "preferred_username"
 
     /**
-
-     Get the authenticated user username
-     @return The authenticated user username
-     @throws NotAuthenticatedUserException if the user is not authenticated
-     @throws UnknownAuthenticationException if the user uses an unknown authentication scheme
+     * Get the authenticated user username
+     * @return The authenticated user username
+     * @throws NotAuthenticatedUserException if the user is not authenticated
+     * @throws UnknownAuthenticationException if the user uses an unknown authentication scheme
      */
     fun username(): Username {
         return optionalUsername().orElseThrow(::NotAuthenticatedUserException)
     }
 
     /**
-
-     Get the authenticated user username
-     @return The authenticated user username or empty if the user is not authenticated
-     @throws UnknownAuthenticationException if the user uses an unknown authentication scheme
+     * Get the authenticated user username
+     * @return The authenticated user username or empty if the user is not authenticated
+     * @throws UnknownAuthenticationException if the user uses an unknown authentication scheme
      */
     fun optionalUsername(): Optional<Username> {
         return authentication().map(::readPrincipal).flatMap(Username::of)
     }
 
     /**
-
-     Read user principal from authentication
-
-     @param authentication authentication to read the principal from
-
-     @return The user principal
-
-     @throws UnknownAuthenticationException if the authentication can't be read (unknown token type)
+     * Read user principal from authentication
+     *
+     * @param authentication authentication to read the principal from
+     *
+     * @return The user principal
+     *
+     * @throws UnknownAuthenticationException if the authentication can't be read (unknown token type)
      */
     fun readPrincipal(authentication: Authentication): String {
         return when {
@@ -68,14 +68,19 @@ object AuthenticatedUser {
     }
 
     /**
-
-     Get the authenticated user roles
-     @return The authenticated user roles or empty roles if the user is not authenticated
+     * Get the authenticated user roles
+     * @return The authenticated user roles or empty roles if the user is not authenticated
      */
     fun roles(): Roles {
         return authentication().map(::toRoles).orElse(Roles.EMPTY)
     }
 
+    /**
+     * Converts an authentication object to a Roles object.
+     *
+     * @param authentication the authentication object to be converted
+     * @return the Roles object containing the authorities from the authentication object
+     */
     private fun toRoles(authentication: Authentication): Roles {
         return Roles(
             authentication.authorities.stream()
@@ -86,14 +91,11 @@ object AuthenticatedUser {
     }
 
     /**
-
-     Get the authenticated user token attributes
-
-     @return The authenticated user token attributes
-
-     @throws NotAuthenticatedUserException if the user is not authenticated
-
-     @throws UnknownAuthenticationException if the authentication scheme is unknown
+     * Get the authenticated user token attributes
+     *
+     * @return The authenticated user token attributes
+     * @throws NotAuthenticatedUserException if the user is not authenticated
+     * @throws UnknownAuthenticationException if the authentication scheme is unknown
      */
     fun attributes(): Map<String, Any> {
         return when (val token = authentication().orElseThrow(::NotAuthenticatedUserException)) {
@@ -103,6 +105,11 @@ object AuthenticatedUser {
         }
     }
 
+    /**
+     * Retrieves the current authentication from the security context.
+     *
+     * @return An optional containing the authentication object if it is present, otherwise an empty optional.
+     */
     private fun authentication(): Optional<Authentication> {
         return Optional.ofNullable(SecurityContextHolder.getContext().authentication)
     }

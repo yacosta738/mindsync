@@ -6,7 +6,7 @@ import io.mindsync.users.domain.exceptions.CredentialException
 import java.util.*
 
 /**
- *
+ * Credential representation in the domain layer of the application that is used to authenticate a user
  * @author Yuniel Acosta (acosta)
  * @created 2/7/23
  */
@@ -15,6 +15,11 @@ data class Credential(
     val credentialValue: String,
     val type: CredentialType = CredentialType.PASSWORD
 ) : BaseValidateValueObject<String>(credentialValue) {
+
+    /**
+     * Validates the value of the value object
+     * @param value the value to validate
+     */
     override fun validate(value: String) {
         if (value.isBlank()) {
             throw CredentialException("Credential value cannot be blank")
@@ -46,7 +51,22 @@ data class Credential(
         private val charset = charLowercase + charUppercase + charNumbers
 
         /**
-         * Generates a random password
+         * Generates a random password with the following rules:
+         * - Must have at least one number, one uppercase, one lowercase and one special character
+         * - Must have at least 8 characters
+         * @return the generated password
+         * @see MIN_LENGTH the minimum length of the password
+         * @see charNumbers the list of numbers
+         * @see charUppercase the list of uppercase characters
+         * @see charLowercase the list of lowercase characters
+         * @see charSpecial the list of special characters
+         * @see charset the list of all characters
+         * @see Random the random generator
+         * @see Random.nextInt to generate a random number
+         * @see List.random to get a random element from a list
+         * @see List.shuffled to shuffle the list
+         * @see List.joinToString to join the list into a string
+         * @see List.toMutableList to convert the list into a mutable list
          */
         fun generateRandomCredentialPassword(): String {
             val length = MIN_LENGTH + Random().nextInt(MIN_LENGTH)
@@ -65,14 +85,35 @@ data class Credential(
             return password
         }
 
+        /**
+         * Creates a new credential with the given value and type
+         * @param credentialValue the value of the credential
+         * @param type the type of the credential (default is [CredentialType.PASSWORD])
+         * @return the created credential with the given value and type and a random id generated with [UUID.randomUUID]
+         * @see UUID.randomUUID for the id generation
+         * @see CredentialId for the id type
+         * @see Credential for the credential type
+         * @see CredentialType for the available types
+         */
         fun create(credentialValue: String, type: CredentialType = CredentialType.PASSWORD): Credential {
             return Credential(CredentialId(UUID.randomUUID()), credentialValue, type)
         }
     }
 }
 
+/**
+ * Credential id representation in the domain layer of the application that is used to identify a credential
+ * @see BaseId for the base id class
+ * @see UUID for the id type
+ * @see Credential for the credential type
+ * @see CredentialId for the id type
+ */
 class CredentialId(id: UUID) : BaseId<UUID>(id)
 
+/**
+ * Credential type representation in the domain layer of the application that is used to identify the type of credential
+ * @see Credential for the credential type
+ */
 enum class CredentialType {
     PASSWORD,
     TOTP,

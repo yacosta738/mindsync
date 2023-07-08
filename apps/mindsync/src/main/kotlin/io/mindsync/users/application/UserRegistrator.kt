@@ -17,9 +17,23 @@ import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 
 /**
+ * The `UserRegistrator` class is responsible for registering new users in the system.
  *
- * @author acosta
- * @created 29/6/23
+ * @author Yuniel Acosta (acosta)
+ * @created 8/7/23
+ * @constructor Creates a new instance of the UserRegistrator class.
+ * @param userCreator The user creator component used to create user objects.
+ * @param eventPublisher The event publisher component used to publish user created events.
+ * @see UserCreator for more information about the user creator component.
+ * @see EventPublisher for more information about the event publisher component.
+ * @see UserCreatedEvent for more information about the user created event.
+ * @see User for more information about the user object.
+ * @see RegisterUserCommand for more information about the register user command.
+ * @see UserStoreException for more information about the user store exception.
+ * @see Response for more information about the response object.
+ * @see Either for more information about the either object.
+ * @see Mono for more information about the mono object.
+ * @see EventBroadcaster for more information about the event broadcaster object.
  */
 @Service
 class UserRegistrator(
@@ -32,6 +46,12 @@ class UserRegistrator(
         this.eventPublisher.use(eventPublisher)
     }
 
+    /**
+     * Registers a new user with the given user registration command.
+     *
+     * @param registerUserCommand The user registration command containing the user details.
+     * @return A Mono of Either, where the left side represents a UserStoreException and the right side represents a Response containing the user details.
+     */
     suspend fun registerNewUser(registerUserCommand: RegisterUserCommand):
         Mono<Either<UserStoreException, Response<UserResponse>>> {
         log.info(
