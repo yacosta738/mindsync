@@ -36,9 +36,9 @@ subprojects {
     }
 }
 
-//jacoco {
-//    toolVersion = libs.findVersion("jacoco").get().strictVersion
-//}
+jacoco {
+    toolVersion = libs.findVersion("jacoco").get().requiredVersion
+}
 
 tasks.withType<Test> {
     finalizedBy("codeCoverageReport")
