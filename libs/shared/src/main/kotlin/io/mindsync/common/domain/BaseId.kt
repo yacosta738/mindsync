@@ -1,5 +1,12 @@
 package io.mindsync.common.domain
 
+/**
+ * Represents a base class for creating ID objects.
+ *
+ * @param value The value of the ID.
+ * @param T The type of the ID value.
+ * @author Yuniel Acosta
+ */
 @Suppress("unused")
 abstract class BaseId<T> protected constructor(val value: T) {
     init {

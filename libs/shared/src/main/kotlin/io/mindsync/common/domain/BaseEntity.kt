@@ -1,5 +1,12 @@
 package io.mindsync.common.domain
 
+/**
+ * A base class for entities with a generic identifier.
+ *
+ * @param ID the type of the identifier
+ * @property id The unique identifier of the entity.
+ * @author Yuniel Acosta
+ */
 abstract class BaseEntity<ID> {
     abstract val id: ID
     override fun equals(other: Any?): Boolean {
