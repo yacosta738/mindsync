@@ -6,13 +6,27 @@ plugins {
     id("jacoco-report-aggregation")
     id("jacoco")
 }
+val githubOrg: String by project
+val githubProjectUrl = "https://github.com/$githubOrg/${rootProject.name}"
 
-sonarqube {
+sonar {
     properties {
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.projectKey", "yacosta738_mindsync")
-        property("sonar.organization", "yacosta738")
-        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.projectName", rootProject.name)
+        property("sonar.projectKey", System.getenv()["SONAR_PROJECT_KEY"] ?: "yacosta738_mindsync")
+        property("sonar.organization", System.getenv()["SONAR_ORGANIZATION"] ?: "yacosta738")
+        property("sonar.projectVersion", rootProject.version.toString())
+        property("sonar.host.url", System.getenv()["SONAR_HOST_URL"] ?: "https://sonarcloud.io")
+        property("sonar.login", System.getenv()["SONAR_TOKEN"] ?: "")
+        property("sonar.scm.provider", "git")
+        property("sonar.links.homepage", githubProjectUrl)
+        property("sonar.links.ci", "$githubProjectUrl/actions")
+        property("sonar.links.scm", githubProjectUrl)
+        property("sonar.links.issue", "$githubProjectUrl/issues")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            buildDir.resolve("reports/jacoco/codeCoverageReport/codeCoverageReport.xml")
+        )
     }
 }
 subprojects {
@@ -24,10 +38,6 @@ subprojects {
             property("sonar.java.test.binaries", "build/classes/kotlin/test")
             property("sonar.junit.reportPaths", "build/test-results/test")
             property("sonar.jacoco.reportPaths", "build/jacoco/test.exec")
-            property(
-                "sonar.coverage.jacoco.xmlReportPaths",
-                "${projectDir.parentFile.path}/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
-            )
             property(
                 "sonar.exclusions",
                 "**/node_modules/**,**/src/test/**,**/src/main/resources/**,**/src/test/resources/**"
@@ -43,6 +53,7 @@ jacoco {
 tasks.withType<Test> {
     finalizedBy("codeCoverageReport")
 }
+
 // task to gather code coverage from multiple subprojects
 // NOTE: the `JacocoReport` tasks do *not* depend on the `test` task by default. Meaning you have to ensure
 // that `test` (or other tasks generating code coverage) run before generating the report.
