@@ -176,7 +176,8 @@ class CustomClaimConverter(
         /**
          * Appends the user's name to a claim.
          *
-         * This method allows appending the user's full name to a claim. If the user object contains a `name` field, the field's value will be split into given and family names and appended to the claim.
+         * This method allows appending the user's full name to a claim. If the user object contains a `name` field,
+         * the field's value will be split into given and family names and appended to the claim.
          *
          * @param claim The claim to append the user's name to. The claim should be a mutable map with String keys and Any values.
          * @param user The user object containing the user's information. The user object should be of type ObjectNode.

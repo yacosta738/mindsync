@@ -12,7 +12,13 @@ repositories {
     mavenCentral()
 }
 
+val kotlinVersion: String = libs.findVersion("kotlin").get().requiredVersion
+
 dependencies {
+    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation(kotlin("bom", kotlinVersion))
+    implementation(kotlin("reflect"))
+    implementation(kotlin("stdlib"))
     // buildSrc in combination with this plugin ensures that the version set here
     // will be set to the same for all other Kotlin dependencies / plugins in the project.
     add("implementation", libs.findLibrary("kotlin-gradle").get())
@@ -42,6 +48,10 @@ dependencies {
     // https://detekt.dev/docs/gettingstarted/gradle/
     // A static code analyzer for Kotlin
     add("implementation", libs.findLibrary("detekt-gradle").get())
+
+    add("implementation", libs.findLibrary("owasp-depcheck").get())
+
+    add("implementation", libs.findLibrary("asciidoctor-gradle").get())
 
     add("implementation", libs.findLibrary("sonarqube-gradle-plugin").get())
 

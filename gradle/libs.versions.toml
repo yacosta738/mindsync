@@ -2,7 +2,7 @@
 kotlin = "1.7.20"
 kotlinCoroutines = "1.6.4"
 springBoot = "3.1.0"
-dokka = "1.7.20"
+dokka = "1.8.20"
 detekt = "1.21.0"
 arrow = "1.2.0-RC"
 sonarqubeGradlePlugin = "4.2.1.3168"
@@ -17,6 +17,8 @@ cucumber = "7.12.1"
 testcontainers = "1.18.3"
 testcontainers-keycloak = "2.5.0"
 jsonwebtoken = "0.11.5"
+owasp = "8.0.1"
+asciidoctor = "4.0.0-alpha.1"
 
 [libraries]
 # project dependencies
@@ -39,6 +41,9 @@ kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinCoroutines" }
 
+# Utils
+owasp-depcheck = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp" }
+asciidoctor-gradle = { module = "org.asciidoctor:asciidoctor-gradle-jvm", version.ref = "asciidoctor" }
 # test dependencies
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }

@@ -1,10 +1,13 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
     id("java-conventions")
+    // the following conventions depend on each other, keep them in the following order
+    id("io.mindsync.verification.test-producer-conventions")
+    id("io.mindsync.verification.jacoco-producer-conventions")
 }
 
 tasks.test {
