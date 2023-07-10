@@ -20,7 +20,7 @@ val dokkaHtmlMultiModuleTask = tasks.named<DokkaMultiModuleTask>(
     "dokkaHtmlMultiModule"
 )
 val testReportTask = tasks.named<TestReport>("testReport")
-val jacocoReportTask = tasks.named<JacocoReport>("aggregateJacocoTestReport")
+val jacocoReportTask = tasks.named<JacocoReport>("testCodeCoverageReport")
 val detektReportTask = tasks.named<Detekt>("aggregateDetekt")
 val dependencyCheckTask = tasks.named<Aggregate>("dependencyCheckAggregate")
 

@@ -26,11 +26,12 @@ sonar {
         property("sonar.links.issue", "$githubProjectUrl/issues")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            buildDir.resolve("reports/jacoco/aggregateJacocoTestReport/aggregateJacocoTestReport.xml")
+            // current project build dir
+            "$buildDir/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
         )
     }
 }
 
 tasks.withType<SonarTask>().configureEach {
-    dependsOn(project.tasks.named("aggregateJacocoTestReport"))
+    dependsOn(project.tasks.named("testCodeCoverageReport"))
 }

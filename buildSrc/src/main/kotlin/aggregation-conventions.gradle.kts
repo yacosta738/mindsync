@@ -3,7 +3,6 @@ import org.owasp.dependencycheck.reporting.ReportGenerator
 import org.sonarqube.gradle.SonarTask
 
 plugins {
-    id("io.mindsync.verification.jacoco-consumer-conventions")
     id("io.gitlab.arturbosch.detekt")
     id("org.sonarqube")
     id("org.owasp.dependencycheck")

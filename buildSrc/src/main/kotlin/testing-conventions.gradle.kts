@@ -7,7 +7,7 @@ plugins {
     id("java-conventions")
     // the following conventions depend on each other, keep them in the following order
     id("io.mindsync.verification.test-producer-conventions")
-    id("io.mindsync.verification.jacoco-producer-conventions")
+    id("io.mindsync.verification.jacoco-conventions")
 }
 
 tasks.test {
@@ -19,6 +19,8 @@ tasks.test {
 }
 
 dependencies {
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit5"))
     add("testImplementation", libs.findBundle("junit").get())
     add("testImplementation", libs.findLibrary("mockk").get())
     add("testImplementation", libs.findLibrary("datafaker").get())
