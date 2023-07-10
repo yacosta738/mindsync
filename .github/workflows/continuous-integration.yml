@@ -1,4 +1,4 @@
-name: Continuous Integration Build 🏗️ and Test 🧪
+name: CI Build
 
 on:
     pull_request:
