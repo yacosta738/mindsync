@@ -6,6 +6,7 @@ plugins {
     id("testing-conventions")
     id("io.mindsync.verification.test-consumer-conventions")
     id("io.mindsync.documentation.documentation-consumer-conventions")
+    id("io.mindsync.verification.sonarqube-conventions")
 }
 
 idea {

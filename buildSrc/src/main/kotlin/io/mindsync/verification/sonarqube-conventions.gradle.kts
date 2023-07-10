@@ -3,7 +3,7 @@ package io.mindsync.verification
 import org.sonarqube.gradle.SonarTask
 
 plugins {
-    `java-library`
+    id("java-conventions")
     id("org.sonarqube")
 }
 
@@ -24,11 +24,18 @@ sonar {
         property("sonar.links.ci", "$githubProjectUrl/actions")
         property("sonar.links.scm", githubProjectUrl)
         property("sonar.links.issue", "$githubProjectUrl/issues")
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            // current project build dir
-            "$buildDir/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
-        )
+    }
+}
+
+subprojects {
+    sonar {
+        properties {
+            property(
+                "sonar.coverage.jacoco.xmlReportPaths",
+                // current project build dir
+                buildDir.resolve("reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
+            )
+        }
     }
 }
 
