@@ -50,7 +50,7 @@ jobs:
             -   name: Run tests 🧪
                 uses: gradle/gradle-build-action@v2
                 with:
-                    arguments: clean check sonar aggregateReports
+                    arguments: clean check sonar jacocoTestReport aggregateReports
                 env:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
