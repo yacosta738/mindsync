@@ -22,7 +22,7 @@ services:
         networks:
             - local-mindsync
     redis:
-        image: redis:6.2.12
+        image: redis:6.2.13
         container_name: redis
         ports:
             - "6379:6379"
