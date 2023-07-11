@@ -1,34 +1,40 @@
+import org.gradle.kotlin.dsl.support.listFilesOrdered
+
 rootProject.name = "mindsync"
-plugins {
-    id("com.gradle.enterprise") version ("3.10.3")
-}
 
-val apps = File("apps")
-val libs = File("libs")
-
-loadSubProjects(listOf(apps, libs))
-
-fun loadSubProjects(modules: List<File>) {
-    modules.forEach { module ->
-        if (module.exists()) {
-            if (module.isDirectory) {
-                module.listFiles()?.forEach { submodule ->
-                    if (submodule.isDirectory) {
-                        println("Loading submodule \uD83D\uDCE6: ${submodule.name}")
-                        include(":${submodule.name}")
-                        project(":${submodule.name}").projectDir = File("${module.name}/${submodule.name}")
-                    } else {
-                        println("${submodule.name} is not a directory \uD83D\uDDFF - skipping")
-                    }
-                }
-            } else {
-                println("${module.name} is not a directory \uD83D\uDE12 - ${module.name}")
-            }
-        } else {
-            println("${module.name} directory does not exist \uD83D\uDEAB - ${module.name}")
-        }
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
+
+plugins {
+    id("com.gradle.enterprise") version ("3.13.4")
+}
+
+fun includeProject(dir: File) {
+    println("Loading submodule \uD83D\uDCE6: ${dir.name}")
+    include(dir.name)
+    val prj = project(":${dir.name}")
+    prj.projectDir = dir
+    prj.buildFileName = "${dir.name}.gradle.kts"
+    require(prj.projectDir.isDirectory) { "Project '${prj.path} must have a ${prj.projectDir} directory" }
+    require(prj.buildFile.isFile) { "Project '${prj.path} must have a ${prj.buildFile} build script" }
+}
+
+fun includeProjectsInDir(dirName: String) {
+    file(dirName).listFilesOrdered { it.isDirectory }
+        .forEach { dir ->
+            includeProject(dir)
+        }
+}
+val projects = listOf(
+    "libs",
+    "apps"
+)
+projects.forEach { includeProjectsInDir(it) }
+includeProject(file("documentation"))
 
 if (!System.getenv("CI").isNullOrEmpty() && !System.getenv("BUILD_SCAN_TOS_ACCEPTED").isNullOrEmpty()) {
     gradleEnterprise {

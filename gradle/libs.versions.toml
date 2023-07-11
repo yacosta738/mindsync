@@ -1,16 +1,27 @@
 [versions]
-lorem = "2.1"
-j2html = "1.6.0"
-kotlin = "1.7.20"
+kotlin = "1.8.20"
+kotlinCoroutines = "1.6.4"
 springBoot = "3.1.0"
-dokka = "1.7.20"
+dokka = "1.8.20"
 detekt = "1.21.0"
 arrow = "1.2.0-RC"
+sonarqubeGradlePlugin = "4.2.1.3168"
+jacoco = "0.8.8"
+mockk = "1.13.5"
+junit= "5.9.3"
+datafaker= "1.8.0"
+reactor = "3.5.6"
+kotest = "5.6.2"
+rest-assured = "5.3.0"
+cucumber = "7.12.1"
+testcontainers = "1.18.3"
+testcontainers-keycloak = "2.5.0"
+jsonwebtoken = "0.11.5"
+owasp = "8.0.1"
+asciidoctor = "4.0.0-alpha.1"
 
 [libraries]
 # project dependencies
-lorem = { module = "com.thedeanda:lorem", version.ref = "lorem" }
-j2html = { module = "com.j2html:j2html", version.ref = "j2html" }
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 
@@ -20,15 +31,53 @@ kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref =
 kotlin-noarg = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin" }
 springBoot-gradle = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
 springBoot-dependencyManagement = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBoot" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinCoroutines" }
+
+# Utils
+owasp-depcheck = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp" }
+asciidoctor-gradle = { module = "org.asciidoctor:asciidoctor-gradle-jvm", version.ref = "asciidoctor" }
+# test dependencies
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
+sonarqube-gradle-plugin = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqubeGradlePlugin" }
+jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
+reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactor" }
+kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
+rest-assured-json-path = { module = "io.rest-assured:json-path", version.ref = "rest-assured" }
+rest-assured-xml-path = { module = "io.rest-assured:xml-path", version.ref = "rest-assured" }
+rest-assured-json-schema-validator = { module = "io.rest-assured:json-schema-validator", version.ref = "rest-assured" }
+cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainers-neo4j = { module = "org.testcontainers:neo4j", version.ref = "testcontainers" }
+testcontainers-keycloak = { module = "com.github.dasniko:testcontainers-keycloak", version.ref = "testcontainers-keycloak" }
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jsonwebtoken" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jsonwebtoken" }
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonwebtoken" }
 
 
 [bundles]
-lorem = ["lorem"]
-j2html = ["j2html"]
+spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux"]
 arrow = ["arrow-core", "arrow-fx-coroutines"]
+kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
+junit = ["junit-jupiter-api", "junit-jupiter-engine"]
+kotest = ["kotest-assertions-core-jvm", "kotest-assertions-json", "kotest-runner-junit5"]
+rest-assured = ["rest-assured", "rest-assured-json-path", "rest-assured-xml-path", "rest-assured-json-schema-validator"]
+tetscontainers = ["testcontainers", "testcontainers-junit-jupiter", "testcontainers-neo4j", "testcontainers-keycloak"]
+jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
 
 [plugins]
 detekt-gradle = { id = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }

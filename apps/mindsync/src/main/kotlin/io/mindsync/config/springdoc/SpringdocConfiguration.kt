@@ -10,6 +10,21 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+/**
+ * Configuration class for SpringDoc.
+ *
+ * This class is responsible for configuring the SpringDoc library
+ * and provides beans for generating OpenAPI documentation.
+ * @see OpenAPI for more information about the OpenAPI specification.
+ * @see GroupedOpenApi for more information about the SpringDoc library.
+ * @see Bean for more information about the annotation.
+ * @see Configuration for more information about the annotation.
+ * @see Value for more information about the annotation.
+ * @see Generated for more information about the annotation.
+ * @see SpringdocConfiguration for more information about the configuration class.
+ *
+ * @author Yuniel Acosta
+ */
 @Configuration
 @Generated(reason = "Not testing technical configuration")
 internal class SpringdocConfiguration {

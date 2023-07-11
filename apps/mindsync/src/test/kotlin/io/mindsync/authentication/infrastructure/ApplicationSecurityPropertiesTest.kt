@@ -11,16 +11,16 @@ internal class ApplicationSecurityPropertiesTest {
         assertThat(properties.contentSecurityPolicy).isEqualTo(
             DEFAULT_CONTENT_SECURITY_POLICY
         )
-        assertThat(properties.oauth2.getAudience()).isEmpty()
+        assertThat(properties.oauth2.audience).isEmpty()
     }
 
     @Test
     fun shouldUpdatedConfiguration() {
         val properties = ApplicationSecurityProperties()
         properties.contentSecurityPolicy = "policy"
-        properties.oauth2.setAudience(listOf("audience"))
+        properties.oauth2.audience = listOf("audience").toMutableList()
         assertThat(properties.contentSecurityPolicy).isEqualTo("policy")
-        assertThat(properties.oauth2.getAudience()).containsExactly("audience")
+        assertThat(properties.oauth2.audience).containsExactly("audience")
     }
 
     companion object {

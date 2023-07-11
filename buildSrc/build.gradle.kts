@@ -1,6 +1,5 @@
 val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-
 plugins {
     // Support convention plugins written in Kotlin. Convention plugins are build scripts in 'src/main'
     // that automatically become available as plugins in the main build.
@@ -13,7 +12,13 @@ repositories {
     mavenCentral()
 }
 
+val kotlinVersion: String = libs.findVersion("kotlin").get().requiredVersion
+
 dependencies {
+    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation(kotlin("bom", kotlinVersion))
+    implementation(kotlin("reflect"))
+    implementation(kotlin("stdlib"))
     // buildSrc in combination with this plugin ensures that the version set here
     // will be set to the same for all other Kotlin dependencies / plugins in the project.
     add("implementation", libs.findLibrary("kotlin-gradle").get())
@@ -44,6 +49,11 @@ dependencies {
     // A static code analyzer for Kotlin
     add("implementation", libs.findLibrary("detekt-gradle").get())
 
-    implementation("org.sonarsource.scanner.gradle", "sonarqube-gradle-plugin", "4.2.1.3168")
-    implementation("org.jacoco:org.jacoco.core:0.8.8")
+    add("implementation", libs.findLibrary("owasp-depcheck").get())
+
+    add("implementation", libs.findLibrary("asciidoctor-gradle").get())
+
+    add("implementation", libs.findLibrary("sonarqube-gradle-plugin").get())
+
+    add("testImplementation", libs.findLibrary("jacoco-core").get())
 }

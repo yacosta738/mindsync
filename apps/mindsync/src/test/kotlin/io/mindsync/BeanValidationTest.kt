@@ -99,6 +99,7 @@ internal class BeanValidationTest {
         private val EXCLUDED_CONTROLLERS = setOf(
             "ExceptionTranslatorTestController",
             "AuthenticationResource",
+            "UserRegisterController",
             "DummyResource"
         )
         private val OBJECT_METHODS = Arrays.stream(

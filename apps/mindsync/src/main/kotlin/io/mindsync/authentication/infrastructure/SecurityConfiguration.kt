@@ -1,6 +1,5 @@
 package io.mindsync.authentication.infrastructure
 
-import io.mindsync.authentication.domain.Role
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -31,12 +30,33 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository
-import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler
+import org.springframework.security.web.server.csrf.XorServerCsrfTokenRequestAttributeHandler
+import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
 
+private const val POLICY =
+    "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
+
+/**
+ * Configuration class for setting up security in a Spring WebFlux application.
+ *
+ * This class is responsible for configuring the security settings in the application.
+ * It also configures the security filter chain that will be used to protect the application.
+ * @param applicationSecurityProperties the application security properties
+ * @since 1.0.0
+ * @author Yuniel Acosta
+ * @see EnableWebFluxSecurity for enabling Spring Security in a WebFlux application
+ * @see EnableReactiveMethodSecurity for enabling Spring Security method security in a WebFlux application
+ * @see WebSecurityCustomizer for customizing the WebSecurity configuration
+ * @see SecurityWebFilterChain for configuring the security filter chain
+ * @see ServerHttpSecurity for configuring the security filter chain
+ * @see ReactiveClientRegistrationRepository for managing OAuth 2.0 Client Registration
+ * @see ReactiveJwtDecoder for decoding a JSON Web Token (JWT) from a Bearer Token request
+ * @see WebClient for performing HTTP requests
+ */
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -50,6 +70,11 @@ class SecurityConfiguration(
         private const val TIMEOUT = 2000
     }
 
+    /**
+     * Creates a customizer for configuring web security settings.
+     *
+     * @return the WebSecurityCustomizer instance
+     */
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web: WebSecurity ->
@@ -66,6 +91,12 @@ class SecurityConfiguration(
         }
     }
 
+    /**
+     * Builds a SecurityWebFilterChain for the provided ServerHttpSecurity instance.
+     *
+     * @param http The ServerHttpSecurity instance to configure the filter chain.
+     * @return The configured SecurityWebFilterChain.
+     */
     @Bean
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         // @formatter:off
@@ -74,7 +105,7 @@ class SecurityConfiguration(
                     csrf ->
                 csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // See https://stackoverflow.com/q/74447118/65681
-                    .csrfTokenRequestHandler(ServerCsrfTokenRequestAttributeHandler())
+                    .csrfTokenRequestHandler(XorServerCsrfTokenRequestAttributeHandler())
             }
             .headers {
                     headers ->
@@ -82,29 +113,18 @@ class SecurityConfiguration(
                 headers.referrerPolicy {
                         referrerPolicy ->
                     referrerPolicy.policy(
-                        org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN
+                        ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN
                     )
                 }
 
-                headers.permissionsPolicy { permissions ->
-                    permissions.policy(
-                        "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
-                    )
-                }
+                headers.permissionsPolicy { permissions -> permissions.policy(POLICY) }
             }
             .authorizeExchange {
                     auth ->
                 auth
                     .pathMatchers("/health-check").permitAll()
-                    .pathMatchers("/api/authenticate").permitAll()
-                    .pathMatchers("/api/auth-info").permitAll()
-                    .pathMatchers("/api/admin/**").hasAuthority(Role.ADMIN.key())
+                    .pathMatchers("/api/register").permitAll()
                     .pathMatchers("/api/**").authenticated()
-                    .pathMatchers("/management/health").permitAll()
-                    .pathMatchers("/management/health/**").permitAll()
-                    .pathMatchers("/management/info").permitAll()
-                    .pathMatchers("/management/prometheus").permitAll()
-                    .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())
@@ -119,6 +139,11 @@ class SecurityConfiguration(
         // @formatter:on
     }
 
+    /**
+     * Converts a Jwt token into a Mono of AbstractAuthenticationToken, using a ReactiveJwtAuthenticationConverterAdapter.
+     *
+     * @return Converter<Jwt, Mono<AbstractAuthenticationToken>> the authentication converter.
+     */
     fun authenticationConverter(): Converter<Jwt, Mono<AbstractAuthenticationToken>> {
         val jwtAuthenticationConverter = JwtAuthenticationConverter()
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(JwtGrantedAuthorityConverter())
@@ -146,6 +171,12 @@ class SecurityConfiguration(
         }
     }
 
+    /**
+     * Creates a ReactiveJwtDecoder instance for decoding JWT tokens.
+     *
+     * @param clientRegistrationRepository The repository containing client registrations.
+     * @return A ReactiveJwtDecoder instance.
+     */
     @Bean
     @Generated(reason = "Only called with a valid client registration repository")
     fun jwtDecoder(
@@ -153,7 +184,7 @@ class SecurityConfiguration(
     ): ReactiveJwtDecoder {
         val jwtDecoder = NimbusReactiveJwtDecoder.withIssuerLocation(issuerUri).build()
         val audienceValidator: OAuth2TokenValidator<Jwt> =
-            AudienceValidator(applicationSecurityProperties.oauth2.getAudience())
+            AudienceValidator(applicationSecurityProperties.oauth2.audience)
         val withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri)
         val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer, audienceValidator)
         jwtDecoder.setJwtValidator(withAudience)

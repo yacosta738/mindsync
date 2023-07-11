@@ -8,6 +8,8 @@ logging:
 spring:
     application:
         name: mindsync
+    main:
+        allow-bean-definition-overriding: true
     profiles:
         active: dev
     security:
@@ -15,21 +17,32 @@ spring:
             client:
                 registration:
                     oidc:
-                        client-secret: web_app
-                        client-id: web_app
+                        client-secret: ${application.security.oauth2.client-secret}
+                        client-id: ${application.security.oauth2.client-id}
                         scope: openid,profile,email
                 provider:
                     oidc:
-                        issuer-uri: http://localhost:7080/realms/mindsync
+                        issuer-uri: ${application.security.oauth2.issuer-uri}
     neo4j:
         uri: bolt://localhost:7687
         authentication:
-            username: neo4j
-            password: margin-saturn-presto-saga-slogan-8117
+            username: ${NEO4J_USERNAME:neo4j}
+            password: ${NEO4J_PASSWORD:margin-saturn-presto-saga-slogan-8117}
 
 application:
+    version: 0.0.1-SNAPSHOT
     security:
         oauth2:
+            base-url: ${OAUTH2_SERVER_URL:http://localhost:7080}
+            server-url: ${application.security.oauth2.base-url}
+            issuer-uri: ${application.security.oauth2.base-url}/realms/${application.security.oauth2.realm}
+            realm: ${REALM:mindsync}
+            client-id: ${CLIENT_ID:web_app}
+            client-secret: ${CLIENT_SECRET:web_app}
+            admin-client-id: ${ADMIN_CLIENT_ID:admin-cli}
+            admin-realm: ${ADMIN_REALM:master}
+            admin-username: ${ADMIN_USERNAME:admin}
+            admin-password: ${ADMIN_PASSWORD:secret}
             audience:
                 - account
                 - api://default

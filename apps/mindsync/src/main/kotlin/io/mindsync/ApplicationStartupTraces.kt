@@ -9,12 +9,22 @@ import java.util.*
 
 private const val SEPARATOR_LENGTH = 58
 
+/**
+ * Utility class to log application's startup information.
+ * This class is inspired by the [org.springframework.boot.StartupInfoLogger] class.
+ * It logs the application's startup information in a more concise way.
+ * @author Yuniel Acosta (acosta)
+ * @created 8/7/23
+ */
 object ApplicationStartupTraces {
     private val log: Logger = LoggerFactory.getLogger(ApplicationStartupTraces::class.java)
     private val SEPARATOR = "-".repeat(SEPARATOR_LENGTH)
     private const val BREAK = "\n"
     private const val SPACER = "  "
 
+    /**
+     * Return a string of the application startup traces.
+     */
     fun of(environment: Environment): String {
         Objects.requireNonNull(environment, "Environment must not be null")
         return buildTraces(environment)

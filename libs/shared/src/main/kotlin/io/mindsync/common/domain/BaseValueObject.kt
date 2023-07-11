@@ -2,9 +2,17 @@ package io.mindsync.common.domain
 
 import java.io.Serializable
 
-abstract class BaseValueObject<T> protected constructor(val value: T) :
-    Comparable<BaseValueObject<T>>, Serializable {
+/**
+ * Base class for value objects that are validated when created
+ * @author Yuniel Acosta (acosta)
+ * @created 2/7/23
+ */
+@Suppress("SerialVersionUIDInSerializableClass")
+abstract class BaseValueObject<T> protected constructor(val value: T) : Serializable {
 
+    /**
+     * Compares two value objects by their value
+     */
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is BaseValueObject<*>) return false
@@ -14,15 +22,22 @@ abstract class BaseValueObject<T> protected constructor(val value: T) :
         return true
     }
 
+    /**
+     * Returns the hash code of the value object
+     */
     override fun hashCode(): Int {
         return value?.hashCode() ?: 0
     }
 
+    /**
+     * Returns the string representation of the value object
+     */
     override fun toString(): String {
         return value.toString()
     }
 
+    @Suppress("serialVersionUID")
     companion object {
-        private const val serialVersionUID = 1L
+        private const val serialVersionUID = -68L
     }
 }

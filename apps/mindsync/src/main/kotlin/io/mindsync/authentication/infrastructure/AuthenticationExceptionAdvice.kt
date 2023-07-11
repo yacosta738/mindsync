@@ -11,9 +11,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 private const val DEFAULT_PRECEDENCE = 2000
 
+/**
+ * This class handles exceptions related to authentication.
+ *
+ * It provides advice for exceptions of type NotAuthenticatedUserException and UnknownAuthenticationException.
+ * Orders the execution of advice methods according to precedence.
+ * @author Yuniel Acosta
+ */
 @ControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE - DEFAULT_PRECEDENCE)
 internal class AuthenticationExceptionAdvice {
+    /**
+     * Handles the [NotAuthenticatedUserException] and returns a ProblemDetail object.
+     *
+     * @return A [ProblemDetail] object with the status code set to UNAUTHORIZED, title set to "not authenticated",
+     * and the property [MESSAGE_KEY] set to "error.http.401".
+     */
     @ExceptionHandler(NotAuthenticatedUserException::class)
     fun NotAuthenticatedUserException.handleNotAuthenticateUser(): ProblemDetail {
         val detail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED)
@@ -22,6 +35,11 @@ internal class AuthenticationExceptionAdvice {
         return detail
     }
 
+    /**
+     * Handles [UnknownAuthenticationException] and returns a [ProblemDetail] object with appropriate details.
+     *
+     * @return The [ProblemDetail] object representing the unknown authentication error.
+     */
     @ExceptionHandler(UnknownAuthenticationException::class)
     fun UnknownAuthenticationException.handleUnknownAuthentication(): ProblemDetail {
         val detail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR)
