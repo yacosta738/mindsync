@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-jose")
     implementation("org.springframework.security:spring-security-oauth2-resource-server")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.7.0")
-    implementation("com.squareup.moshi:moshi:1.10.0")
+    implementation("com.squareup.moshi:moshi:1.15.0")
     implementation("org.keycloak:keycloak-admin-client:21.1.1")
 
     // 3 R D   P A R T Y
