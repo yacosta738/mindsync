@@ -7,12 +7,22 @@ plugins {
     id("io.mindsync.verification.test-consumer-conventions")
     id("io.mindsync.documentation.documentation-consumer-conventions")
     id("io.mindsync.verification.sonarqube-conventions")
+    id("com.gorylenko.gradle-git-properties")
 }
 
 idea {
     module.isDownloadJavadoc = true
     module.isDownloadSources = true
+    // exclude node_modules from indexing
+    module.excludeDirs.add(file("**/node_modules"))
 }
+
+gitProperties {
+    failOnNoGitDirectory = false
+    keys = listOf("git.branch", "git.commit.id.abbrev", "git.commit.id.describe")
+}
+
+
 allprojects {
     group = "io.mindsync.gradle"
 }

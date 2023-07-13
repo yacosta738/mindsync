@@ -19,6 +19,8 @@ testcontainers-keycloak = "2.5.0"
 jsonwebtoken = "0.11.5"
 owasp = "8.0.1"
 asciidoctor = "4.0.0-alpha.1"
+gradle-git-properties = "2.4.1"
+frontend-gradle-plugin = "7.0.0"
 
 [libraries]
 # project dependencies
@@ -34,6 +36,7 @@ springBoot-dependencyManagement = { module = "org.springframework.boot:spring-bo
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
 spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBoot" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+gradle-git-properties = { module = "com.gorylenko.gradle-git-properties:gradle-git-properties", version.ref = "gradle-git-properties" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
@@ -81,3 +84,4 @@ jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
 
 [plugins]
 detekt-gradle = { id = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+frontend-gradle-plugin = { id = "org.siouan.frontend-jdk17", version.ref = "frontend-gradle-plugin" }

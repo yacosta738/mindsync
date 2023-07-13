@@ -81,8 +81,8 @@ class SecurityConfiguration(
             web
                 .ignoring()
                 .requestMatchers(HttpMethod.OPTIONS, "/**")
-                .requestMatchers("/app/**")
-                .requestMatchers("/i18n/**")
+                .requestMatchers("/**")
+                .requestMatchers("/_astro/**")
                 .requestMatchers("/content/**")
                 .requestMatchers("/swagger-ui/**")
                 .requestMatchers("/swagger-ui.html")
@@ -122,6 +122,7 @@ class SecurityConfiguration(
             .authorizeExchange {
                     auth ->
                 auth
+                    .pathMatchers("/").permitAll()
                     .pathMatchers("/health-check").permitAll()
                     .pathMatchers("/api/register").permitAll()
                     .pathMatchers("/api/**").authenticated()

@@ -56,4 +56,6 @@ dependencies {
     add("implementation", libs.findLibrary("sonarqube-gradle-plugin").get())
 
     add("testImplementation", libs.findLibrary("jacoco-core").get())
+
+    add("implementation", libs.findLibrary("gradle-git-properties").get())
 }
