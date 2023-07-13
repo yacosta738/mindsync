@@ -1,1 +1,0 @@
-/Users/acosta/Dev/mindsync/apps/mindsync-frontend/node/bin/pnpm
