@@ -1,0 +1,59 @@
+---
+import {Icon} from 'astro-icon';
+import pkg from '../../../package.json' assert {type: 'json'};
+import LinkButton from 'atoms:LinkButton';
+import Menu from './Menu.astro';
+import {navMenus} from "../../models/Menu";
+import HamMenu from "atoms:HamMenu";
+import {LanguageSelector} from "astro-i18next/components";
+
+const appName = pkg.name.toString() ?? 'MindSync';
+---
+
+<nav
+    class="fixed z-50 w-full bg-white border-b border-gray-200 sm:py-2 dark:bg-gray-800 dark:border-gray-700"
+>
+    <div class="container py-3 mx-auto">
+        <div class="flex items-center justify-between mx-1">
+            <div class="flex items-center justify-start">
+                <a href="/" class="flex mr-4">
+                    <img
+                        src='/favicon.svg'
+                        class="h-8 mr-3"
+                        alt="MindSync Logo"
+                    />
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+						{appName}
+                    </span>
+                </a>
+                <div class="hidden sm:flex sm:ml-6">
+                    <Menu menus={navMenus}/>
+                </div>
+            </div>
+
+            <div class="flex justify-items-center justify-center ">
+                <LanguageSelector
+                    showFlag={true}
+                    class='cursor-pointer select-none rounded-lg border-b border-transparent bg-transparent text-sm text-primary-500 hover:border-primary-500 hover:bg-primary-900 mx-1'
+                    tabindex="0"
+                />
+                <LinkButton href="/login" class="hidden sm:flex">
+                    <Icon name="mdi:login" class="w-4 h-4 mr-1"/>
+                    Login
+                </LinkButton>
+                <HamMenu class="sm:hidden"/>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="hidden sm:hidden" id="mobile-menu">
+        <Menu menus={navMenus}>
+            <LinkButton
+                slot="last-menu"
+                href="/login">
+                <Icon name="mdi:login" class="w-4 h-4 mr-1"/>
+                Login
+            </LinkButton>
+        </Menu>
+    </div>
+</nav>
