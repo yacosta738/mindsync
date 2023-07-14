@@ -24,7 +24,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-resource-server")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.7.0")
     implementation("com.squareup.moshi:moshi:1.15.0")
-    implementation("org.keycloak:keycloak-admin-client:21.1.1")
+    implementation("org.keycloak:keycloak-admin-client:21.1.2")
 
     // 3 R D   P A R T Y
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
