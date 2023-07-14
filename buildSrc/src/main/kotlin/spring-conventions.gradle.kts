@@ -19,6 +19,11 @@ apply(plugin = "org.springframework.boot")
 logger.lifecycle("Enabling Spring Boot Dependency Management in module ${project.path}")
 apply(plugin = "io.spring.dependency-management")
 
+val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+dependencies {
+    add("implementation", libs.findBundle("spring-boot").get())
+}
 springBoot {
     // Creates META-INF/build-info.properties for Spring Boot Actuator
     buildInfo()

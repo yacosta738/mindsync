@@ -1,6 +1,7 @@
 [versions]
 kotlin = "1.8.20"
 kotlinCoroutines = "1.6.4"
+kotlin-reflect = "1.8.22"
 springBoot = "3.1.1"
 dokka = "1.8.20"
 detekt = "1.21.0"
@@ -21,6 +22,11 @@ owasp = "8.0.1"
 asciidoctor = "4.0.0-alpha.1"
 gradle-git-properties = "2.4.1"
 frontend-gradle-plugin = "7.0.0"
+buildtools-native = "0.9.23"
+moshi = "1.15.0"
+keycloak-admin-client = "21.1.2"
+springdoc-openapi-webflux-ui = "1.7.0"
+reflections = "0.10.2"
 
 [libraries]
 # project dependencies
@@ -35,6 +41,7 @@ springBoot-gradle = { module = "org.springframework.boot:spring-boot-gradle-plug
 springBoot-dependencyManagement = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
 spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBoot" }
+springdoc-openapi-webflux-ui = { module = "org.springdoc:springdoc-openapi-webflux-ui", version.ref = "springdoc-openapi-webflux-ui" }
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 gradle-git-properties = { module = "com.gorylenko.gradle-git-properties:gradle-git-properties", version.ref = "gradle-git-properties" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -43,7 +50,10 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinCoroutines" }
-
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-reflect" }
+reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+keycloak-admin-client = { module = "org.keycloak:keycloak-admin-client", version.ref = "keycloak-admin-client" }
 # Utils
 owasp-depcheck = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp" }
 asciidoctor-gradle = { module = "org.asciidoctor:asciidoctor-gradle-jvm", version.ref = "asciidoctor" }
@@ -73,9 +83,10 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonweb
 
 
 [bundles]
-spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux"]
+spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux", "springdoc-openapi-webflux-ui"]
 arrow = ["arrow-core", "arrow-fx-coroutines"]
 kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
+reflections = ["reflections", "kotlin-reflect"]
 junit = ["junit-jupiter-api", "junit-jupiter-engine"]
 kotest = ["kotest-assertions-core-jvm", "kotest-assertions-json", "kotest-runner-junit5"]
 rest-assured = ["rest-assured", "rest-assured-json-path", "rest-assured-xml-path", "rest-assured-json-schema-validator"]
@@ -85,3 +96,4 @@ jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
 [plugins]
 detekt-gradle = { id = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 frontend-gradle-plugin = { id = "org.siouan.frontend-jdk17", version.ref = "frontend-gradle-plugin" }
+buildtools-native = { id = "org.graalvm.buildtools.native", version.ref = "buildtools-native" }
