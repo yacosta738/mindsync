@@ -1,5 +1,6 @@
 # Mindsync 
 
+[![CI Build](https://github.com/yacosta738/mindsync/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/yacosta738/mindsync/actions/workflows/continuous-integration.yml)
 ![coverage](.github/badges/jacoco.svg)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yacosta738_mindsync&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yacosta738_mindsync)

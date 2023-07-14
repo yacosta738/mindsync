@@ -72,6 +72,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
     add("implementation", libs.findBundle("kotlinx-coroutines").get())
+    add("implementation", libs.findLibrary("kotlin-reflect").get())
     add("implementation", libs.findBundle("arrow").get())
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))

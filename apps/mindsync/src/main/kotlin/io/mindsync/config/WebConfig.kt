@@ -30,6 +30,7 @@ class WebConfig : WebFluxConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/**")
             .addResourceLocations("classpath:/static/")
+            .addResourceLocations("classpath:/public/")
     }
 
     /**

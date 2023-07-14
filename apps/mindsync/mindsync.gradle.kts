@@ -3,7 +3,7 @@ plugins {
 //  id("publishing-conventions") // If everything was configured correctly, you could use it to publish the artifacts. But it is not working with Spring as I thought.
     id("spring-conventions")
     id("spring-testing-conventions")
-//    id("io.mindsync.verification.sonarqube-conventions")
+    alias(libs.plugins.buildtools.native)
 }
 
 dependencies {
@@ -22,15 +22,14 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.security:spring-security-oauth2-jose")
     implementation("org.springframework.security:spring-security-oauth2-resource-server")
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.7.0")
-    implementation("com.squareup.moshi:moshi:1.10.0")
-    implementation("org.keycloak:keycloak-admin-client:21.1.1")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui")
+    implementation(libs.moshi)
+    implementation(libs.keycloak.admin.client)
 
     // 3 R D   P A R T Y
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
-    implementation("org.reflections:reflections:0.10.2")
+    implementation(libs.bundles.reflections)
 
     // D A T A B A S E S
     implementation("org.springframework.boot:spring-boot-starter-data-neo4j")

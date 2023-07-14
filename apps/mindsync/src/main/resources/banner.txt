@@ -1,0 +1,10 @@
+
+ ${AnsiColor.MAGENTA} ███╗   ███╗██╗███╗   ██╗██████╗ ███████╗██╗   ██╗███╗   ██╗ ██████╗
+ ${AnsiColor.MAGENTA} ████╗ ████║██║████╗  ██║██╔══██╗██╔════╝╚██╗ ██╔╝████╗  ██║██╔════╝
+ ${AnsiColor.MAGENTA} ██╔████╔██║██║██╔██╗ ██║██║  ██║███████╗ ╚████╔╝ ██╔██╗ ██║██║
+ ${AnsiColor.MAGENTA} ██║╚██╔╝██║██║██║╚██╗██║██║  ██║╚════██║  ╚██╔╝  ██║╚██╗██║██║
+ ${AnsiColor.MAGENTA} ██║ ╚═╝ ██║██║██║ ╚████║██████╔╝███████║   ██║   ██║ ╚████║╚██████╗
+ ${AnsiColor.MAGENTA} ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝
+
+${AnsiColor.BRIGHT_BLUE}:: MindSync 🚀  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.mindsync.ai ::${AnsiColor.DEFAULT}

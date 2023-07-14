@@ -30,15 +30,21 @@ sonar {
 subprojects {
     sonar {
         properties {
-            property(
-                "sonar.coverage.jacoco.xmlReportPaths",
-                // current project build dir
-                buildDir.resolve("reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
-            )
+            if (!project.name.equals("mindsync-frontend", ignoreCase = true)) {
+                property(
+                    "sonar.coverage.jacoco.xmlReportPaths",
+                    // current project build dir
+                    buildDir.resolve("reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
+                )
+            }
         }
     }
 }
 
 tasks.withType<SonarTask>().configureEach {
+    onlyIf {
+        println("Running sonarqube for ${project.name}")
+        file("src/main").exists()
+    }
     dependsOn(project.tasks.named("testCodeCoverageReport"))
 }
