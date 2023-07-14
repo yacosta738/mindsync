@@ -24,7 +24,7 @@ gitProperties {
 
 
 allprojects {
-    group = "io.mindsync.gradle"
+    group = properties["group"] as String
 }
 // add tasks for all subprojects
 subprojects {
