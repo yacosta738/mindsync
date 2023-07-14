@@ -73,9 +73,6 @@ jobs:
                 with:
                     default_author: github_actions
                     message: 'commit badge 🍀 ${{ steps.jacoco.outputs.coverage }} %'
-                    fetch: '--tags --force'
-                    pathspec_error_handling: ignore
-                    push: true
                     github_token: ${{ secrets.GITHUB_TOKEN }}
             -   name: Upload documentation results
                 uses: actions/upload-artifact@v2
