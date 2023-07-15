@@ -22,7 +22,6 @@ gitProperties {
     keys = listOf("git.branch", "git.commit.id.abbrev", "git.commit.id.describe")
 }
 
-
 allprojects {
     group = properties["group"] as String
 }
