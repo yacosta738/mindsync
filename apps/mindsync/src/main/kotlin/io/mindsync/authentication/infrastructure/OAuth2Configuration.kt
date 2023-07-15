@@ -10,7 +10,8 @@ import org.springframework.security.oauth2.client.web.server.ServerOAuth2Authori
 import java.time.Duration
 
 /**
- * Configuration class for OAuth2 management. It is annotated with @Configuration to indicate that it is a Spring configuration class.
+ * Configuration class for OAuth2 management. It is annotated with @Configuration to indicate that it is a Spring
+ * configuration class.
  * It is responsible for creating the [ReactiveOAuth2AuthorizedClientManager] bean.
  * @see ReactiveOAuth2AuthorizedClientManager
  * @see DefaultReactiveOAuth2AuthorizedClientManager
@@ -22,7 +23,8 @@ import java.time.Duration
 @Configuration
 class OAuth2Configuration {
     /**
-     * Creates an instance of ReactiveOAuth2AuthorizedClientManager using the provided client registration repository and authorized client repository.
+     * Creates an instance of ReactiveOAuth2AuthorizedClientManager using the provided client registration
+     * repository and authorized client repository.
      *
      * @param clientRegistrationRepository The reactive client registration repository.
      * @param authorizedClientRepository The server OAuth2 authorized client repository.

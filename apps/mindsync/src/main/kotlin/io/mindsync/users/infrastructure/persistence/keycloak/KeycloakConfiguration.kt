@@ -48,7 +48,8 @@ class KeycloakConfiguration {
     /**
      * Creates and configures a Keycloak instance based on the provided application security properties.
      *
-     * @param applicationSecurityProperties the application security properties to use for configuring the Keycloak instance
+     * @param applicationSecurityProperties the application security properties to use for configuring
+     * the Keycloak instance
      * @return the Keycloak instance
      */
     @Bean

@@ -60,8 +60,10 @@ class TestSecurityConfiguration {
         return mock(ReactiveJwtDecoder::class.java)
     }
 
+    @Suppress("MaxLineLength")
     @Bean
-    fun authorizedClientService(clientRegistrationRepository: ClientRegistrationRepository): OAuth2AuthorizedClientService {
-        return InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository)
-    }
+    fun authorizedClientService(clientRegistrationRepository: ClientRegistrationRepository): OAuth2AuthorizedClientService =
+        InMemoryOAuth2AuthorizedClientService(
+            clientRegistrationRepository
+        )
 }

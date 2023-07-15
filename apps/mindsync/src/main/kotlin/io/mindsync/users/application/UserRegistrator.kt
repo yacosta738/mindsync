@@ -50,7 +50,8 @@ class UserRegistrator(
      * Registers a new user with the given user registration command.
      *
      * @param registerUserCommand The user registration command containing the user details.
-     * @return A Mono of Either, where the left side represents a UserStoreException and the right side represents a Response containing the user details.
+     * @return A Mono of Either, where the left side represents a UserStoreException and the right side represents
+     * a Response containing the user details.
      */
     suspend fun registerNewUser(registerUserCommand: RegisterUserCommand):
         Mono<Either<UserStoreException, Response<UserResponse>>> {

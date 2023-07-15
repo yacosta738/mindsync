@@ -17,7 +17,8 @@ import java.util.stream.Collectors
 
 /**
  *
- * The AuthenticatedUser class provides methods to retrieve information about the authenticated user. It handles various authentication schemes.
+ * The AuthenticatedUser class provides methods to retrieve information about the authenticated user.
+ * It handles various authentication schemes.
  * This is an utility class to get authenticated user information
  *
  * @author Yuniel Acosta
@@ -59,7 +60,8 @@ object AuthenticatedUser {
             authentication is JwtAuthenticationToken -> authentication.token.claims[PREFERRED_USERNAME]?.toString()
                 ?: ""
 
-            authentication.principal is DefaultOidcUser -> (authentication.principal as DefaultOidcUser).attributes[PREFERRED_USERNAME]?.toString()
+            authentication.principal is DefaultOidcUser -> (authentication.principal as DefaultOidcUser)
+                .attributes[PREFERRED_USERNAME]?.toString()
                 ?: ""
 
             authentication.principal is String -> authentication.principal as String

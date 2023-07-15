@@ -18,7 +18,8 @@ class UserRegistratorCommandHandler(private val userRegistrator: UserRegistrator
     /**
      * Handles the given RegisterUserCommand.
      *
-     * @param command The RegisterUserCommand to handle. See [RegisterUserCommand] for more information about the command.
+     * @param command The RegisterUserCommand to handle. See [RegisterUserCommand] for more information
+     * about the command.
      */
     override suspend fun handle(command: RegisterUserCommand) {
         log.info("Handling register user command with email: {}", command.email)

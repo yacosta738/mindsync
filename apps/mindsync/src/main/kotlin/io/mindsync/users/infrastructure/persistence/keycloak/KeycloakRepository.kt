@@ -44,10 +44,13 @@ class KeycloakRepository(
 ) : UserCreator<User> {
 
     /**
-     * Creates a new user with the given user object. The user object contains the user details. The user is created in Keycloak.
+     * Creates a new user with the given user object. The user object contains the user details.
+     * The user is created in Keycloak.
      *
      * @param user The user to be created.
-     * @return A Mono that emits Either<UserStoreException, User>. The either object contains either a Left value with a UserStoreException if there was an error creating the user, or a Right value with the created user if the operation was successful.
+     * @return A Mono that emits Either<UserStoreException, User>. The either object contains either a Left value
+     * with a UserStoreException if there was an error creating the user, or a Right value with the created user
+     * if the operation was successful.
      */
     override suspend fun create(user: User): Mono<Either<UserStoreException, User>> {
         log.info("Saving user with email: {}", user.email.value)
@@ -91,7 +94,8 @@ class KeycloakRepository(
      * Checks if the user already exists in the user store.
      *
      * @param user The user to check.
-     * @return A Mono that emits Either a UserStoreException if the user already exists, or the user object if it does not exist.
+     * @return A Mono that emits Either a UserStoreException if the user already exists,
+     * or the user object if it does not exist.
      */
     private suspend fun checkIfUserAlreadyExists(user: User): Mono<Either<UserStoreException, User>> {
         val userByEmail = getUserByEmail(user.email.value)

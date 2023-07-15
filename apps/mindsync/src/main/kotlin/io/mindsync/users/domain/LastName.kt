@@ -1,6 +1,7 @@
 package io.mindsync.users.domain
 
-import io.mindsync.common.domain.*
+import io.mindsync.common.domain.BaseValidateValueObject
+import io.mindsync.common.domain.BaseValueObject
 import io.mindsync.users.domain.exceptions.LastNameNotValidException
 
 private const val NAME_LEN = 150

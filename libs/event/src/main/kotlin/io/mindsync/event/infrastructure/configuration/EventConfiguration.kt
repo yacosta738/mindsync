@@ -1,6 +1,10 @@
 package io.mindsync.event.infrastructure.configuration
 
-import io.mindsync.event.domain.*
+import io.mindsync.event.domain.DomainEvent
+import io.mindsync.event.domain.EventConsumer
+import io.mindsync.event.domain.EventFilter
+import io.mindsync.event.domain.Subscribe
+import io.mindsync.event.domain.TypeMatchEventFilter
 import io.mindsync.event.infrastructure.EventEmitter
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.annotation.Autowired

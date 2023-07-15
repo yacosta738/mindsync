@@ -37,6 +37,7 @@ import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import java.time.Duration
 
+@Suppress("MaxLineLength")
 private const val POLICY =
     "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()"
 
@@ -141,7 +142,8 @@ class SecurityConfiguration(
     }
 
     /**
-     * Converts a Jwt token into a Mono of AbstractAuthenticationToken, using a ReactiveJwtAuthenticationConverterAdapter.
+     * Converts a Jwt token into a Mono of [AbstractAuthenticationToken],
+     * using a [ReactiveJwtAuthenticationConverterAdapter].
      *
      * @return Converter<Jwt, Mono<AbstractAuthenticationToken>> the authentication converter.
      */

@@ -36,12 +36,14 @@ import reactor.core.publisher.Mono
 class UserRegisterController(private val userRegistrator: UserRegistrator) {
 
     /**
-     * Registers a new user. This method takes a `registerUserRequest` object as input and returns a `Mono<ResponseEntity<Response<UserResponse>>>`.
+     * Registers a new user. This method takes a `registerUserRequest` object as input and returns a
+     * `Mono<ResponseEntity<Response<UserResponse>>>`.
      * If the user is registered successfully, a `ResponseEntity` containing the user details is returned.
      * If an error occurs, a `ResponseEntity` containing the error message is returned.
      *
      * @param registerUserRequest The request object containing user information.
-     * @return A Mono of ResponseEntity containing the response object with user information. If an error occurs, a Mono of ResponseEntity containing the error message is returned.
+     * @return A Mono of ResponseEntity containing the response object with user information.
+     * If an error occurs, a Mono of ResponseEntity containing the error message is returned.
      * @see RegisterUserRequest for more information about the register user request.
      * @see UserResponse for more information about the user response.
      * @see ResponseEntity for more information about the response entity.
@@ -64,7 +66,8 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
     /**
      * Maps the registration result to a Mono ResponseEntity.
      *
-     * @param result the registration result as an Either object, where the left side represents an error and the right side represents a successful response
+     * @param result the registration result as an Either object, where the left side represents an error
+     * and the right side represents a successful response
      * @return a Mono ResponseEntity containing the mapped result
      */
     private fun mapRegistrationResult(result: Either<UserStoreException, Response<UserResponse>>):
@@ -83,7 +86,8 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
     }
 
     /**
-     * Handles registration error and returns a Mono wrapping a ResponseEntity containing a Response object with a UserResponse.
+     * Handles registration error and returns a Mono wrapping a ResponseEntity containing a
+     * [Response] object with a [UserResponse].
      *
      * @param error the Throwable representing the registration error
      * @return a Mono wrapping a ResponseEntity with HTTP status code 500 (Internal Server Error)

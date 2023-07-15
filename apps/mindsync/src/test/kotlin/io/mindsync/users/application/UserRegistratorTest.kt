@@ -9,7 +9,9 @@ import io.mindsync.users.domain.Response
 import io.mindsync.users.domain.event.UserCreatedEvent
 import io.mindsync.users.domain.exceptions.UserStoreException
 import net.datafaker.Faker
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import reactor.core.publisher.Mono
 
