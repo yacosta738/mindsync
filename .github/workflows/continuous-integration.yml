@@ -186,12 +186,12 @@ jobs:
                     distribution: corretto
                     java-version: 17
             -   name: Download documentation reports
-                uses: actions/download-artifact@v2
+                uses: actions/download-artifact@v3
                 with:
                     name: documentation
                     path: build/documentation
             -   name: Download owasp reports
-                uses: actions/download-artifact@v2
+                uses: actions/download-artifact@v3
                 with:
                     name: owasp-reports
                     path: build/reports/owasp
