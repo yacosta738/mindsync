@@ -22,9 +22,8 @@ gitProperties {
     keys = listOf("git.branch", "git.commit.id.abbrev", "git.commit.id.describe")
 }
 
-
 allprojects {
-    group = "io.mindsync.gradle"
+    group = properties["group"] as String
 }
 // add tasks for all subprojects
 subprojects {

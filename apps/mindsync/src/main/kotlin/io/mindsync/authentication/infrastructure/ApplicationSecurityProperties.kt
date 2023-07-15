@@ -1,9 +1,10 @@
 package io.mindsync.authentication.infrastructure
 
+import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties.Companion.CONTENT_SECURITY_POLICY
+import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties.Companion.OAuth2
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.validation.annotation.Validated
-import java.util.*
 
 /**
  * [ApplicationSecurityProperties] is a configuration class that handles security properties for the application.
@@ -11,7 +12,8 @@ import java.util.*
  * This class is responsible for managing the security-related properties of the application.
  * It is annotated with @Validated to enable validation of the properties.
  * It is annotated with @Configuration to indicate that it is a Spring configuration class.
- * It is annotated with @ConfigurationProperties to specify the prefix for the properties and to enable ignoring unknown fields.
+ * It is annotated with @ConfigurationProperties to specify the prefix for the properties and to enable ignoring
+ * unknown fields.
  *
  * Properties:
  * - oauth2: The OAuth2 configuration properties. It is an instance of the inner [OAuth2] class.

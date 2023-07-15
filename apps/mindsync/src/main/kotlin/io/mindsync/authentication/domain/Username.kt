@@ -21,7 +21,8 @@ private const val MIN_LENGTH = 3
 data class Username(val username: String) : BaseValidateValueObject<String>(username) {
 
     /**
-     * Validates the given username. A username is valid if it is not blank and its length is between 3 and 100 characters.
+     * Validates the given username. A username is valid if it is not blank
+     * and its length is between 3 and 100 characters.
      *
      * @param value the username to validate
      * @throws UsernameException if the username is blank or if it doesn't have the required length
@@ -41,7 +42,8 @@ data class Username(val username: String) : BaseValidateValueObject<String>(user
          * If the username is invalid and throws a UsernameException, it returns an empty Optional.
          *
          * @param username the string representation of the username
-         * @return an Optional<Username> object representing the username, or an empty Optional if the username is invalid
+         * @return an Optional<Username> object representing the username,
+         *         or an empty Optional if the username is invalid
          */
         fun of(username: String): Optional<Username> {
             return try {

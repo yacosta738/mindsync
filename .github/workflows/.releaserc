@@ -1,0 +1,18 @@
+{
+    "branches": ["main"],
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        ["@semantic-release/github", {
+            "assets": [
+                {"path": "../../apps/mindsync/build/libs/mindsync-${nextRelease.version}.jar", "label": "Mindsync JAR"},
+                {"path": "../../apps/mindsync/build/libs/mindsync-${nextRelease.version}-sources.jar", "label": "Mindsync Sources JAR"},
+                {"path": "../../apps/mindsync/build/libs/mindsync-${nextRelease.version}-javadoc.jar", "label": "Mindsync Javadoc JAR"},
+                {"path": "../../apps/mindsync/build/libs/mindsync-${nextRelease.version}-plain.jar", "label": "Mindsync Plain JAR"}
+            ]
+        }],
+        ["@semantic-release/exec", {
+           "prepareCmd" : "./release.sh ${nextRelease.version}"
+        }]
+    ]
+}

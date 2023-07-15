@@ -1,3 +1,4 @@
+
 import io.gitlab.arturbosch.detekt.Detekt
 import org.owasp.dependencycheck.reporting.ReportGenerator
 import org.sonarqube.gradle.SonarTask
@@ -60,13 +61,13 @@ subprojects {
     }
 }
 
-dependencyCheck {
+configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     failBuildOnCVSS = 3F
     formats = listOf(
-        ReportGenerator.Format.HTML,
-        ReportGenerator.Format.JUNIT,
-        ReportGenerator.Format.XML,
-        ReportGenerator.Format.SARIF
+        ReportGenerator.Format.HTML.toString(),
+        ReportGenerator.Format.JUNIT.toString(),
+        ReportGenerator.Format.XML.toString(),
+        ReportGenerator.Format.SARIF.toString()
     )
     suppressionFile = "${rootProject.rootDir}/config/owasp/owasp-supression.xml"
 

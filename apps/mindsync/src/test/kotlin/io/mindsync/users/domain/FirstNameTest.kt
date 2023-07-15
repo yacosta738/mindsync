@@ -2,7 +2,9 @@ package io.mindsync.users.domain
 
 import io.mindsync.UnitTest
 import io.mindsync.users.domain.exceptions.FirstNameNotValidException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 @UnitTest

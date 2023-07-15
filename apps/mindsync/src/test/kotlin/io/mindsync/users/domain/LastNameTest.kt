@@ -2,7 +2,9 @@ package io.mindsync.users.domain
 
 import io.mindsync.UnitTest
 import io.mindsync.users.domain.exceptions.LastNameNotValidException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 @UnitTest
@@ -26,7 +28,10 @@ internal class LastNameTest {
     @Test
     fun `should throw an exception when create a last name with invalid value`() {
         val invalidLastNames = listOf(
-            "A voluptatum ex. Ratione adipisci eveniet expedita iste consectetur voluptatibus illum odio optio. Eum facilis autem. Explicabo sequi corrupti eius quis eius adipisci."
+            """
+                A voluptatum ex. Ratione adipisci eveniet expedita iste consectetur voluptatibus illum odio optio.
+                Eum facilis autem. Explicabo sequi corrupti eius quis eius adipisci.
+            """.trimIndent()
         )
         invalidLastNames.forEach {
             println("Last Name: $it")

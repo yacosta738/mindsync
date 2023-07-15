@@ -10,7 +10,7 @@ plugins {
 }
 
 // -----------------------------
-// Add testIntegration Sourceset and Task (and also add those as Test-Module to IDEA)
+// Add testIntegration SourceSet and Task (and also add those as Test-Module to IDEA)
 // -----------------------------
 
 // to get rid of "Overload resolution ambiguity"-messsage

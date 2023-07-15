@@ -17,7 +17,8 @@ class UserId(private val id: UUID) : BaseId<UUID>(id) {
     /**
      * Constructs a new instance of the class with the specified ID.
      *
-     * @param id The ID of the object as a string representation. It must be a valid UUID value.(e.g. "123e4567-e89b-12d3-a456-426614174000") see [UUID] for more information about the UUID value.
+     * @param id The ID of the object as a string representation. It must be a valid UUID value.
+     * (e.g. "123e4567-e89b-12d3-a456-426614174000") see [UUID] for more information about the UUID value.
      * @see UUID for more information about the UUID
      */
     constructor(id: String) : this(UUID.fromString(id))
