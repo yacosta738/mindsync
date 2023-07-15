@@ -75,7 +75,7 @@ jobs:
                     message: 'commit badge 🍀 ${{ steps.jacoco.outputs.coverage }} %'
                     github_token: ${{ secrets.GITHUB_TOKEN }}
             -   name: Upload documentation results
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 with:
                     name: documentation
                     path: build/documentation
@@ -96,7 +96,7 @@ jobs:
                 with:
                     arguments: clean dependencyCheckAnalyze
             -   name: Upload security results
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 with:
                     name: owasp-reports
                     path: build/reports/owasp
