@@ -8,13 +8,13 @@ import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
 import io.mindsync.users.domain.UserId
 import io.mindsync.users.domain.exceptions.UserStoreException
+import jakarta.ws.rs.WebApplicationException
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
 import org.keycloak.representations.idm.UserRepresentation
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
-import javax.ws.rs.WebApplicationException
 
 /**
  * The KeycloakRepository class is a repository implementation that interacts with Keycloak
