@@ -31,7 +31,7 @@
         "test": "echo Testing frontend"
 	},
 	"dependencies": {
-		"@astrojs/tailwind": "^3.0.1",
+		"@astrojs/tailwind": "^4.0.0",
 		"@faker-js/faker": "^7.6.0",
 		"apexcharts": "^3.37.2",
 		"astro": "^2.0.4",
