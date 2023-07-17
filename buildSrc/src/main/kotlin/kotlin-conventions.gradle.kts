@@ -19,8 +19,10 @@ plugins {
 val embeddedMajorAndMinorKotlinVersion = project.getKotlinPluginVersion().substringBeforeLast(".")
 if (KOTLIN_VERSION != embeddedMajorAndMinorKotlinVersion) {
     logger.warn(
-        "Constant 'KOTLIN_VERSION' ($KOTLIN_VERSION) differs from embedded Kotlin version in Gradle (${project.getKotlinPluginVersion()})!\n" +
-            "Constant 'KOTLIN_VERSION' should be ($embeddedMajorAndMinorKotlinVersion)."
+        """
+            ⚠️ Constant 'KOTLIN_VERSION' ($KOTLIN_VERSION) differs from embedded Kotlin version in Gradle (${project.getKotlinPluginVersion()})!\n
+            ⚠️ Constant 'KOTLIN_VERSION' should be ($embeddedMajorAndMinorKotlinVersion).
+        """.trimIndent()
     )
 }
 
@@ -28,7 +30,7 @@ tasks.compileKotlin {
     logger.lifecycle("Configuring $name with version ${project.getKotlinPluginVersion()} in project ${project.name}")
     kotlinOptions {
         @Suppress("SpellCheckingInspection")
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all-compatibility")
         allWarningsAsErrors = true
         jvmTarget = JDK_VERSION
         languageVersion = KOTLIN_VERSION
@@ -40,7 +42,7 @@ tasks.compileTestKotlin {
     logger.lifecycle("Configuring $name with version ${project.getKotlinPluginVersion()} in project ${project.name}")
     kotlinOptions {
         @Suppress("SpellCheckingInspection")
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all-compatibility")
         allWarningsAsErrors = true
         jvmTarget = JDK_VERSION
         languageVersion = KOTLIN_VERSION
