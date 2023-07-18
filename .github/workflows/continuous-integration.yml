@@ -12,26 +12,27 @@ on:
 
 jobs:
     compile:
-        name: Compile 🏗️
+        name: 🏗️ Compile
         strategy:
             matrix:
-                os: [ ubuntu-20.04 ]
+                os: [ ubuntu-latest ]
         runs-on: ${{ matrix.os }}
         steps:
-            -   uses: docker-practice/actions-setup-docker@master
+            -   name: 🐳 Set up Docker
+                uses: docker-practice/actions-setup-docker@master
                 timeout-minutes: 12
-            -   uses: actions/checkout@v3
-            -   name: Set up JDK 17
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
-            -   name: Setup Gradle
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: clean classes testClasses testIntegrationClasses
+            -   name: 🧪 Run Check and Sonar
+                id: gradle
+                run: ./gradlew clean classes testClasses testIntegrationClasses
     tests:
-        name: Tests 🧪
+        name: 🧪 Tests
         needs: compile
         strategy:
             matrix:
@@ -39,85 +40,87 @@ jobs:
         runs-on: ${{ matrix.os }}
 
         steps:
-            -   uses: docker-practice/actions-setup-docker@master
+            -   name: 🐳 Set up Docker
+                uses: docker-practice/actions-setup-docker@master
                 timeout-minutes: 12
-            -   uses: actions/checkout@v3
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
                 with:
                     repository: ${{ github.event.pull_request.head.repo.full_name }}
                     ref: ${{ github.event.pull_request.head.ref }}
-            -   name: Set up JDK 17
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
-            -   name: Run tests 🧪
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: clean check sonar jacocoTestReport aggregateReports
+            -   name: 🧪 Run Check and Sonar
+                id: gradle
+                run: ./gradlew clean check sonar jacocoTestReport aggregateReports
                 env:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            -   name: Generate JaCoCo Badge
+            -   name: 💫 Generate JaCoCo Badge
                 uses: cicirello/jacoco-badge-generator@v2
                 with:
                     generate-branches-badge: true
                     jacoco-csv-file: apps/mindsync/build/reports/jacoco/test/jacocoTestReport.csv
 
-            -   name: Log coverage percentage
+            -   name: 📄 Log coverage percentage
                 run: |
                     echo "coverage = ${{ steps.jacoco.outputs.coverage }}"
                     echo "branch coverage = ${{ steps.jacoco.outputs.branches }}"
 
-            -   name: Commit and push the badge (if it changed)
+            -   name: ❇️Commit and push the badge (if it changed)
                 uses: EndBug/add-and-commit@v9
                 with:
                     default_author: github_actions
                     message: 'commit badge 🍀 ${{ steps.jacoco.outputs.coverage }} %'
                     github_token: ${{ secrets.GITHUB_TOKEN }}
-            -   name: Upload documentation results
+            -   name: 🧩 Upload documentation results
                 uses: actions/upload-artifact@v3
                 with:
                     name: documentation
                     path: build/documentation
     security:
-        name: Security Checks 🔒
+        name: 🔒Security Checks
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v3
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
                 with:
                     fetch-depth: 0
-            -   name: Set up JDK 17
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
-            -   name: Run security checks 🔒
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: clean dependencyCheckAnalyze
-            -   name: Upload security results
+            -   name: 🔒 Run security checks with 🧰 OWASP Dependency Check
+                id: gradle
+                run: ./gradlew clean dependencyCheckAnalyze
+            -   name: 🧩Upload security results
                 uses: actions/upload-artifact@v3
                 with:
                     name: owasp-reports
                     path: build/reports/owasp
     release:
-        name: Release 🚀
+        name: 🚀 Release
         needs: [ tests, security ]
         if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v3
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
                 with:
                     fetch-depth: 0
-            -   name: Set up JDK 17
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
-            -   name: Run build with Gradle wrapper
+            -   name: 🛠️ Run build with Gradle wrapper
                 id: gradle
                 run: ./gradlew build --scan
-            -   name: "Add build scan URL as PR comment"
+            -   name: Add build scan URL as PR comment
                 uses: actions/github-script@v6
                 if: github.event_name == 'pull_request' && failure()
                 with:
@@ -129,14 +132,15 @@ jobs:
                           repo: context.repo.repo,
                           body: '❌ ${{ github.workflow }} failed: ${{ steps.gradle.outputs.build-scan-url }}'
                         })
-            -   name: Setup Node.js
+            -   name: ❇️ Setup Node.js
                 uses: actions/setup-node@v3
                 with:
                     node-version: "lts/*"
-            -   name: Add plugin for conventional commits
+                    cache: "npm"
+            -   name: 🪄 Add plugin for conventional commits
                 run: npm install conventional-changelog-conventionalcommits @semantic-release/exec
                 working-directory: ./.github/workflows
-            -   name: Release to GitHub
+            -   name: 📦 Release to GitHub
                 working-directory: ./.github/workflows
                 run: npx semantic-release
                 env:
@@ -144,27 +148,27 @@ jobs:
         outputs:
             revnumber: ${{ env.revnumber }}
     build-publish-docker:
-        name: Build and Publish Docker 🐳
+        name:  🐳 Build and Publish Docker Image
         needs: [ release ]
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v3
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
                 with:
                     fetch-depth: 0
-            -   name: Update Version in gradle.properties 🎯
+            -   name: 🎯 Update Version in gradle.properties
                 run: |
                     sed -i "s/version=.*/version=${{ needs.release.outputs.revnumber }}/" gradle.properties
-            -   name: Set up JDK 17
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
             -   run: echo ${{ needs.release.outputs.revnumber }}
-            -   name: Build with Gradle
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: clean bootBuildImage
-            -   name: Publish to Docker Hub
+            -   name: 🛠️ Run build with Gradle wrapper
+                id: gradle
+                run: ./gradlew clean bootBuildImage
+            -   name: 🐋Publish to Docker Hub
                 uses: docker/build-push-action@v4
                 with:
                     username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -172,36 +176,36 @@ jobs:
                     repository: n4t5u/mindsync
                     tags: ${{ needs.release.outputs.revnumber }}
     publish-docs:
-        name: Publish Docs 📚
+        name: 📚Publish Docs to GitHub Pages
         needs: [ release ]
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v3
+            -   name: 👍 Checkout
+                uses: actions/checkout@v3
                 with:
                     fetch-depth: 0
-            -   name: Set up JDK 17
+            -   name: ☕ Set up JDK 17
                 uses: actions/setup-java@v3
                 with:
                     distribution: corretto
                     java-version: 17
-            -   name: Download documentation reports
+            -   name: ⬇️ Download documentation reports
                 uses: actions/download-artifact@v3
                 with:
                     name: documentation
                     path: build/documentation
-            -   name: Download owasp reports
+            -   name: ⬇️ Download OWASP reports
                 uses: actions/download-artifact@v3
                 with:
                     name: owasp-reports
                     path: build/reports/owasp
-            -   name: Build package with Gradle wrapper
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: aggregateDocumentation
+            -   name: 🛠️ Build package with Gradle wrapper
+                id: gradle
+                run: ./gradlew aggregateDocumentation
                 env:
                     revnumber: ${{ needs.release.outputs.revnumber }}
-            -   name: Publish documentation
+            -   name: ↗️Publish documentation
                 uses: JamesIves/github-pages-deploy-action@v4.4.3
                 with:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
