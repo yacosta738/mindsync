@@ -7,23 +7,18 @@ export interface Menu {
 
 export const navMenus: Menu[] = [
 	{
-		id: 'dashboard',
-		title: 'Dashboard',
-		link: '/dashboard'
+		id: 'about',
+		title: 'About',
+		link: '/about'
 	},
 	{
-		id: 'team',
-		title: 'Team',
-		link: '#team'
+		id: 'documentation',
+		title: 'Documentation',
+		link: '/documentation'
 	},
 	{
-		id: 'roadmap',
-		title: 'Roadmap',
-		link: '#roadmap'
-	},
-	{
-		id: 'contact',
-		title: 'Contact',
-		link: '#contact'
+		id: 'download',
+		title: 'Download',
+		link: '/download'
 	}
 ]

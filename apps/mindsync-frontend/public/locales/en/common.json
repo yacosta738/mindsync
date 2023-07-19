@@ -4,5 +4,11 @@
         "description": "Second Brain, notes, and knowledge management for power users.",
         "ogTitle": "Mindsync",
         "ogImageAlt": "Mindsync logo"
-    }
+    },
+    "menus": {
+        "about": "About",
+        "documentation": "Documentation",
+        "download": "Download"
+      },
+      "tooltip-toggle": "Toggle dark mode"
 }

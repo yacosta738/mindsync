@@ -1,5 +1,6 @@
 ---
-import {Menu} from "../../models/Menu";
+import { t } from 'i18next'
+import type { Menu } from "../../models/Menu";
 
 export interface Props {
 	menus: Menu[]
@@ -14,8 +15,9 @@ const {menus} = Astro.props;
 				id={menu.id}
 				href={menu.link}
 				class="text-sm font-medium text-gray-700 hover:text-primary-700 dark:text-gray-400 dark:hover:text-primary-500"
-				aria-current="page">{menu.title}</a
-			>
+				aria-current="page">
+                {t(`menus.${menu.id}`)}
+            </a>
 		</li>
 	))}
 	<li class="relative">

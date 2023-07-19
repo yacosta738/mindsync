@@ -4,5 +4,11 @@
         "description": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
         "ogTitle": "Mindsync",
         "ogImageAlt": "Mindsync"
-    }
+    },
+    "menus": {
+        "about": "Acerca de",
+        "documentation": "Documentación",
+        "download": "Descargar"
+      },
+      "tooltip-toggle": "Cambiar a modo oscuro"
 }
