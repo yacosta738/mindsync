@@ -53,6 +53,7 @@ module.exports = {
 			},
 			fontFamily: {
 				sans: [
+                    'Space Grotesk',
 					'Inter',
 					'ui-sans-serif',
 					'system-ui',
@@ -70,7 +71,7 @@ module.exports = {
 					'Noto Color Emoji',
 				],
 				body: [
-					'Inter',
+                    'Space Grotesk',
 					'ui-sans-serif',
 					'system-ui',
 					'-apple-system',

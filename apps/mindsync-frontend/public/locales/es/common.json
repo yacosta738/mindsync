@@ -10,5 +10,13 @@
         "documentation": "Documentación",
         "download": "Descargar"
       },
-      "tooltip-toggle": "Cambiar a modo oscuro"
+      "tooltip-toggle": "Cambiar a modo oscuro",
+      "hero": {
+        "title": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
+        "subtitle": "Con Border-IA, podrás dar vida a tus ideas en tiempo récord.",
+        "download": "Descargar",
+        "world-graph": {
+            "title": "Desata el potencial de tu mente con nuestro segundo cerebro digital."
+        }
+      }
 }

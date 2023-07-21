@@ -1,31 +1,14 @@
 ---
 import { t } from "i18next";
-import AstroLogo from '../../assets/astro-icon.svg?raw';
+import Hero from 'molecules:Hero'
 import * as readMe from '../../../README.md';
 import pkg from '../../../package.json' assert {type: 'json'};
 ---
 
 <div
-    class="bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100 mb-20 p-4 lg:p-16 shadow-xl shadow-slate-200 dark:shadow-slate-900"
+    class="flex flex-col min-h-screen"
 >
-    <header
-        class="p-8 flex justify-center items-center flex-wrap flex-col w-full mt-16"
-    >
-        <div class="flex justify-center w-full">
-            <div
-                set:html={AstroLogo}
-                class="svg-inline w-16 h-16 text-violet-700 dark:text-violet-100"
-            />
-        </div>
-
-        <div class="format dark:format-invert lg:format-lg mt-32">
-            <p
-                class="text-3xl lg:text-6xl dark:text-slate-200 text-slate-600 leading-tight"
-            >
-                Link your notes, enhance your understanding.
-            </p>
-        </div>
-    </header>
+    <Hero />
 
     <article class="flex justify-center pt-32 pb-32">
         <div class="w-full readme format dark:format-invert lg:format-lg">

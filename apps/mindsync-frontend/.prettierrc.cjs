@@ -3,10 +3,11 @@
 
 module.exports = {
 	printWidth: 80,
-	semi: true,
+	semi: false,
 	singleQuote: true,
+    jsxSingleQuote: true,
 	tabWidth: 2,
-	trailingComma: 'all',
+	trailingComma: 'none',
 
 	// See: https://github.com/prettier/prettier/issues/7475
 	useTabs: true,
@@ -22,4 +23,5 @@ module.exports = {
 			},
 		},
 	],
+    endOfLine: 'lf',
 };

@@ -1,5 +1,4 @@
 ---
-import {Icon} from 'astro-icon';
 import LinkButton from 'atoms:LinkButton';
 import ThemeSwitcher from 'atoms:ThemeSwitcher';
 import HamMenu from "atoms:HamMenu";
@@ -36,11 +35,12 @@ const appName = pkg.name.toString() ?? 'MindSync';
                 <ThemeSwitcher class="hidden sm:flex"/>
                 <LanguageSelector
                     showFlag={true}
-                    class='hidden sm:flex cursor-pointer select-none rounded-lg border-b border-transparent bg-transparent text-sm text-primary-500 hover:border-primary-500 hover:bg-primary-900 mx-1'
+                    class='hidden sm:flex language-selector'
                     tabindex="0"
                 />
-                <LinkButton href="/login" class="hidden sm:flex">
-                    <Icon name="mdi:login" class="w-4 h-4 mr-1"/>
+                <LinkButton
+                secondary
+                href="/login" class="hidden sm:flex">
                     Login
                 </LinkButton>
                 <HamMenu class="sm:hidden"/>
@@ -51,17 +51,22 @@ const appName = pkg.name.toString() ?? 'MindSync';
     <div class="hidden sm:hidden" id="mobile-menu">
         <Menu menus={navMenus}>
             <div slot="last-menu" class="flex flex-col justify-center mx-auto">
-                <LinkButton
-                    href="/login">
-                    <Icon name="mdi:login" class="w-4 h-4 mr-1"/>
+                <LinkButton secondary href="/login">
                     Login
                 </LinkButton>
                 <LanguageSelector
                     showFlag={true}
-                    class='cursor-pointer select-none rounded-lg border-b border-transparent bg-transparent text-sm text-primary-500 hover:border-primary-500 hover:bg-primary-900 mx-1'
+                    class='language-selector'
                     tabindex="0"
                 />
             </div>
         </Menu>
     </div>
 </nav>
+
+<style>
+    .language-selector {
+        @apply cursor-pointer select-none text-center text-tertiary-50 bg-tertiary-800 dark:bg-tertiary-800
+        font-sans font-semibold uppercase rounded border-tertiary-700 px-5 py-2.5 mx-1;
+    }
+</style>

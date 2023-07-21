@@ -1,0 +1,20 @@
+---
+import {t} from 'i18next';
+import {Icon} from 'astro-icon';
+---
+
+<div class="absolute top-full left-0 rounded-xl w-80 h-96 mx-auto p-0.5 bg-gradient-to-r from-primary-500 to-secondary-500">
+    <div class="flex flex-col justify-between h-full bg-tertiary-50 dark:bg-tertiary-950 text-white rounded-xl p-10">
+        <div class="self-stretch justify-between items-center inline-flex dark:bg-tertiary-950">
+            <div class="text-tertiary-700 dark:text-tertiary-300 font-medium leading-normal tracking-tight">
+              {t('hero.world-graph.title')}
+            </div>
+          </div>
+          <div class="justify-center items-center gap-2.5 inline-flex">
+            <div class="w-64 h-64 relative">
+              <Icon name="globe-graph" class="w-full h-full text-tertiary-950 dark:text-primary-500" />
+            </div>
+        </div>
+      </div>
+ </div>
+
