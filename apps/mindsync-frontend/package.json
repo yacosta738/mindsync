@@ -31,20 +31,22 @@
 		"test": "echo Testing frontend"
 	},
 	"dependencies": {
+		"@astrojs/image": "0.17.2",
+		"@astrojs/rss": "2.4.3",
+		"@astrojs/sitemap": "2.0.0",
 		"@astrojs/tailwind": "^4.0.0",
 		"@faker-js/faker": "^8.0.0",
 		"@fontsource-variable/space-grotesk": "^5.0.5",
 		"apexcharts": "^3.37.2",
-		"astro": "^2.0.4",
+		"astro": "^2.9.0",
 		"flowbite": "^1.6.3",
 		"flowbite-typography": "^1.0.3",
+		"sharp": "^0.32.4",
 		"shiki": "^0.14.1",
 		"tailwind-scrollbar": "^3.0.0",
 		"tailwindcss": "^3.0.24"
 	},
 	"devDependencies": {
-		"@astrojs/rss": "2.4.3",
-		"@astrojs/sitemap": "2.0.0",
 		"@types/eslint": "^8.21.1",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",

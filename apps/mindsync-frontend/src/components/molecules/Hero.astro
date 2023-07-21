@@ -2,7 +2,9 @@
 import {t} from 'i18next';
 import LinkButton from 'atoms:LinkButton';
 import WorldGraph from 'atoms:WorldGraph';
+import { Image } from '@astrojs/image/components';
 import {Icon} from 'astro-icon';
+import appInterface from '../../assets/images/app-interface.png';
 ---
 
 <header class="p-8 flex justify-start items-start flex-wrap flex-col w-full mt-16">
@@ -24,10 +26,21 @@ import {Icon} from 'astro-icon';
                 {t("hero.subtitle")}
             </h3>
             <LinkButton href="/"
-                class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:from-primary-500 hover:to-secondary-500 duration-300">
+                class="download-button">
                 <Icon name="mdi:download" class="mr-2 h-5 w-5"/>
                 {t("hero.download")}
             </LinkButton>
         </div>
     </div>
+   <div class="mt-5 relative">
+    <div id="hero-mask-shape" class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-tertiary-50 dark:to-tertiary-950 opacity-90"></div>
+    <Image src={appInterface} alt={t('hero.app-interface')} />
+   </div>
 </header>
+
+<style>
+    .download-button {
+        @apply transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:from-primary-500 hover:to-secondary-500 duration-300;
+    }
+
+</style>
