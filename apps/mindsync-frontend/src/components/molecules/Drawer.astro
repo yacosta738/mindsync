@@ -1,0 +1,25 @@
+---
+import HamMenu from 'atoms:HamMenu'
+
+interface Props {
+    id: string
+    tabindex: number | string
+    ariaLabelledby: string
+}
+
+const { id = 'drawer-top-example', tabindex = -1, ariaLabelledby = 'drawer-top-label', ...attributes } = Astro.props;
+---
+
+<!-- drawer component -->
+<div id={id} class="fixed top-0 left-0 right-0 z-40 w-full p-4 transition-transform -translate-y-full bg-tertiary-100 border-tertiary-50 dark:bg-tertiary-950 dark:border-tertiary-900"
+    tabindex={tabindex} aria-labelledby={ariaLabelledby} {...attributes}>
+    <div class="flex justify-between items-center">
+       <slot name="nav-title">
+            <h5 id={ariaLabelledby} class="text-2xl font-bold text-tertiary-900 dark:text-tertiary-100">
+                Drawer Title
+            </h5>
+         </slot>
+       <HamMenu data-drawer-hide={id} aria-controls={id} />
+    </div>
+    <slot></slot>
+</div>
