@@ -14,7 +14,7 @@ const {id = 'ham-menu', ...attributes} = Astro.props;
 	<span class="sr-only">Open main menu</span>
 	<!-- Open mobile menu icon -->
 	<svg
-		id='open-menu'
+		id=`open-menu-${id}`
 		class='ham hamRotate ham7'
 		viewBox='0 0 100 100'
 		width='42'
@@ -31,11 +31,30 @@ const {id = 'ham-menu', ...attributes} = Astro.props;
 	</svg>
 </button>
 <script define:vars={{ id }}>
-	const hamMenu = document.getElementById(id);
-	const openMenu = document.getElementById('open-menu');
-	hamMenu?.addEventListener('click', () => {
-		openMenu?.classList.toggle('active-menu');
-	});
+
+const hamMenu = document.getElementById(id);
+const openMenu = document.getElementById(`open-menu-${id}`);
+
+hamMenu?.addEventListener('click', () => {
+    const event = new CustomEvent('menu-drawer', {
+        detail: {
+            open: openMenu?.classList.toggle('active-menu'),
+            id
+        },
+    });
+    document.dispatchEvent(event);
+});
+// consume event and if the id does not match, close the menu
+document.addEventListener('menu-drawer', (e) => {
+    if (e.detail.id !== id) {
+        openMenu?.classList.toggle('active-menu');
+    }
+});
+
+document.addEventListener('drawer:hide', (e) => {
+    openMenu?.classList.remove('active-menu');
+});
+
 </script>
 <style>
     .ham {

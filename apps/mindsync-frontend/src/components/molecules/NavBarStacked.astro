@@ -14,7 +14,7 @@ const ariaLabelledby = 'mobile-menu-top-label';
 ---
 
 <nav
-    class="fixed z-50 w-full flex-col justify-start items-center inline-flex sm:py-2 bg-tertiary-100 border-tertiary-50 dark:bg-tertiary-950 dark:border-tertiary-900"
+    class="fixed z-50 w-full flex-col justify-start items-center inline-flex px-2 sm:py-2 bg-tertiary-100 border-tertiary-50 dark:bg-tertiary-950 dark:border-tertiary-900"
 >
     <div class="container py-3 mx-auto">
         <div class="flex items-center justify-between mx-1">
@@ -46,46 +46,35 @@ const ariaLabelledby = 'mobile-menu-top-label';
                     class="hidden sm:flex">
                     Login
                 </LinkButton>
-                <HamMenu
-                    data-drawer-target={drawerMenuId}
-                    data-drawer-show={drawerMenuId}
-                    data-drawer-placement="top"
-                    aria-controls={drawerMenuId}
-                     class="sm:hidden"
-                />
+                <Drawer id={drawerMenuId} tabindex="-1" ariaLabelledby = {ariaLabelledby}>
+                    <a href="/" class="flex mr-4" slot="nav-title">
+                        <img
+                            src='/favicon.svg'
+                            class="h-8 mr-3"
+                            alt={`${appName} Logo`}
+                        />
+                        <span class="uppercase self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                            {appName}
+                        </span>
+                    </a>
+                    <Menu menus={navMenus}>
+                        <div slot="last-menu" class="flex flex-col">
+                            <hr class="h-px my-2 bg-tertiary-700 border-0 dark:bg-tertiary-100">
+                            <LinkButton secondary href="/login"
+                            class="my-2">
+                                Login
+                            </LinkButton>
+                            <LanguageSwitcher
+                                displayType={DisplayType.BOTH}
+                                class='language-selector'
+                                tabindex="0"
+                            />
+                        </div>
+                    </Menu>
+                </Drawer>
             </div>
         </div>
     </div>
-    <!-- Mobile menu -->
-    <!-- <div class="hidden sm:hidden w-full p-4" id="mobile-menu">
-
-    </div> -->
-    <Drawer id={drawerMenuId} tabindex="-1" ariaLabelledby = {ariaLabelledby}>
-        <a href="/" class="flex mr-4" slot="nav-title">
-            <img
-                src='/favicon.svg'
-                class="h-8 mr-3"
-                alt={`${appName} Logo`}
-            />
-            <span class="uppercase self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                {appName}
-            </span>
-        </a>
-        <Menu menus={navMenus}>
-            <div slot="last-menu" class="flex flex-col">
-                <hr class="h-px my-2 bg-tertiary-700 border-0 dark:bg-tertiary-100">
-                <LinkButton secondary href="/login"
-                class="my-2">
-                    Login
-                </LinkButton>
-                <LanguageSwitcher
-                    displayType={DisplayType.BOTH}
-                    class='language-selector'
-                    tabindex="0"
-                />
-            </div>
-        </Menu>
-    </Drawer>
 </nav>
 
 <style>
