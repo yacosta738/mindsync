@@ -1,12 +1,12 @@
 ---
-import  NotFound from '../../assets/404.svg?raw';
+import {Icon} from 'astro-icon';
 ---
 
 <div
-	class="flex flex-col justify-center items-center px-6 mx-auto h-screen xl:px-0 dark:bg-gray-900"
+	class="flex flex-col justify-center items-center px-6 mx-auto h-screen xl:px-0"
 >
 	<div class="block md:max-w-lg">
-        <div set:html={NotFound} class="svg-inline w-96 h-96" />
+        <Icon name="404" class="w-96 h-96" />
 	</div>
 	<div class="text-center xl:max-w-4xl">
 		<h1

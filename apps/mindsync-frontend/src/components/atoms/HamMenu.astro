@@ -1,20 +1,23 @@
 ---
+interface Props extends astroHTML.JSX.SelectHTMLAttributes {
+    id?: string;
+}
+
+const {id = 'ham-menu', ...attributes} = Astro.props;
 ---
 <button
-	id="ham-menu"
-	data-collapse-toggle="mobile-menu"
+	id={id}
 	type="button"
-	class="inline-flex items-center justify-center p-2 ml-3 text-gray-400 rounded-lg sm:hidden hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-300 dark:hover:bg-gray-700 dark:hover:text-white"
-	aria-controls="mobile-menu-2"
-	aria-expanded="false"
+	class='inline-flex items-center justify-center text-gray-400 rounded-lg sm:hidden hover:text-gray-900 focus:outline-none focus:ring-1 focus:ring-primary-300 dark:hover:bg-gray-700'
+    {...attributes}
 >
 	<span class="sr-only">Open main menu</span>
 	<!-- Open mobile menu icon -->
 	<svg
-		id='open-menu'
+		id=`open-menu-${id}`
 		class='ham hamRotate ham7'
 		viewBox='0 0 100 100'
-		width='50'
+		width='42'
 	>
 		<path
 			class='line top'
@@ -27,12 +30,31 @@
 		/>
 	</svg>
 </button>
-<script>
-	const hamMenu = document.getElementById('ham-menu');
-	const openMenu = document.getElementById('open-menu');
-	hamMenu.addEventListener('click', () => {
-		openMenu.classList.toggle('active-menu');
-	});
+<script define:vars={{ id }}>
+
+const hamMenu = document.getElementById(id);
+const openMenu = document.getElementById(`open-menu-${id}`);
+
+hamMenu?.addEventListener('click', () => {
+    const event = new CustomEvent('menu-drawer', {
+        detail: {
+            open: openMenu?.classList.toggle('active-menu'),
+            id
+        },
+    });
+    document.dispatchEvent(event);
+});
+// consume event and if the id does not match, close the menu
+document.addEventListener('menu-drawer', (e) => {
+    if (e.detail.id !== id) {
+        openMenu?.classList.toggle('active-menu');
+    }
+});
+
+document.addEventListener('drawer:hide', () => {
+    openMenu?.classList.remove('active-menu');
+});
+
 </script>
 <style>
     .ham {

@@ -1,8 +1,8 @@
 ---
-import pkg from '../../../package.json' assert {type: 'json'};
-import HeadSEO from '../organisms/HeadSEO.astro';
 import i18next, {t, setDefaultNamespace} from 'i18next';
 import {HeadHrefLangs} from 'astro-i18next/components';
+import pkg from '../../../package.json' assert {type: 'json'};
+import HeadSEO from '../organisms/HeadSEO.astro';
 
 const {class: clazz} = Astro.props;
 let {
@@ -47,24 +47,19 @@ setDefaultNamespace('common')
 </head>
 <body
     class:list={[
-        //
-
         clazz,
-        'bg-gray-50 dark:bg-gray-800',
-        'scrollbar scrollbar-w-3 scrollbar-thumb-rounded-[0.25rem]',
+        'bg-tertiary-100 dark:bg-tertiary-950',
+        'scrollbar scrollbar-w-1 scrollbar-thumb-rounded-[0.25rem]',
         'scrollbar-track-slate-200  scrollbar-thumb-gray-400',
         'dark:scrollbar-track-gray-900 dark:scrollbar-thumb-gray-700',
     ]}
 >
-<slot/>
+    <slot/>
 </body>
 </html>
 
 <script>
     import 'flowbite';
+    // eslint-disable-next-line import/extensions
     import 'flowbite/dist/datepicker.js';
 </script>
-
-<style is:global>
-    @import url('https://fonts.cdnfonts.com/css/inter');
-</style>

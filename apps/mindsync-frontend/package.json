@@ -1,5 +1,5 @@
 {
-	"name": "MindSync",
+	"name": "mindsync",
 	"version": "0.0.1",
 	"private": "true",
 	"description": "MindSync is the take note of the future. It's a note taking app that uses AI to help you take notes.",
@@ -21,37 +21,38 @@
 	"scripts": {
 		"astro": "astro",
 		"build": "astro build",
-        "check": "echo Checking frontend && pnpm run lint && pnpm run test",
-        "clean": "rm -rf dist",
-        "lint": "echo Linting frontend",
+		"check": "echo Checking frontend && pnpm run lint && pnpm run test",
+		"clean": "rm -rf dist",
+		"lint": "echo Linting frontend",
 		"dev": "astro dev",
 		"preview": "astro preview",
-        "i18n:generate": "astro-i18next generate",
+		"i18n:generate": "astro-i18next generate",
 		"start": "astro dev",
-        "test": "echo Testing frontend"
+		"test": "echo Testing frontend"
 	},
 	"dependencies": {
+		"@astrojs/image": "0.17.2",
+		"@astrojs/rss": "2.4.3",
+		"@astrojs/sitemap": "2.0.0",
 		"@astrojs/tailwind": "^4.0.0",
 		"@faker-js/faker": "^8.0.0",
+		"@fontsource-variable/space-grotesk": "^5.0.5",
 		"apexcharts": "^3.37.2",
-		"astro": "^2.0.4",
+		"astro": "^2.9.0",
 		"flowbite": "^1.6.3",
 		"flowbite-typography": "^1.0.3",
+		"sharp": "^0.32.4",
 		"shiki": "^0.14.1",
 		"tailwind-scrollbar": "^3.0.0",
 		"tailwindcss": "^3.0.24"
 	},
 	"devDependencies": {
-		"@astrojs/rss": "2.4.3",
-		"@astrojs/sitemap": "2.0.1",
-        "astro-i18next": "1.0.0-beta.21",
-        "i18next": "^23.0.0",
-        "i18next-fs-backend": "2.1.5",
-        "astro-icon": "^0.8.1",
 		"@types/eslint": "^8.21.1",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"astro-eslint-parser": "^0.14.0",
+		"astro-i18next": "1.0.0-beta.21",
+		"astro-icon": "^0.8.1",
 		"astro-seo": "0.7.5",
 		"eslint": "^8.35.0",
 		"eslint-config-airbnb-base": "^15.0.0",
@@ -60,8 +61,11 @@
 		"eslint-import-resolver-typescript": "^3.5.3",
 		"eslint-plugin-astro": "^0.28.0",
 		"eslint-plugin-import": "^2.27.5",
+		"eslint-plugin-jsx-a11y": "6.7.1",
 		"eslint-plugin-prettier": "^5.0.0",
-		"eslint-plugin-tsdoc": "^0.2.17"
+		"eslint-plugin-tsdoc": "^0.2.17",
+		"i18next": "^22.4.10",
+		"i18next-fs-backend": "2.1.5"
 	},
     "packageManager": "pnpm@8.6.10"
 }

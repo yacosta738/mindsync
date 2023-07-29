@@ -1,5 +1,4 @@
 /** @type {import("@types/eslint").Linter.Config} */
-// Extracted from `webdev-configs` (https://github.com/JulianCataldo/web-garden/tree/develop/configs)
 
 module.exports = {
 	root: true,
@@ -13,6 +12,7 @@ module.exports = {
 
 	env: {
 		browser: true,
+        es2022: true,
 		node: true,
 	},
 
@@ -36,6 +36,9 @@ module.exports = {
 			extends: [
 				'airbnb-base',
 				'airbnb-typescript',
+
+                'plugin:astro/recommended',
+                'plugin:astro/jsx-a11y-strict',
 
 				'plugin:@typescript-eslint/recommended',
 				'plugin:@typescript-eslint/recommended-requiring-type-checking',
@@ -64,7 +67,6 @@ module.exports = {
 		/* — JS — */
 		{
 			files: [
-				// TODO: fix "Parsing error: The keyword 'import' is reserved" in `*.mjs`
 				'*.js',
 				'*.mjs',
 				'*.cjs',

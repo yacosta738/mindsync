@@ -1,12 +1,24 @@
 ---
 const {...attributes} = Astro.props
-const {class: className, href,...attrs} = attributes
+const {secondary: ButtonVariant, class: className, href,...attrs} = attributes
+const variant = ButtonVariant? 'secondary-button' : 'primary-button'
 ---
 
-<a 
+<a
 	href={href}
-	class=`text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${className}`
+    class=`${variant} ${className}`
 	{...attrs}
 >
 	<slot/>
 </a>
+
+<style>
+    .primary-button {
+        @apply text-center inline-flex bg-gradient-to-r from-purple-400 to-violet-500 justify-center items-center text-tertiary-50
+        font-sans font-semibold uppercase rounded border-tertiary-300 dark:border-tertiary-700 px-5 py-2.5;
+    }
+    .secondary-button {
+        @apply text-center text-tertiary-50 bg-tertiary-800 dark:bg-tertiary-800
+        font-sans font-semibold uppercase rounded border-tertiary-300 dark:border-tertiary-700 px-5 py-2.5;
+    }
+</style>
