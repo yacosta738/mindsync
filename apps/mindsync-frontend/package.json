@@ -58,7 +58,7 @@
 		"eslint-config-airbnb-typescript": "^17.0.0",
 		"eslint-config-prettier": "^8.7.0",
 		"eslint-import-resolver-typescript": "^3.5.3",
-		"eslint-plugin-astro": "^0.27.0",
+		"eslint-plugin-astro": "^0.28.0",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-tsdoc": "^0.2.17"
