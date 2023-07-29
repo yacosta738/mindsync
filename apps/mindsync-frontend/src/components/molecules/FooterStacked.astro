@@ -1,41 +1,33 @@
 ---
 import CopyrightNotice from 'atoms:CopyrightNotice';
-import GitHubButton from "atoms:GitHubButton";
+import Logo from 'atoms:Logo';
+// import GitHubButton from "atoms:GitHubButton";
+import { Icon } from 'astro-icon';
 ---
 
 <footer
-	class="md:flex md:items-center md:justify-between px-4 2xl:px-0 py-6 md:py-10"
+	class="flex flex-col md:flex-row items-center justify-between px-4 2xl:px-0 py-6 md:py-10 border-t border-tertiary-300 dark:border-tertiary-800"
 >
-	<CopyrightNotice />
-
-	<ul class="flex flex-wrap items-center justify-center">
-        <li>
-            <GitHubButton repository="yacosta738/mindsync"/>
+    <!-- <GitHubButton repository="yacosta738/mindsync"/> -->
+    <Logo />
+    <ul class="flex flex-wrap items-center justify-center my-4 md:my-0">
+        <li class="mx-1 w-12 h-12 bg-tertiary-200 dark:bg-tertiary-900 rounded border border-tertiary-300 dark:border-tertiary-800 justify-center items-center inline-flex">
+            <a href="#" class="text-tertiary-800 hover:text-tertiary-900 dark:text-tertiary-400 dark:hover:text-tertiary-300">
+                <Icon name="simple-icons:instagram" class="w-8 h-8" />
+            </a>
         </li>
-		<li>
-			<a
-				href="#"
-				class="mr-4 text-sm font-normal text-gray-500 hover:underline md:mr-6 dark:text-gray-400"
-				>Terms</a>
-		</li>
-		<li>
-			<a
-				href="#"
-				class="mr-4 text-sm font-normal text-gray-500 hover:underline md:mr-6 dark:text-gray-400"
-				>Licensing</a
-			>
-		</li>
-		<li>
-			<a
-				href="#"
-				class="mr-4 text-sm font-normal text-gray-500 hover:underline md:mr-6 dark:text-gray-400"
-				>Cookie Policy</a>
-		</li>
-		<li>
-			<a
-				href="#"
-				class="text-sm font-normal text-gray-500 hover:underline dark:text-gray-400"
-				>Contact</a>
-		</li>
-	</ul>
+        <li class="mx-1 w-12 h-12 bg-tertiary-200 dark:bg-tertiary-900 rounded border border-tertiary-300 dark:border-tertiary-800 justify-center items-center inline-flex">
+            <a href="#" class="text-tertiary-800 hover:text-tertiary-900 dark:text-tertiary-400 dark:hover:text-tertiary-300">
+                <Icon name="ph:discord-logo" class="w-8 h-8" />
+            </a>
+        </li>
+        <li class="mx-1 w-12 h-12 bg-tertiary-200 dark:bg-tertiary-900 rounded border border-tertiary-300 dark:border-tertiary-800 justify-center items-center inline-flex">
+            <a href="https://github.com/yacosta738/mindsync" target="_blank"
+             class="text-tertiary-800 hover:text-tertiary-900 dark:text-tertiary-400 dark:hover:text-tertiary-300">
+                <Icon name="ph:github-logo" class="w-8 h-8" />
+            </a>
+        </li>
+    </ul>
+
+    <CopyrightNotice />
 </footer>

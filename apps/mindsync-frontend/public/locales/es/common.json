@@ -22,5 +22,12 @@
       },
       "items-section":{
           "title": "Cómo MindSync te ayuda en tu día a día"
-      }
+      },
+      "banner-section": {
+        "title": "Trabaja rápido desde cualquier lugar",
+        "subtitle": "Mantente actualizado y avanza en tu trabajo con Mindsync en iOS y Android. Descarga la aplicación hoy.",
+        "apple-store": "Descargar en",
+        "google-play": "Obtener en"
+    }
+
 }

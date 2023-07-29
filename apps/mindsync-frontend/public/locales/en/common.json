@@ -22,5 +22,11 @@
       },
       "items-section":{
           "title": "How MindSync helps you on a daily basis"
-      }
+      },
+      "banner-section":{
+            "title": "Work fast from anywhere",
+            "subtitle": "Stay up to date and move work forward with Mindsync on iOS & Android. Download the app today.",
+            "apple-store": "Download on the",
+            "google-play": "Get in on"
+        }
 }
