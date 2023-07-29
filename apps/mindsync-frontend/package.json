@@ -59,7 +59,7 @@
 		"eslint-config-airbnb-typescript": "^17.0.0",
 		"eslint-config-prettier": "^8.7.0",
 		"eslint-import-resolver-typescript": "^3.5.3",
-		"eslint-plugin-astro": "^0.27.0",
+		"eslint-plugin-astro": "^0.28.0",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-jsx-a11y": "6.7.1",
 		"eslint-plugin-prettier": "^5.0.0",
@@ -67,5 +67,5 @@
 		"i18next": "^22.4.10",
 		"i18next-fs-backend": "2.1.5"
 	},
-	"packageManager": "pnpm@8.6.9"
+    "packageManager": "pnpm@8.6.10"
 }
