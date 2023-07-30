@@ -1,10 +1,10 @@
 [versions]
-kotlin = "1.8.21"
+kotlin = "1.9.0"
 kotlinCoroutines = "1.7.3"
 kotlin-reflect = "1.9.0"
 springBoot = "3.1.2"
 dokka = "1.8.20"
-detekt = "1.23.0"
+detekt = "1.23.1"
 arrow = "1.2.0"
 sonarqubeGradlePlugin = "4.3.0.3225"
 jacoco = "0.8.10"

@@ -105,7 +105,7 @@ class SecurityConfiguration(
             .csrf {
                     csrf ->
                 csrf
-                    .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()) // See https://stackoverflow.com/q/74447118/65681
+                    .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(XorServerCsrfTokenRequestAttributeHandler())
             }
             .headers {

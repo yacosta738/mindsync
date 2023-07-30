@@ -48,8 +48,10 @@ object ApplicationStartupTraces {
         val applicationName = environment.getProperty("spring.application.name")
         return if (applicationName?.isBlank() != false) {
             "Application is running!"
-        } else StringBuilder().append("Application '").append(applicationName).append("' is running!")
-            .toString()
+        } else {
+            StringBuilder().append("Application '").append(applicationName).append("' is running!")
+                .toString()
+        }
     }
 
     private fun externalUrl(environment: Environment): String {
@@ -65,16 +67,18 @@ object ApplicationStartupTraces {
     private fun url(type: String, host: String, environment: Environment): String {
         return if (notWebEnvironment(environment)) {
             ""
-        } else StringBuilder()
-            .append(type)
-            .append(": \t")
-            .append(protocol(environment))
-            .append("://")
-            .append(host)
-            .append(":")
-            .append(environment.getProperty("server.port"))
-            .append(contextPath(environment))
-            .toString()
+        } else {
+            StringBuilder()
+                .append(type)
+                .append(": \t")
+                .append(protocol(environment))
+                .append("://")
+                .append(host)
+                .append(":")
+                .append(environment.getProperty("server.port"))
+                .append(contextPath(environment))
+                .toString()
+        }
     }
 
     private fun notWebEnvironment(environment: Environment): Boolean {
@@ -93,8 +97,10 @@ object ApplicationStartupTraces {
         val profiles = environment.activeProfiles
         return if (profiles.isEmpty()) {
             "No active profile set, running with default configuration."
-        } else StringBuilder().append("Profile(s): \t")
-            .append(profiles.joinToString(", ")).toString()
+        } else {
+            StringBuilder().append("Profile(s): \t")
+                .append(profiles.joinToString(", ")).toString()
+        }
     }
 
     private fun contextPath(environment: Environment): String {
@@ -106,7 +112,9 @@ object ApplicationStartupTraces {
         val configServer = environment.getProperty("configserver.status")
         return if (configServer?.isBlank() != false) {
             "No config server detected."
-        } else StringBuilder().append("Config Server: ").append(configServer).append(BREAK).append(SEPARATOR)
-            .append(BREAK).toString()
+        } else {
+            StringBuilder().append("Config Server: ").append(configServer).append(BREAK).append(SEPARATOR)
+                .append(BREAK).toString()
+        }
     }
 }

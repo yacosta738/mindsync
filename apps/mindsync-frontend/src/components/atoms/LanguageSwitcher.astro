@@ -7,12 +7,6 @@ interface LanguageMapping {
   [localeCode: string]: string;
 }
 
-export enum DisplayType  {
-    FLAG = 'flag',
-    TEXT = 'text',
-    BOTH = 'both'
-}
-
 const flags = [
     {
         'code': 'en',
@@ -25,7 +19,7 @@ const flags = [
 ]
 
 interface Props extends astroHTML.JSX.SelectHTMLAttributes {
-    displayType?: DisplayType;
+    displayType?: 'flag' | 'text' | 'both';
     languageMapping?: LanguageMapping;
 }
 
@@ -34,11 +28,11 @@ const currentLanguage = i18next.language;
 
 const { pathname } = Astro.url;
 
-const { displayType = DisplayType.FLAG, languageMapping, ...attributes } = Astro.props;
+const { displayType = 'flag', languageMapping, ...attributes } = Astro.props;
 ---
 {
-    displayType === DisplayType.TEXT || displayType === DisplayType.BOTH ? <LanguageSelector
-        showFlag={displayType === DisplayType.BOTH}
+    displayType === 'text' || displayType === 'both' ? <LanguageSelector
+        showFlag={displayType === 'both'}
         languageMapping={languageMapping}
         tabindex="0"
         {...attributes}
