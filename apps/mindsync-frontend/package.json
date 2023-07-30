@@ -11,7 +11,10 @@
 	],
 	"homepage": "https://mindsync.com",
 	"bugs": "https://github.com/yacosta738/mindsync/issues",
-	"repository": "https://github.com/yacosta738/mindsync.git",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yacosta738/mindsync.git"
+    },
 	"license": "GPL-3.0",
 	"author": "MindSync Inc.",
 	"contributors": [
@@ -21,9 +24,10 @@
 	"scripts": {
 		"astro": "astro",
 		"build": "astro build",
-		"check": "echo Checking frontend && pnpm run lint && pnpm run test",
+		"check": "echo ✔\uFE0E Checking frontend && pnpm run lint && pnpm run test",
 		"clean": "rm -rf dist",
-		"lint": "echo Linting frontend",
+		"lint": "echo \uD83E\uDE84 Linting && eslint --ignore-path .gitignore . && stylelint **/*.scss --allow-empty-input",
+        "lint:fix": "echo \uD83E\uDE84 Linting Fix && eslint --fix --ignore-path .gitignore . && stylelint --fix **/*.scss --allow-empty-input",
 		"dev": "astro dev",
 		"preview": "astro preview",
 		"i18n:generate": "astro-i18next generate",
@@ -65,7 +69,11 @@
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-tsdoc": "^0.2.17",
 		"i18next": "^22.4.10",
-		"i18next-fs-backend": "2.1.5"
-	},
+		"i18next-fs-backend": "2.1.5",
+        "stylelint": "^14.1.0",
+        "stylelint-config-rational-order": "^0.1.2",
+        "stylelint-config-standard-scss": "^3.0.0",
+        "stylelint-order": "^5.0.0"
+    },
     "packageManager": "pnpm@8.6.10"
 }

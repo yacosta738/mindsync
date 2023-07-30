@@ -1,3 +1,4 @@
+// eslint-disable-next-line tsdoc/syntax
 /** @type {import('astro-i18next').AstroI18nextConfig} */
 
 import type { AstroI18nextConfig } from 'astro-i18next'
