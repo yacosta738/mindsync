@@ -1,8 +1,9 @@
 package io.mindsync.users.domain
 
+import io.mindsync.common.domain.query.Response
+
 /**
  * Represents a response from the API with the data and the errors
- * @author Yuniel Acosta (acosta)
  * @created 3/7/23
  */
 data class ApiError(val message: String)
@@ -17,7 +18,7 @@ data class ApiError(val message: String)
  * @property apiErrors the errors of the response
  * @see ApiError the error of the response data
  */
-data class Response<T>(val data: T?, val apiErrors: List<ApiError>) {
+data class ApiResponse<T>(val data: T?, val apiErrors: List<ApiError>) : Response {
     companion object {
         /**
          * Creates a new response with the data
@@ -25,11 +26,11 @@ data class Response<T>(val data: T?, val apiErrors: List<ApiError>) {
          * @return a new response with the data
          * @param <T> the type of the data
          * @see ApiError the error of the response data
-         * @see Response the response
+         * @see ApiResponse the response
          * @see ApiError the error of the response data
          */
-        fun <T> success(data: T): Response<T> {
-            return Response(data, emptyList())
+        fun <T> success(data: T): ApiResponse<T> {
+            return ApiResponse(data, emptyList())
         }
 
         /**
@@ -38,11 +39,11 @@ data class Response<T>(val data: T?, val apiErrors: List<ApiError>) {
          * @return a new response with the errors
          * @param <T> the type of the data
          * @see ApiError the error of the response data
-         * @see Response the response
+         * @see ApiResponse the response
          * @see ApiError the error of the response data
          */
-        fun <T> error(apiErrors: List<ApiError>): Response<T> {
-            return Response(null, apiErrors)
+        fun <T> error(apiErrors: List<ApiError>): ApiResponse<T> {
+            return ApiResponse(null, apiErrors)
         }
     }
 }

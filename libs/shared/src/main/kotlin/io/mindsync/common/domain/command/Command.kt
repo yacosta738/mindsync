@@ -7,7 +7,7 @@ import java.util.*
  * This interface defines the properties and behavior that all commands in the system must have.
  *
  * @property id The unique identifier of the command.
- * @author Yuniel Acosta
+ *
  * @created 29/6/23
  */
 interface Command {

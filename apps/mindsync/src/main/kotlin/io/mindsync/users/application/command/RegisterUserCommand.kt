@@ -8,7 +8,6 @@ import java.util.*
 /**
  * Represents a command to register a new user.
  *
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
  * @property username The username of the new user.
  * @property email The email of the new user.

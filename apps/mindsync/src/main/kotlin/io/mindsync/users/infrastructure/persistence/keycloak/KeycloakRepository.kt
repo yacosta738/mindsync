@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono
 class KeycloakRepository(
     private val applicationSecurityProperties: ApplicationSecurityProperties,
     private val keycloak: Keycloak
-) : UserCreator<User> {
+) : UserCreator {
 
     /**
      * Creates a new user with the given user object. The user object contains the user details.

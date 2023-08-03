@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono
  * This class handles the '/health-check' endpoint.
  * The class contains a method to perform a health check, which returns a Mono of String.
  * The method returns a Mono of String with the value 'OK'.
- * @author Yuniel Acosta
  * @created 8/7/23
  */
 @RestController

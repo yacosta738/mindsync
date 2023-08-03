@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 
 /**
  * Converter class that converts a Jwt into a collection of GrantedAuthority objects.
- * @author Yuniel Acosta
  * @since 1.0.0
  */
 @Component

@@ -25,7 +25,6 @@ package io.mindsync.authentication.domain
  * @see Role.key for more information about the key() method.
  * @see Role.from for more information about the from() method.
  *
- * @author Yuniel Acosta
  */
 
 enum class Role {

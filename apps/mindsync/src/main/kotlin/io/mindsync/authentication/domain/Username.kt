@@ -16,7 +16,6 @@ private const val MIN_LENGTH = 3
  * @see [BaseValidateValueObject] for more information about the base class.
  * @see [UsernameException] for more information about the exception.
  * @see [Username.of] for more information about the factory method.
- * @author Yuniel Acosta
  */
 data class Username(val username: String) : BaseValidateValueObject<String>(username) {
 

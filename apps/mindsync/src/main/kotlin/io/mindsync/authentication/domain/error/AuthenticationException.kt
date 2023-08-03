@@ -5,7 +5,6 @@ package io.mindsync.authentication.domain.error
  *
  * This class is a sealed class, meaning it can only be extended within the same file.
  * It extends the RuntimeException class which is an unchecked exception.
- * @author Yuniel Acosta
  */
 sealed class AuthenticationException : RuntimeException()
 

@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration
  * @param applicationContext the application context
  * @constructor Creates a new configuration class for handling event configuration in the application.
  * @property applicationContext the application context
- * @author Yuniel Acosta
+ *
  */
 @Suppress("UNCHECKED_CAST")
 @Configuration

@@ -18,7 +18,6 @@ import java.util.stream.StreamSupport
  * @param webClient The WebClient instance used to make HTTP requests.
  * @param token The token used for authentication.
  * @since 1.0.0
- * @author Yuniel Acosta
  */
 class CustomClaimConverter(
     private val registration: ClientRegistration,

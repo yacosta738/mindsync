@@ -6,7 +6,7 @@ import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.event.domain.EventBroadcaster
 import io.mindsync.event.domain.EventPublisher
 import io.mindsync.users.application.command.RegisterUserCommand
-import io.mindsync.users.domain.Response
+import io.mindsync.users.domain.ApiResponse
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
 import io.mindsync.users.domain.event.UserCreatedEvent
@@ -19,7 +19,6 @@ import reactor.core.scheduler.Schedulers
 /**
  * The `UserRegistrator` class is responsible for registering new users in the system.
  *
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
  * @constructor Creates a new instance of the UserRegistrator class.
  * @param userCreator The user creator component used to create user objects.
@@ -30,14 +29,14 @@ import reactor.core.scheduler.Schedulers
  * @see User for more information about the user object.
  * @see RegisterUserCommand for more information about the register user command.
  * @see UserStoreException for more information about the user store exception.
- * @see Response for more information about the response object.
+ * @see ApiResponse for more information about the response object.
  * @see Either for more information about the either object.
  * @see Mono for more information about the mono object.
  * @see EventBroadcaster for more information about the event broadcaster object.
  */
 @Service
 class UserRegistrator(
-    private val userCreator: UserCreator<User>,
+    private val userCreator: UserCreator,
     eventPublisher: EventPublisher<UserCreatedEvent>
 ) {
     private val eventPublisher = EventBroadcaster<UserCreatedEvent>()
@@ -54,7 +53,7 @@ class UserRegistrator(
      * a Response containing the user details.
      */
     suspend fun registerNewUser(registerUserCommand: RegisterUserCommand):
-        Mono<Either<UserStoreException, Response<UserResponse>>> {
+        Mono<Either<UserStoreException, ApiResponse<UserResponse>>> {
         log.info(
             "Registering new user with email: {} and username: {}",
             registerUserCommand.email,
@@ -76,30 +75,37 @@ class UserRegistrator(
                 },
                 { user ->
                     log.info("User saved successfully with id: {}", user.id)
-                    eventPublisher.publish(
-                        UserCreatedEvent(
-                            userId = user.id.value.toString(),
-                            email = user.email.value,
-                            username = user.username.value,
-                            firstname = user.name?.firstName?.value,
-                            lastname = user.name?.lastName?.value
-                        )
-                    )
-                    Mono.just(
-                        Either.Right(
-                            Response.success(
-                                UserResponse(
-                                    user.username.value,
-                                    user.email.value,
-                                    user.name?.firstName?.value,
-                                    user.name?.lastName?.value
-                                )
-                            )
-                        )
-                    )
+                    publishUserCreatedEvent(user)
+                    registerNewUser(user)
                 }
             )
     }
+
+    private suspend fun publishUserCreatedEvent(user: User) {
+        eventPublisher.publish(
+            UserCreatedEvent(
+                userId = user.id.value.toString(),
+                email = user.email.value,
+                username = user.username.value,
+                firstname = user.name?.firstName?.value,
+                lastname = user.name?.lastName?.value
+            )
+        )
+    }
+
+    private fun registerNewUser(user: User): Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
+        Mono.just(
+            Either.Right(
+                ApiResponse.success(
+                    UserResponse(
+                        user.username.value,
+                        user.email.value,
+                        user.name?.firstName?.value,
+                        user.name?.lastName?.value
+                    )
+                )
+            )
+        )
 
     companion object {
         private val log = LoggerFactory.getLogger(UserRegistrator::class.java)

@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size
  * This class is used to encapsulate the required data for registering a user.
  * It has properties for username, email, password, firstname, and lastname.
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
  * @property username The username of the user. It must not be blank and must be between 3 and 100 characters.
  * @property email The email of the user. It must not be blank, must be a valid email address,

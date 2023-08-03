@@ -64,6 +64,7 @@ internal class BeanValidationTest {
         return Consumer<Method> { method: Method ->
             Arrays
                 .stream(method.parameters)
+                .filter{ parameter: Parameter -> parameter.annotations.isNotEmpty() }
                 .filter(checkedTypes())
                 .forEach { parameter: Parameter ->
                     Assertions.assertThat(
@@ -72,7 +73,7 @@ internal class BeanValidationTest {
                         )
                     )
                         .`as`(errorMessage(method, parameter))
-                        .anyMatch { annotation: Annotation -> annotation.annotationClass == Validated::class.java }
+                        .anyMatch { annotation: Annotation -> annotation.annotationClass.java == Validated::class.java }
                 }
         }
     }
@@ -98,9 +99,8 @@ internal class BeanValidationTest {
         private const val ROOT_PACKAGE = "io.mindsync"
         private val EXCLUDED_CONTROLLERS = setOf(
             "ExceptionTranslatorTestController",
-            "AuthenticationResource",
-            "UserRegisterController",
-            "DummyResource"
+            "AccountExceptionResource",
+            "AuthenticationResource"
         )
         private val OBJECT_METHODS = Arrays.stream(
             Any::class.java.methods

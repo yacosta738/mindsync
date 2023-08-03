@@ -6,7 +6,6 @@ import java.util.*
 /**
  * Represents a unique identifier for a user. It is a value object.
  *
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
  * @param id The UUID value of the user ID.
  * @constructor Creates a new instance of UserId with the specified UUID value.

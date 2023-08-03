@@ -4,7 +4,7 @@ import arrow.core.Either
 import io.mindsync.users.application.UserRegistrator
 import io.mindsync.users.application.UserResponse
 import io.mindsync.users.domain.ApiError
-import io.mindsync.users.domain.Response
+import io.mindsync.users.domain.ApiResponse
 import io.mindsync.users.domain.exceptions.UserStoreException
 import io.mindsync.users.infrastructure.dto.RegisterUserRequest
 import org.slf4j.LoggerFactory
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
@@ -24,15 +25,16 @@ import reactor.core.publisher.Mono
  *
  * The class also includes private helper methods to map the registration result and handle any
  * registration errors.
- * @author Yuniel Acosta
- * @created 30/6/23
+ *
  * @constructor Creates a new instance of the UserRegisterController class.
  * @param userRegistrator The user registrator component used to register new users.
  * @see UserRegistrator for more information about the user registrator component.
  * @see RegisterUserRequest for more information about the register user request.
  * @see UserResponse for more information about the user response.
+ * @created 30/6/23
  */
 @RestController
+@RequestMapping("/api")
 class UserRegisterController(private val userRegistrator: UserRegistrator) {
 
     /**
@@ -48,14 +50,14 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
      * @see UserResponse for more information about the user response.
      * @see ResponseEntity for more information about the response entity.
      * @see Mono for more information about the mono object.
-     * @see Response for more information about the response object.
+     * @see ApiResponse for more information about the response object.
      * @see HttpStatus for more information about the http status.
      * @see Either for more information about the either object.
      * @see UserStoreException for more information about the user store exception.
      */
-    @PostMapping("/api/register")
-    suspend fun registerUser(@RequestBody @Validated registerUserRequest: RegisterUserRequest):
-        Mono<ResponseEntity<Response<UserResponse>>> {
+    @PostMapping("/register")
+    suspend fun registerUser(@Validated @RequestBody registerUserRequest: RegisterUserRequest):
+        Mono<ResponseEntity<ApiResponse<UserResponse>>> {
         log.info("Registering new user with email: {}", registerUserRequest.email)
 
         return userRegistrator.registerNewUser(registerUserRequest.toRegisterUserCommand())
@@ -70,13 +72,13 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
      * and the right side represents a successful response
      * @return a Mono ResponseEntity containing the mapped result
      */
-    private fun mapRegistrationResult(result: Either<UserStoreException, Response<UserResponse>>):
-        Mono<ResponseEntity<Response<UserResponse>>> {
+    private fun mapRegistrationResult(result: Either<UserStoreException, ApiResponse<UserResponse>>):
+        Mono<ResponseEntity<ApiResponse<UserResponse>>> {
         return result.fold(
             { error ->
                 log.error("Error: {}", error.message)
                 val errorMessage = error.message
-                Mono.just(ResponseEntity.badRequest().body(Response.error(listOf(ApiError(errorMessage)))))
+                Mono.just(ResponseEntity.badRequest().body(ApiResponse.error(listOf(ApiError(errorMessage)))))
             },
             { user ->
                 log.info("User saved successfully with email: {}", user.data?.email)
@@ -87,12 +89,12 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
 
     /**
      * Handles registration error and returns a Mono wrapping a ResponseEntity containing a
-     * [Response] object with a [UserResponse].
+     * [ApiResponse] object with a [UserResponse].
      *
      * @param error the Throwable representing the registration error
      * @return a Mono wrapping a ResponseEntity with HTTP status code 500 (Internal Server Error)
      */
-    private fun handleRegistrationError(error: Throwable): Mono<ResponseEntity<Response<UserResponse>>> {
+    private fun handleRegistrationError(error: Throwable): Mono<ResponseEntity<ApiResponse<UserResponse>>> {
         log.error("Error during user registration: {}", error.message)
         return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build())
     }

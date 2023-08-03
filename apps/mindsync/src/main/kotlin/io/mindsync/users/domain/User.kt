@@ -6,7 +6,6 @@ import java.util.*
 
 /**
  * User domain model. This is the root of the user aggregate. It contains all the information about the user.
- * @author Yuniel Acosta (acosta)
  * @created 2/7/23
  * @param id the user id as a string representation of a UUID value (e.g. "123e4567-e89b-12d3-a456-426614174000")
  * @param username the username as a string value (e.g. "username") see [Username] for more information

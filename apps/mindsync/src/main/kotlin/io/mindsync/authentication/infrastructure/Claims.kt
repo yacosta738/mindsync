@@ -11,7 +11,6 @@ import java.util.stream.Collectors
  * authorization information from claims.
  *
  * @since 1.0.0
- * @author Yuniel Acosta
  */
 internal object Claims {
     const val CLAIMS_NAMESPACE = "https://www.mindsync.io/"

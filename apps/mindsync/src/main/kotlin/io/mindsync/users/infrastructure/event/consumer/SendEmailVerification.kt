@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  *
  * This class is a component and an event consumer, subscribing to events of type UserCreatedEvent.
  * It uses a KeycloakRepository to perform the email verification process.
- * @author Yuniel Acosta (acosta)
+ *
  * @created 7/7/23
  * @param keycloakRepository the KeycloakRepository to use for performing the email verification process
  * @see KeycloakRepository for more information about the KeycloakRepository

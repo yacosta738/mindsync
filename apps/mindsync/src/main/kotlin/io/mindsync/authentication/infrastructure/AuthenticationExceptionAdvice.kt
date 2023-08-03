@@ -16,7 +16,6 @@ private const val DEFAULT_PRECEDENCE = 2000
  *
  * It provides advice for exceptions of type NotAuthenticatedUserException and UnknownAuthenticationException.
  * Orders the execution of advice methods according to precedence.
- * @author Yuniel Acosta
  */
 @ControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE - DEFAULT_PRECEDENCE)

@@ -6,11 +6,9 @@ import reactor.core.publisher.Mono
 
 /**
  * Represents a UserCreator that is responsible for creating a user.
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
- * @param User the type of user that will be created.
  */
-fun interface UserCreator<User> {
+fun interface UserCreator {
     /**
      * Creates a user in the user store.
      *

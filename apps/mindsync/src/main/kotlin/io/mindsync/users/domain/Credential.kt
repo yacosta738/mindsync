@@ -7,7 +7,6 @@ import java.util.*
 
 /**
  * Credential representation in the domain layer of the application that is used to authenticate a user
- * @author Yuniel Acosta (acosta)
  * @created 2/7/23
  */
 data class Credential(

@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.server.router
 
 /**
  * This class is responsible for configuring web-related settings for the application.
- * @author Yuniel Acosta
  * @since 0.0.0-SNAPSHOT
  * @see WebFluxConfigurer
  */

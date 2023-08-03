@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.filter
  * It implements the EventConsumer interface and consumes events of a specific type.
  *
  * @param E The type of events this multiplexer consumes.
- * @author Yuniel Acosta
+ *
  */
 class EventMultiplexer<E : Any> : EventConsumer<E> {
     private val consumers = mutableListOf<Pair<EventFilter<E>, EventConsumer<E>>>()

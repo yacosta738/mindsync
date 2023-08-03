@@ -17,13 +17,13 @@ import reactor.core.publisher.Mono
 
 /**
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 4/7/23
  */
 class KeycloakRepositoryTest : KeycloakTestContainers() {
 
     @Autowired
-    private lateinit var userCreator: UserCreator<User>
+    private lateinit var userCreator: UserCreator
 
     private val faker = Faker()
 

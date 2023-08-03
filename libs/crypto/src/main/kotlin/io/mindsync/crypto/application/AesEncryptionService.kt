@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec
  * @param salt the salt string used for key derivation
  * @param key the key string used for encryption and decryption
  *
- * @author Yuniel Acosta
+ *
  */
 class AesEncryptionService(salt: String, key: String) :
     EncryptionService {

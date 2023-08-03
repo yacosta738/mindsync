@@ -5,7 +5,7 @@ import io.kotest.common.runBlocking
 import io.mindsync.UnitTest
 import io.mindsync.users.application.command.RegisterUserCommand
 import io.mindsync.users.domain.Credential
-import io.mindsync.users.domain.Response
+import io.mindsync.users.domain.ApiResponse
 import io.mindsync.users.domain.event.UserCreatedEvent
 import io.mindsync.users.domain.exceptions.UserStoreException
 import net.datafaker.Faker
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 
 /**
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 3/7/23
  */
 @UnitTest
@@ -32,7 +32,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand()
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -58,7 +58,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(email = invalidEmail)
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -79,7 +79,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(username = invalidUsername)
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -100,7 +100,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(password = invalidPassword)
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -121,7 +121,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(firstname = invalidFirstname)
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -144,7 +144,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(lastname = invalidLastname)
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -164,7 +164,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(username = "test")
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -186,7 +186,7 @@ class UserRegistratorTest {
         val registerUserCommand2 = createRegisterUserCommand(username = "test")
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand2)
 
             val response = result.block()
@@ -206,7 +206,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand(email = "test@google.com")
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -228,7 +228,7 @@ class UserRegistratorTest {
         val registerUserCommand2 = createRegisterUserCommand(email = "test@google.com")
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand2)
 
             val response = result.block()
@@ -248,7 +248,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand()
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, Response<UserResponse>>> =
+            val result: Mono<Either<UserStoreException, ApiResponse<UserResponse>>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()

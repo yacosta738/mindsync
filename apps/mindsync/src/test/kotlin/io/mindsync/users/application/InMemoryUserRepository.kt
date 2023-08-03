@@ -9,12 +9,12 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 3/7/23
  */
 class InMemoryUserRepository(
     private val users: MutableMap<String, User> = ConcurrentHashMap()
-) : UserCreator<User> {
+) : UserCreator {
     override suspend fun create(user: User): Mono<Either<UserStoreException, User>> {
         checkIfUserExist(user).let {
             if (it != null) {

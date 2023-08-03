@@ -5,7 +5,6 @@ package io.mindsync.common.domain
  *
  * @param ID the type of the identifier
  * @property id The unique identifier of the entity.
- * @author Yuniel Acosta
  */
 abstract class BaseEntity<ID> {
     abstract val id: ID

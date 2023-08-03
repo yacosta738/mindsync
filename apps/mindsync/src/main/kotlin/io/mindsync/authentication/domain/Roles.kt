@@ -7,7 +7,6 @@ import java.util.stream.Stream
  *
  * @property roles The set of roles in the collection.
  * @constructor Creates a new instance of the [Roles] class.
- * @author Yuniel Acosta
  */
 data class Roles(val roles: Set<Role>) {
     /**

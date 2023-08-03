@@ -13,7 +13,6 @@ private const val NAME_LEN = 150
  * @see BaseValidateValueObject
  * @see BaseValueObject
  * @see LastNameNotValidException
- * @author Yuniel Acosta
  */
 data class LastName(val lastname: String) : BaseValidateValueObject<String>(lastname) {
     /**

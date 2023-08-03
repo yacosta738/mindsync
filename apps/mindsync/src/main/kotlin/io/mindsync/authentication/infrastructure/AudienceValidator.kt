@@ -14,7 +14,6 @@ import org.springframework.util.Assert
  * @constructor Creates a new instance of [AudienceValidator].
  * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1.3">(Audience) Claim</a>
  * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#IDToken">openid-connect</a>
- * @author Yuniel Acosta
  */
 internal class AudienceValidator(allowedAudience: List<String>) : OAuth2TokenValidator<Jwt> {
     private val log = LoggerFactory.getLogger(AudienceValidator::class.java)

@@ -3,7 +3,7 @@ package io.mindsync.users.domain.exceptions
 import io.mindsync.common.domain.error.BusinessRuleValidationException
 /**
  * Invalid argument email exception is thrown when an email is not valid.
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
  */
 sealed class InvalidArgumentEmailException(

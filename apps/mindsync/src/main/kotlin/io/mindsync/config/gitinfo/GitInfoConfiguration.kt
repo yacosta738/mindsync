@@ -9,7 +9,6 @@ import org.springframework.core.io.ClassPathResource
 /**
  * Configuration class for loading Git information from git.properties file.
  *
- * @author Yuniel Acosta
  */
 @Configuration
 @Generated(reason = "Not testing technical configuration")

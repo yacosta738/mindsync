@@ -21,7 +21,6 @@ import java.util.stream.Collectors
  * It handles various authentication schemes.
  * This is an utility class to get authenticated user information
  *
- * @author Yuniel Acosta
  */
 object AuthenticatedUser {
     private const val PREFERRED_USERNAME = "preferred_username"

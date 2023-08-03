@@ -35,7 +35,6 @@ import org.springframework.validation.annotation.Validated
  *
  * Constants:
  * - [CONTENT_SECURITY_POLICY]: The default Content Security Policy for the application.
- * @author Yuniel Acosta
  */
 @Validated
 @Configuration

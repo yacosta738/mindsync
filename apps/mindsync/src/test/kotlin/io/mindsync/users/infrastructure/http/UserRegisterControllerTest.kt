@@ -15,7 +15,7 @@ private const val ENDPOINT = "/api/register"
 
 /**
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 6/7/23
  */
 @AutoConfigureWebTestClient

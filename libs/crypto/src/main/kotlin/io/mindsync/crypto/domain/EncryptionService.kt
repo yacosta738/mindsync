@@ -2,7 +2,7 @@ package io.mindsync.crypto.domain
 
 /**
  * Service for encrypting values.
- * @author Yuniel Acosta
+ *
  */
 interface EncryptionService {
     /**
