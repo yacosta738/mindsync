@@ -7,6 +7,8 @@ import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties
 import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
 import jakarta.ws.rs.BadRequestException
+import jakarta.ws.rs.ClientErrorException
+import jakarta.ws.rs.NotAuthorizedException
 import org.keycloak.admin.client.KeycloakBuilder
 import org.keycloak.representations.AccessTokenResponse
 import org.slf4j.LoggerFactory
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Repository
  * the [UserAuthenticator] interface, which defines the authenticate() method for user authentication.
  *
  * @property applicationSecurityProperties The properties for configuring the Keycloak authentication.
+ *
+ * @constructor Creates a new instance of KeycloakAuthenticatorRepository.
+ * @param applicationSecurityProperties The properties for configuring the Keycloak authentication.
  * @created 31/7/23
  */
 @Repository
@@ -31,15 +36,14 @@ class KeycloakAuthenticatorRepository(
      * @param password The password for authentication.
      * @return The [KeycloakBuilder] instance configured with the provided username and password.
      */
-    private fun newKeycloakBuilderWithPasswordCredentials(username: String, password: String): KeycloakBuilder {
-        return KeycloakBuilder.builder()
+    private fun newKeycloakBuilderWithPasswordCredentials(username: String, password: String): KeycloakBuilder =
+        KeycloakBuilder.builder()
             .realm(applicationSecurityProperties.oauth2.realm)
             .serverUrl(applicationSecurityProperties.oauth2.serverUrl)
             .clientId(applicationSecurityProperties.oauth2.clientId)
             .clientSecret(applicationSecurityProperties.oauth2.clientSecret)
             .username(username)
             .password(password)
-    }
 
     /**
      * Login a user with the given username and password.
@@ -50,13 +54,22 @@ class KeycloakAuthenticatorRepository(
      */
     override suspend fun authenticate(username: Username, password: Credential): AccessToken {
         log.info("Authenticating user with username: {}", username)
-        val keycloak = newKeycloakBuilderWithPasswordCredentials(username.value, password.value).build()
         return try {
+            val keycloak = newKeycloakBuilderWithPasswordCredentials(username.value, password.value).build()
             val accessTokenResponse = keycloak.tokenManager().getAccessToken()
             accessTokenResponse.toAccessToken()
-        } catch (ex: BadRequestException) {
-            log.warn("invalid account. User probably hasn't verified email.", ex)
-            throw UserAuthenticationException("Invalid account. User probably hasn't verified email.", ex)
+        } catch (ex: ClientErrorException) {
+            var message: String = ex.message ?: ""
+            when (ex) {
+                is NotAuthorizedException,
+                is BadRequestException -> {
+                    log.warn("Unable to authenticate user", ex)
+                    message = "Unable to authenticate user"
+                }
+
+                else -> log.error("Unable to authenticate user", ex)
+            }
+            throw UserAuthenticationException(message, ex)
         }
     }
 

@@ -7,24 +7,23 @@ import java.util.*
 
 @UnitTest
 internal class UserTest {
-    private val email = "test@mindsync.com"
-    private val username = "mindsync"
+    private val emailOrUsername = "test@mindsync.com"
     private val firstname = "Mindsync"
     private val lastname = "Mindsync"
     private val password = "Th1sIsA$5tr0ngP@ssw0rd"
 
     @Test
     fun `should create a valid user`() {
-        val user = User.create(email, username, firstname, lastname)
-        assertEquals(email, user.email.value)
-        assertEquals(username, user.username.value)
+        val user = User.create(emailOrUsername, firstname, lastname)
+        assertEquals(emailOrUsername, user.email.value)
+        assertEquals(emailOrUsername, user.username.value)
         assertEquals(firstname, user.name?.firstName?.value)
         assertEquals(lastname, user.name?.lastName?.value)
     }
 
     @Test
     fun `should update user name`() {
-        val user = User.create(email, username, firstname, lastname)
+        val user = User.create(emailOrUsername, firstname, lastname)
         val newFirstName = "Mindsync"
         val newLastName = "Mindsync"
         user.updateName(newFirstName, newLastName)
@@ -37,15 +36,14 @@ internal class UserTest {
         val credential = Credential.create(password, CredentialType.PASSWORD)
         val user = User(
             id = UUID.randomUUID(),
-            email = email,
-            username = username,
+            email = emailOrUsername,
             firstName = firstname,
             lastName = lastname,
             credentials = mutableListOf(credential)
         )
         user.credentials.add(credential)
-        assertEquals(email, user.email.value)
-        assertEquals(username, user.username.value)
+        assertEquals(emailOrUsername, user.email.value)
+        assertEquals(emailOrUsername, user.username.value)
         assertEquals(firstname, user.name?.firstName?.value)
         assertEquals(lastname, user.name?.lastName?.value)
         assertEquals(credential, user.credentials.first())
@@ -53,7 +51,7 @@ internal class UserTest {
 
     @Test
     fun `should return full name`() {
-        val user = User.create(email, username, firstname, lastname)
+        val user = User.create(emailOrUsername, firstname, lastname)
         assertEquals("$firstname $lastname", user.fullName())
     }
 }

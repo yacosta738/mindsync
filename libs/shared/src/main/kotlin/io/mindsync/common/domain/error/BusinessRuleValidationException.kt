@@ -1,5 +1,7 @@
 package io.mindsync.common.domain.error
 
+import java.lang.Exception
+
 /**
  * An abstract class representing a business rule validation exception.
  *
@@ -12,4 +14,4 @@ package io.mindsync.common.domain.error
 abstract class BusinessRuleValidationException(
     override val message: String,
     override val cause: Throwable? = null
-) : Throwable(message, cause)
+) : Exception(message, cause)

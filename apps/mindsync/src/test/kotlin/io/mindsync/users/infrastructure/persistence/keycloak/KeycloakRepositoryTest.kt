@@ -1,17 +1,18 @@
 package io.mindsync.users.infrastructure.persistence.keycloak
 
-import arrow.core.Either
 import io.kotest.common.runBlocking
-import io.mindsync.KeycloakTestContainers
 import io.mindsync.authentication.domain.Username
+import io.mindsync.testcontainers.InfrastructureTestContainers
 import io.mindsync.users.domain.Email
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
 import io.mindsync.users.domain.exceptions.UserStoreException
+import kotlinx.coroutines.reactor.awaitSingle
 import net.datafaker.Faker
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import reactor.core.publisher.Mono
 
@@ -20,7 +21,7 @@ import reactor.core.publisher.Mono
  *
  * @created 4/7/23
  */
-class KeycloakRepositoryTest : KeycloakTestContainers() {
+class KeycloakRepositoryTest : InfrastructureTestContainers() {
 
     @Autowired
     private lateinit var userCreator: UserCreator
@@ -31,96 +32,122 @@ class KeycloakRepositoryTest : KeycloakTestContainers() {
     fun `should create a new user`() {
         val user = User.create(
             email = faker.internet().emailAddress(),
-            username = faker.name().username(),
             firstName = faker.name().firstName(),
             lastName = faker.name().lastName()
         )
 
         runBlocking {
-            val result: Mono<Either<UserStoreException, User>> = userCreator.create(user)
+            val result: Mono<User> = userCreator.create(user)
 
-            val either = result.block()
-            assertTrue(either?.isRight() ?: false)
-            assertEquals(user.email.value, either?.getOrNull()?.email?.value)
-            assertEquals(user.username.value, either?.getOrNull()?.username?.value)
-            assertEquals(user.name?.firstName?.value, either?.getOrNull()?.name?.firstName?.value)
-            assertEquals(user.name?.lastName?.value, either?.getOrNull()?.name?.lastName?.value)
+            val createdUser = result.block()
+            assertNotNull(createdUser)
+            assertEquals(createdUser?.email, user.email)
+            assertEquals(createdUser?.username, user.username)
+            assertEquals(createdUser?.name?.firstName, user.name?.firstName ?: "")
+            assertEquals(createdUser?.name?.lastName, user.name?.lastName ?: "")
         }
     }
 
     @Test
-    fun `should not create a new user with an existing email`() {
+    fun `should not create a new user with an existing email`(): Unit = runBlocking {
         val user = User.create(
             email = faker.internet().emailAddress(),
-            username = faker.name().username(),
             firstName = faker.name().firstName(),
             lastName = faker.name().lastName()
         )
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> = userCreator.create(user)
-            val either = result.block()
-            assertTrue(either?.isRight() ?: false)
-        }
+        val result: Mono<User> = userCreator.create(user)
+        val createdUser = result.block()
+        assertNotNull(createdUser)
+        assertEquals(createdUser?.email, user.email)
+        assertEquals(createdUser?.username, user.username)
+        assertEquals(createdUser?.name?.firstName, user.name?.firstName ?: "")
+        assertEquals(createdUser?.name?.lastName, user.name?.lastName ?: "")
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> =
-                userCreator.create(user.copy(username = Username(faker.name().username())))
-            val either = result.block()
-            assertTrue(either?.isLeft() ?: false)
+        val newUsername = Username(faker.name().username())
+        val duplicateUser = user.copy(username = newUsername)
+
+        // Act & Assert (try to create duplicate user)
+        assertThrows<UserStoreException> {
+            userCreator.create(duplicateUser).awaitSingle()
+        }.also { exception ->
+            assertEquals(
+                "User with email: ${user.email.value} or username: ${newUsername.value} already exists.",
+                exception.message
+            )
         }
     }
 
     @Test
-    fun `should not create a new user with an existing username`() {
+    fun `should not create a new user with an existing username`(): Unit = runBlocking {
         val user = User.create(
             email = faker.internet().emailAddress(),
-            username = faker.name().username(),
             firstName = faker.name().firstName(),
             lastName = faker.name().lastName()
         )
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> = userCreator.create(user)
-            val either = result.block()
-            assertTrue(either?.isRight() ?: false)
-        }
+        val result: Mono<User> = userCreator.create(user)
+        val createdUser = result.block()
+        assertNotNull(createdUser)
+        assertEquals(createdUser?.email, user.email)
+        assertEquals(createdUser?.username, user.username)
+        assertEquals(createdUser?.name?.firstName, user.name?.firstName ?: "")
+        assertEquals(createdUser?.name?.lastName, user.name?.lastName ?: "")
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> =
-                userCreator.create(user.copy(email = Email(faker.internet().emailAddress())))
-            val either = result.block()
-            assertTrue(either?.isLeft() ?: false)
+        val newEmail = Email("newuser@test.com")
+        val duplicateUser = user.copy(email = newEmail)
+
+        // Act & Assert (try to create duplicate user)
+        assertThrows<UserStoreException> {
+            userCreator.create(duplicateUser).awaitSingle()
+        }.also { exception ->
+            assertEquals(
+                "User with email: ${newEmail.value} or username: ${user.username.value} already exists.",
+                exception.message
+            )
         }
     }
 
     @Test
-    fun `should not create a new user with an existing email and username`() {
+    fun `should not create a new user with an existing email and username`(): Unit = runBlocking {
         val user = User.create(
             email = faker.internet().emailAddress(),
-            username = faker.name().username(),
             firstName = faker.name().firstName(),
             lastName = faker.name().lastName()
         )
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> = userCreator.create(user)
-            val either = result.block()
-            assertTrue(either?.isRight() ?: false)
+        val result: Mono<User> = userCreator.create(user)
+        val createdUser = result.block()
+        assertNotNull(createdUser)
+        assertEquals(createdUser?.email, user.email)
+        assertEquals(createdUser?.username, user.username)
+        assertEquals(createdUser?.name?.firstName, user.name?.firstName ?: "")
+        assertEquals(createdUser?.name?.lastName, user.name?.lastName ?: "")
+
+        val newUsername = Username(faker.name().username())
+        val newEmail = Email("ultra@gmail.com")
+        var duplicateUser = user.copy(username = newUsername)
+
+        // Act & Assert (try to create duplicate user)
+        assertThrows<UserStoreException> {
+            userCreator.create(duplicateUser).awaitSingle()
+        }.also { exception ->
+            assertEquals(
+                "User with email: ${user.email.value} or username: ${newUsername.value} already exists.",
+                exception.message
+            )
         }
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> =
-                userCreator.create(user.copy(email = Email(faker.internet().emailAddress())))
-            val either = result.block()
-            assertTrue(either?.isLeft() ?: false)
-        }
+        duplicateUser = user.copy(email = newEmail)
 
-        runBlocking {
-            val result: Mono<Either<UserStoreException, User>> =
-                userCreator.create(user.copy(username = Username(faker.name().username())))
-            val either = result.block()
-            assertTrue(either?.isLeft() ?: false)
+        // Act & Assert (try to create duplicate user)
+        assertThrows<UserStoreException> {
+            userCreator.create(duplicateUser).awaitSingle()
+        }.also { exception ->
+            assertEquals(
+                "User with email: ${newEmail.value} or username: ${user.username.value} already exists.",
+                exception.message
+            )
         }
     }
 }

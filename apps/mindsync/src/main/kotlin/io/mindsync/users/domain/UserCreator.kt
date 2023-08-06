@@ -1,24 +1,21 @@
 package io.mindsync.users.domain
 
-import arrow.core.Either
-import io.mindsync.users.domain.exceptions.UserStoreException
 import reactor.core.publisher.Mono
 
 /**
  * Represents a UserCreator that is responsible for creating a user.
+ *
+ * A UserCreator is a functional interface with a single method `create`, which takes a `User` object
+ * and asynchronously creates a user. The method returns a `Mono<User>` that represents a stream that emits
+ * a single user object.
  * @created 8/7/23
  */
 fun interface UserCreator {
     /**
-     * Creates a user in the user store.
+     * Create a new user.
      *
-     * @param user the user object to be created
-     * @return a Mono that emits an Either object, where Left is a UserStoreException if there was an error
-     *         while creating the user, and Right is the created User object on success
-     * @see UserStoreException for more information about the possible errors
-     * @see User for more information about the user object
-     * @see Mono for more information about the Mono object
-     * @see Either for more information about the Either object
+     * @param user The user object to be created.
+     * @return A Mono emitting the created User object.
      */
-    suspend fun create(user: User): Mono<Either<UserStoreException, User>>
+    suspend fun create(user: User): Mono<User>
 }

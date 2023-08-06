@@ -42,7 +42,22 @@ services:
             - "5432:5432"
         networks:
             - local-mindsync
-
+    greenmail:
+        image: greenmail/standalone:${GREENMAIL_VERSION}
+        container_name: greenmail
+        environment:
+            - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.auth.disabled -Dgreenmail.verbose -Dgreenmail.users=developer:developer
+            - JAVA_OPTS=-Djava.net.preferIPv4Stack=true -Xmx512m
+        ports:
+            - "3025:3025"
+            - "3110:3110"
+            - "3143:3143"
+            - "3465:3465"
+            - "3993:3993"
+            - "3995:3995"
+            - "6080:8080"
+        networks:
+            - local-mindsync
     keycloak:
         depends_on:
             - postgres

@@ -1,8 +1,7 @@
 package io.mindsync.authentication.application
 
-import io.mindsync.CredentialGenerator
 import io.mindsync.UnitTest
-import io.mindsync.authentication.domain.Username
+import io.mindsync.authentication.application.query.AuthenticateUserQuery
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -21,9 +20,12 @@ private const val USER = "user"
 
 @UnitTest
 @OptIn(ExperimentalCoroutinesApi::class)
-class UserAuthenticatorServiceTest {
+class AuthenticateUserQueryHandlerTest {
     private val inMemoryUserAuthenticator = InMemoryUserAuthenticator()
     private val userAuthenticatorService: UserAuthenticatorService = UserAuthenticatorService(inMemoryUserAuthenticator)
+    private val authenticateUserQueryHandler: AuthenticateUserQueryHandler = AuthenticateUserQueryHandler(
+        userAuthenticatorService
+    )
 
     @BeforeEach
     fun setUp() {
@@ -39,9 +41,11 @@ class UserAuthenticatorServiceTest {
 
     @Test
     fun `should authenticate a user`() = runTest {
-        val accessToken = userAuthenticatorService.authenticate(
-            Username(USER),
-            CredentialGenerator.generate(PASSWORD)
+        val accessToken = authenticateUserQueryHandler.handle(
+            AuthenticateUserQuery(
+                username = USER,
+                password = PASSWORD
+            )
         )
         assertNotNull(accessToken)
         assertEquals("token", accessToken.token)
@@ -58,9 +62,11 @@ class UserAuthenticatorServiceTest {
     fun `should throw exception when user is not found`() = runTest {
         val exception = assertThrows(UserAuthenticationException::class.java) {
             runBlocking {
-                userAuthenticatorService.authenticate(
-                    Username(USER),
-                    CredentialGenerator.generate("wr0ngP4ssw0rd*86632")
+                authenticateUserQueryHandler.handle(
+                    AuthenticateUserQuery(
+                        username = "unknown",
+                        password = PASSWORD
+                    )
                 )
             }
         }

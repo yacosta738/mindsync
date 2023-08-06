@@ -3,8 +3,8 @@ package io.mindsync.users.infrastructure.http
 import arrow.core.Either
 import io.mindsync.users.application.UserRegistrator
 import io.mindsync.users.application.UserResponse
-import io.mindsync.users.domain.ApiError
 import io.mindsync.users.domain.ApiResponse
+import io.mindsync.users.domain.ApiResponseStatus
 import io.mindsync.users.domain.exceptions.UserStoreException
 import io.mindsync.users.infrastructure.dto.RegisterUserRequest
 import org.slf4j.LoggerFactory
@@ -59,32 +59,17 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
     suspend fun registerUser(@Validated @RequestBody registerUserRequest: RegisterUserRequest):
         Mono<ResponseEntity<ApiResponse<UserResponse>>> {
         log.info("Registering new user with email: {}", registerUserRequest.email)
-
         return userRegistrator.registerNewUser(registerUserRequest.toRegisterUserCommand())
             .flatMap(::mapRegistrationResult)
             .onErrorResume(::handleRegistrationError)
     }
 
-    /**
-     * Maps the registration result to a Mono ResponseEntity.
-     *
-     * @param result the registration result as an Either object, where the left side represents an error
-     * and the right side represents a successful response
-     * @return a Mono ResponseEntity containing the mapped result
-     */
-    private fun mapRegistrationResult(result: Either<UserStoreException, ApiResponse<UserResponse>>):
+    private fun mapRegistrationResult(apiResponse: ApiResponse<UserResponse>):
         Mono<ResponseEntity<ApiResponse<UserResponse>>> {
-        return result.fold(
-            { error ->
-                log.error("Error: {}", error.message)
-                val errorMessage = error.message
-                Mono.just(ResponseEntity.badRequest().body(ApiResponse.error(listOf(ApiError(errorMessage)))))
-            },
-            { user ->
-                log.info("User saved successfully with email: {}", user.data?.email)
-                Mono.just(ResponseEntity.ok(user))
-            }
-        )
+        return when (apiResponse.status) {
+            ApiResponseStatus.SUCCESS -> Mono.just(ResponseEntity.status(HttpStatus.CREATED).body(apiResponse))
+            ApiResponseStatus.FAILURE -> Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse))
+        }
     }
 
     /**
