@@ -10,7 +10,8 @@ import io.mindsync.common.domain.query.Response
  * @property refreshToken The refresh token value.
  * @property refreshExpiresIn The time in seconds until the refresh token expires.
  * @property tokenType The type of the token.
- * @property notBeforePolicy The time in seconds from the token's creation, before which it should not be considered valid.
+ * @property notBeforePolicy The time in seconds from the token's creation,
+ *           before which it should not be considered valid.
  * @property sessionState The session state associated with the access token.
  * @property scope The scope of the access token.
  *

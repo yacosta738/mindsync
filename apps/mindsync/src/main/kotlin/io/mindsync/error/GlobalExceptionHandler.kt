@@ -20,7 +20,8 @@ import java.time.Instant
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     /**
-     * Handles the [UserAuthenticationException] by creating a ProblemDetail object with the appropriate status, detail and properties.
+     * Handles the [UserAuthenticationException] by creating a ProblemDetail object with the appropriate status,
+     * detail and properties.
      *
      * @param e The UserAuthenticationException that was thrown.
      * @return The ProblemDetail object representing the exception.

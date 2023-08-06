@@ -64,7 +64,7 @@ internal class BeanValidationTest {
         return Consumer<Method> { method: Method ->
             Arrays
                 .stream(method.parameters)
-                .filter{ parameter: Parameter -> parameter.annotations.isNotEmpty() }
+                .filter { parameter: Parameter -> parameter.annotations.isNotEmpty() }
                 .filter(checkedTypes())
                 .forEach { parameter: Parameter ->
                     Assertions.assertThat(

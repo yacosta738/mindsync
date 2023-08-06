@@ -38,7 +38,9 @@ class KeycloakRepository(
                     if (userAlreadyExists) {
                         Mono.error(
                             UserStoreException(
-                                "User with email: ${user.email.value} or username: ${user.username.value} already exists."
+                                """
+                                    User with email: ${user.email.value} or username: ${user.username.value} already exists.
+                                """.trimIndent()
                             )
                         )
                     } else {
