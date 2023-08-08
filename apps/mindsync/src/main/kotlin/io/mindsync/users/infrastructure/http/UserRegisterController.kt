@@ -1,6 +1,5 @@
 package io.mindsync.users.infrastructure.http
 
-import arrow.core.Either
 import io.mindsync.users.application.UserRegistrator
 import io.mindsync.users.application.UserResponse
 import io.mindsync.users.domain.ApiResponse
@@ -52,7 +51,6 @@ class UserRegisterController(private val userRegistrator: UserRegistrator) {
      * @see Mono for more information about the mono object.
      * @see ApiResponse for more information about the response object.
      * @see HttpStatus for more information about the http status.
-     * @see Either for more information about the either object.
      * @see UserStoreException for more information about the user store exception.
      */
     @PostMapping("/register")

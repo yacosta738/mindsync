@@ -64,7 +64,7 @@ class KeycloakAuthenticatorRepository(
                 is NotAuthorizedException,
                 is BadRequestException -> {
                     log.warn("Unable to authenticate user", ex)
-                    message = "Unable to authenticate user"
+                    message = "Invalid account. User probably hasn't verified email."
                 }
 
                 else -> log.error("Unable to authenticate user", ex)

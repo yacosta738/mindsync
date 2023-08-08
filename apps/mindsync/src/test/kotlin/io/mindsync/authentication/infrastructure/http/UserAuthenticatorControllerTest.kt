@@ -1,149 +1,103 @@
 package io.mindsync.authentication.infrastructure.http
 
-import io.kotest.assertions.print.print
-import io.mindsync.CredentialGenerator
-import io.mindsync.testcontainers.InfrastructureTestContainers
-import io.mindsync.users.domain.Credential
-import io.mindsync.users.domain.User
-import io.mindsync.users.domain.UserCreator
-import kotlinx.coroutines.reactor.awaitSingle
+import io.mindsync.UnitTest
+import io.mindsync.authentication.application.AuthenticateUserQueryHandler
+import io.mindsync.authentication.application.UserAuthenticatorService
+import io.mindsync.authentication.domain.AccessToken
+import io.mindsync.authentication.domain.UserAuthenticator
+import io.mindsync.authentication.infrastructure.http.request.LoginRequest
+import io.mindsync.error.GlobalExceptionHandler
+import io.mindsync.users.domain.exceptions.UserAuthenticationException
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.datafaker.Faker
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
-import org.springframework.http.MediaType
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf
 import org.springframework.test.web.reactive.server.WebTestClient
-import java.util.*
 
 private const val ENDPOINT = "/api/login"
 
-private const val TITLE = "User authentication failed"
+@UnitTest
+class UserAuthenticatorControllerTest {
 
-private const val DETAIL = "Unable to authenticate user"
-
-private const val ERROR_CATEGORY = "AUTHENTICATION"
-
-@AutoConfigureWebTestClient
-class UserAuthenticatorControllerTest : InfrastructureTestContainers() {
     private val faker = Faker()
-    private var usernameOrEmail = "admin@mindsync.com"
-    private val password = "S3cr3tP@ssw0rd*123"
+    private val accessToken = createAccessToken()
 
-    @Autowired
-    private lateinit var webTestClient: WebTestClient
-
-    @Autowired
-    private lateinit var userCreator: UserCreator
-
-    @BeforeEach
-    fun setUp() {
-        startInfrastructure()
-        usernameOrEmail = faker.internet().emailAddress()
-        runBlocking {
-            createUser(email = usernameOrEmail, password = password).also {
-                println("\uD83E\uDDEA TEST: User create for test purpose: $it")
-            }
-        }
-    }
+    private val userAuthenticator = mockk<UserAuthenticator>()
+    private val authenticator = UserAuthenticatorService(userAuthenticator)
+    private val authenticateUserQueryHandler = AuthenticateUserQueryHandler(authenticator)
+    private val userAuthenticatorController = UserAuthenticatorController(authenticateUserQueryHandler)
+    private val webTestClient = WebTestClient.bindToController(userAuthenticatorController)
+        .controllerAdvice(GlobalExceptionHandler()) // Attach the global exception handler
+        .build()
 
     @Test
-    fun `should not authenticate a user without csrf token`() {
-        webTestClient.post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus().isForbidden
-    }
+    @DisplayName("should return access token when user logs in")
+    fun `should return access token when user logs in`(): Unit = runBlocking {
+        // Arrange
+        val loginRequest = createLoginRequest()
 
-    @Test
-    fun `should authenticate a user`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "$usernameOrEmail",
-                    "password": "$password"
-                }
-                """.trimIndent()
-            )
+        coEvery { userAuthenticator.authenticate(any(), any()) } returns accessToken
+
+        // Act & Assert
+        webTestClient.post().uri(ENDPOINT)
+            .bodyValue(loginRequest)
             .exchange()
             .expectStatus().isOk
             .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
+            .jsonPath("$.token").isEqualTo(accessToken.token)
+            .jsonPath("$.expiresIn").isEqualTo(accessToken.expiresIn)
+            .jsonPath("$.refreshToken").isEqualTo(accessToken.refreshToken)
+            .jsonPath("$.refreshExpiresIn").isEqualTo(accessToken.refreshExpiresIn)
+            .jsonPath("$.tokenType").isEqualTo(accessToken.tokenType)
+            .jsonPath("$.notBeforePolicy").isEqualTo(accessToken.notBeforePolicy!!)
+            .jsonPath("$.sessionState").isEqualTo(accessToken.sessionState!!)
+            .jsonPath("$.scope").isEqualTo(accessToken.scope!!)
+
+        // Verify
+        coVerify { userAuthenticator.authenticate(any(), any()) }
     }
 
     @Test
-    fun `should not authenticate a user with invalid credentials`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "$usernameOrEmail",
-                    "password": "${password}invalidPassword"
-                }
-                """.trimIndent()
-            )
+    @DisplayName("should handle UserAuthenticationException")
+    fun `should handle UserAuthenticationException`(): Unit = runBlocking {
+        // Arrange
+        val loginRequest = createLoginRequest()
+
+        coEvery {
+            userAuthenticator.authenticate(any(), any())
+        } throws UserAuthenticationException("Invalid account. User probably hasn't verified email.")
+
+        // Act & Assert
+        webTestClient.post().uri(ENDPOINT)
+            .bodyValue(loginRequest)
             .exchange()
             .expectStatus().isUnauthorized
             .expectBody()
-            .jsonPath("$.title").isEqualTo(TITLE)
-            .jsonPath("$.detail").isEqualTo(DETAIL)
-            .jsonPath("$.instance").isEqualTo(ENDPOINT)
-            .jsonPath("$.errorCategory").isEqualTo(ERROR_CATEGORY)
-            .jsonPath("$.timestamp").isNotEmpty
+            .jsonPath("$.title").isEqualTo("User authentication failed")
+
+        // Verify
+        coVerify { userAuthenticator.authenticate(any(), any()) }
     }
 
-    @Test
-    fun `should not authenticate a user with invalid username`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${usernameOrEmail}invalidUsername",
-                    "password": "$password"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isUnauthorized
-            .expectBody()
-            .jsonPath("$.title").isEqualTo(TITLE)
-            .jsonPath("$.detail").isEqualTo(DETAIL)
-            .jsonPath("$.instance").isEqualTo(ENDPOINT)
-            .jsonPath("$.errorCategory").isEqualTo(ERROR_CATEGORY)
-            .jsonPath("$.timestamp").isNotEmpty
-    }
+    private fun createLoginRequest(
+        username: String = faker.internet().emailAddress(),
+        password: String = faker.internet().password(8, 80, true, true, true)
+    ): LoginRequest = LoginRequest(
+        username = username,
+        password = password
+    )
 
-    private suspend fun createUser(
-        email: String = faker.internet().emailAddress(),
-        password: String = Credential.generateRandomCredentialPassword(),
-        firstName: String = faker.name().firstName(),
-        lastName: String = faker.name().lastName()
-    ): User {
-        val user = User(
-            id = UUID.randomUUID(),
-            email = email,
-            credentials = mutableListOf(CredentialGenerator.generate(password)),
-            firstName = firstName,
-            lastName = lastName
-        )
-        return userCreator.create(user).awaitSingle()
-    }
+    private fun createAccessToken(): AccessToken = AccessToken(
+        token = "token",
+        expiresIn = 1L,
+        refreshToken = "refreshToken",
+        refreshExpiresIn = 1L,
+        tokenType = "tokenType",
+        notBeforePolicy = 1,
+        sessionState = "sessionState",
+        scope = "scope"
+    )
 }

@@ -82,6 +82,7 @@ abstract class InfrastructureTestContainers {
                 .withAdminPassword(ADMIN_PASSWORD)
                 .withCreateContainerCmdModifier { cmd -> cmd.withName("keycloak-tests") }
                 .withNetwork(NETWORK)
+                .withReuse(true)
 
         @JvmStatic
         private val greenMailContainer: GenericContainer<*> = GenericContainer<Nothing>(
@@ -95,6 +96,7 @@ abstract class InfrastructureTestContainers {
             withExposedPorts(*ports)
             withCreateContainerCmdModifier { cmd -> cmd.withName("greenmail-tests") }
             withNetwork(NETWORK)
+            withReuse(true)
         }
 
         @JvmStatic

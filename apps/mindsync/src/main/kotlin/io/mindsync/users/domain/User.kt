@@ -79,9 +79,15 @@ data class User(
          * @param email the email address of the user
          * @param firstName the first name of the user
          * @param lastName the last name of the user
+         * @param password the password of the user
          * @return the newly created User object
          */
-        fun create(email: String, firstName: String, lastName: String): User {
+        fun create(
+            email: String,
+            firstName: String,
+            lastName: String,
+            password: String = Credential.generateRandomCredentialPassword()
+        ): User {
             return User(
                 id = UUID.randomUUID(),
                 email = email,
@@ -89,7 +95,7 @@ data class User(
                 lastName = lastName,
                 credentials = mutableListOf(
                     Credential.create(
-                        Credential.generateRandomCredentialPassword(),
+                        password,
                         CredentialType.PASSWORD
                     )
                 )
