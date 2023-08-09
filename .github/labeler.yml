@@ -4,8 +4,8 @@ repo:
 # Add '@apps/service' label to any change within the 'apps' directory
 apps/service:
     - 'apps/**'
-# Add '@libs' label to any change within the 'libs' directory
-libs:
+# Add '@modules' label to any change within the 'libs' directory
+modules:
     - 'libs/**'
 # Add 'test' label to any change to a test file
 test:
