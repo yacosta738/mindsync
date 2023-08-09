@@ -39,3 +39,7 @@ build:
 # Add 'infra' label to any change to *.yml files within the infra dir
 infra:
     -   any: [ 'infra/**/*.yml' ]
+
+# Add 'dependencies' label to any change to package.json, package-lock.json or libs.versions.toml files within the source dir
+dependencies:
+    -   any: [ 'src/**/package.json', 'src/**/package-lock.json', 'gradle/libs.versions.toml' ]
