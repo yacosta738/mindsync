@@ -8,7 +8,7 @@ package io.mindsync.event.domain
  * and returns a boolean value indicating whether the event passes the filter.
  *
  * @param E the type of events that can be filtered
- * @author Yuniel Acosta
+ *
  */
 fun interface EventFilter<E : Any> {
     /**

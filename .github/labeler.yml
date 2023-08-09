@@ -4,8 +4,8 @@ repo:
 # Add '@apps/service' label to any change within the 'apps' directory
 apps/service:
     - 'apps/**'
-# Add '@libs' label to any change within the 'libs' directory
-libs:
+# Add '@modules' label to any change within the 'libs' directory
+modules:
     - 'libs/**'
 # Add 'test' label to any change to a test file
 test:
@@ -19,3 +19,23 @@ source:
 # Add 'frontend` label to any change to *.js, *.ts or *.tsx files within the source dir
 frontend:
     -   any: [ 'src/**/*.js', 'src/**/*.ts', 'src/**/*.tsx' ]
+
+# Add 'backend` label to any change to *.java files within the source dir
+backend:
+    -   any: [ 'src/**/*.java', 'src/**/*.kt' ]
+
+# Add 'docs' label to any change to *.md files within the source dir
+docs:
+    -   any: [ 'src/**/*.md' ]
+
+# Add 'config' label to any change to *.yml or *.properties files within the source dir
+config:
+    -   any: [ 'src/**/*.yml', 'src/**/*.properties' ]
+
+# Add 'build' label to any change to *.gradle files within the source dir
+build:
+    -   any: [ 'src/**/*.gradle' ]
+
+# Add 'infra' label to any change to *.yml files within the infra dir
+infra:
+    -   any: [ 'infra/**/*.yml' ]

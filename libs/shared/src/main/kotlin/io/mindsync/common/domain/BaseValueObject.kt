@@ -4,7 +4,7 @@ import java.io.Serializable
 
 /**
  * Base class for value objects that are validated when created
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
  */
 @Suppress("SerialVersionUIDInSerializableClass")

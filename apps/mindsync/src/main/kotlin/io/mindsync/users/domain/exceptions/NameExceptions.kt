@@ -4,7 +4,7 @@ import io.mindsync.common.domain.error.BusinessRuleValidationException
 
 /**
  * Exception thrown when the name is not valid
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
  */
 sealed class InvalidArgumentNameException(

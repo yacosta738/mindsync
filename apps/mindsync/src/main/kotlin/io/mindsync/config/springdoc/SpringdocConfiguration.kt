@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Configuration
  * @see Generated for more information about the annotation.
  * @see SpringdocConfiguration for more information about the configuration class.
  *
- * @author Yuniel Acosta
  */
 @Configuration
 @Generated(reason = "Not testing technical configuration")

@@ -13,7 +13,6 @@ private const val EMAIL_LEN = 255
  * @see BaseValidateValueObject validate value object
  * @see BaseValueObject base value object
  * @see EmailNotValidException email not valid exception
- * @author Yuniel Acosta
  */
 data class Email(val email: String) : BaseValidateValueObject<String>(email) {
     companion object {

@@ -21,7 +21,6 @@ import java.util.stream.Collectors
  * It handles various authentication schemes.
  * This is an utility class to get authenticated user information
  *
- * @author Yuniel Acosta
  */
 object AuthenticatedUser {
     private const val PREFERRED_USERNAME = "preferred_username"
@@ -54,7 +53,7 @@ object AuthenticatedUser {
      *
      * @throws UnknownAuthenticationException if the authentication can't be read (unknown token type)
      */
-    fun readPrincipal(authentication: Authentication): String {
+    private fun readPrincipal(authentication: Authentication): String {
         return when {
             authentication.principal is UserDetails -> (authentication.principal as UserDetails).username
             authentication is JwtAuthenticationToken -> authentication.token.claims[PREFERRED_USERNAME]?.toString()

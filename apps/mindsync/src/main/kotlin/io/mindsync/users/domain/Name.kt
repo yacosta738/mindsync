@@ -2,7 +2,6 @@ package io.mindsync.users.domain
 
 /**
  * Value object that represents a first name
- * @author Yuniel Acosta (acosta)
  * @created 2/7/23
  * @param firstName first name value object
  * @param lastName last name value object

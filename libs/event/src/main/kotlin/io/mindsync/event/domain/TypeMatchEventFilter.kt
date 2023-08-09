@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
  * @see EventConsumer
  * @see EventMultiplexer
  *
- * @author Yuniel Acosta
+ *
  */
 class TypeMatchEventFilter<T : Any>(
     private val clazz: KClass<T>

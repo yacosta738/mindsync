@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
  * @see EventFilter for filtering events.
  * @see EventMultiplexer for handling event subscriptions.
  * @see EventEmitter for emitting events.
- * @author Yuniel Acosta
+ *
  */
 @Suppress("UNCHECKED_CAST")
 @Component

@@ -18,7 +18,6 @@ import java.time.Duration
  * @see ReactiveOAuth2AuthorizedClientProviderBuilder
  * @see ServerOAuth2AuthorizedClientRepository
  * @see ReactiveClientRegistrationRepository
- * @author Yuniel Acosta
  */
 @Configuration
 class OAuth2Configuration {

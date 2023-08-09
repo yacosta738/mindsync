@@ -26,3 +26,10 @@ class UserStoreException(message: String, cause: Throwable? = null) :
  * @param message the user that is not valid
  */
 class CredentialException(message: String) : UserException(message)
+
+/**
+ * Exception thrown when there is an error during user authentication.
+ *
+ * @param message The detail message describing the exception.
+ */
+class UserAuthenticationException(message: String, cause: Throwable? = null) : UserException(message, cause)

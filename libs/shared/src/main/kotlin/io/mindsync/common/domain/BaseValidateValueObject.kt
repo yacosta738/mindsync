@@ -2,7 +2,7 @@ package io.mindsync.common.domain
 
 /**
  * Base class for value objects that are validated when created
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
  */
 abstract class BaseValidateValueObject<T> protected constructor(value: T) :

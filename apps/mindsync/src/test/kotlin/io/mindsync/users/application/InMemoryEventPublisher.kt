@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue
 
 /**
  * In memory event publisher for testing purposes
- * @author Yuniel Acosta (acosta)
+ *
  * @created 3/7/23
  */
 class InMemoryEventPublisher<T : Any>(

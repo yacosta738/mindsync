@@ -5,7 +5,7 @@ package io.mindsync.common.domain
  *
  * @param value The value of the ID.
  * @param T The type of the ID value.
- * @author Yuniel Acosta
+ *
  */
 @Suppress("unused")
 abstract class BaseId<T> protected constructor(val value: T) {

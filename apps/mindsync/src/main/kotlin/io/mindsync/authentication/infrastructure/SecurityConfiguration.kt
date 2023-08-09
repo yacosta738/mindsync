@@ -30,7 +30,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository
-import org.springframework.security.web.server.csrf.XorServerCsrfTokenRequestAttributeHandler
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
@@ -48,7 +48,6 @@ private const val POLICY =
  * It also configures the security filter chain that will be used to protect the application.
  * @param applicationSecurityProperties the application security properties
  * @since 1.0.0
- * @author Yuniel Acosta
  * @see EnableWebFluxSecurity for enabling Spring Security in a WebFlux application
  * @see EnableReactiveMethodSecurity for enabling Spring Security method security in a WebFlux application
  * @see WebSecurityCustomizer for customizing the WebSecurity configuration
@@ -106,7 +105,7 @@ class SecurityConfiguration(
                     csrf ->
                 csrf
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-                    .csrfTokenRequestHandler(XorServerCsrfTokenRequestAttributeHandler())
+                    .csrfTokenRequestHandler(ServerCsrfTokenRequestAttributeHandler())
             }
             .headers {
                     headers ->
@@ -126,6 +125,7 @@ class SecurityConfiguration(
                     .pathMatchers("/").permitAll()
                     .pathMatchers("/health-check").permitAll()
                     .pathMatchers("/api/register").permitAll()
+                    .pathMatchers("/api/login").permitAll()
                     .pathMatchers("/api/**").authenticated()
             }
             .oauth2Login(withDefaults())

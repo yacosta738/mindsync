@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 /**
  * Represents a domain event.
- * @author Yuniel Acosta
+ *
  */
 interface DomainEvent {
     /**

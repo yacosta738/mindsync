@@ -4,7 +4,7 @@ package io.mindsync.event.domain
  * Class representing an EventBroadcaster.
  *
  * @param E the type of event being broadcasted
- * @author Yuniel Acosta
+ *
  */
 class EventBroadcaster<E : Any> : EventPublisher<E> {
     private val eventPublishers = mutableListOf<EventPublisher<E>>()

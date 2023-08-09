@@ -1,13 +1,15 @@
 package io.mindsync.users.infrastructure.persistence.keycloak
 
-import arrow.core.Either
 import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties
 import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
 import io.mindsync.users.domain.UserId
+import io.mindsync.users.domain.exceptions.CredentialException
+import io.mindsync.users.domain.exceptions.UserException
 import io.mindsync.users.domain.exceptions.UserStoreException
+import jakarta.ws.rs.ClientErrorException
 import jakarta.ws.rs.WebApplicationException
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
@@ -16,46 +18,14 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
-/**
- * The KeycloakRepository class is a repository implementation that interacts with Keycloak
- * for user creation and verification.
- *
- * @author acosta
- * @created 1/7/23
- *
- * @param applicationSecurityProperties The application security properties containing the Keycloak realm information.
- * @param keycloak The Keycloak instance used for API calls.
- * @see UserCreator for more information about the user creator component.
- * @see User for more information about the user object.
- * @see UserId for more information about the user id object.
- * @see UserStoreException for more information about the user store exception.
- * @see Credential for more information about the credential object.
- * @see CredentialRepresentation for more information about the credential representation object.
- * @see UserRepresentation for more information about the user representation object.
- * @see Mono for more information about the mono object.
- * @see Either for more information about the either object.
- * @see WebApplicationException for more information about the web application exception object.
- * @see BusinessRuleValidationException for more information about the business rule validation exception object.
- */
 @Repository
 class KeycloakRepository(
     private val applicationSecurityProperties: ApplicationSecurityProperties,
     private val keycloak: Keycloak
-) : UserCreator<User> {
-
-    /**
-     * Creates a new user with the given user object. The user object contains the user details.
-     * The user is created in Keycloak.
-     *
-     * @param user The user to be created.
-     * @return A Mono that emits Either<UserStoreException, User>. The either object contains either a Left value
-     * with a UserStoreException if there was an error creating the user, or a Right value with the created user
-     * if the operation was successful.
-     */
-    override suspend fun create(user: User): Mono<Either<UserStoreException, User>> {
+) : UserCreator {
+    override suspend fun create(user: User): Mono<User> {
         log.info("Saving user with email: {}", user.email.value)
 
-        val errorSavingUser = "Error saving user with email: ${user.email.value}"
         return try {
             val password =
                 user.credentials.firstOrNull()?.credentialValue ?: Credential.generateRandomCredentialPassword()
@@ -63,56 +33,67 @@ class KeycloakRepository(
                 type = CredentialRepresentation.PASSWORD
                 value = password
             }
-
             checkIfUserAlreadyExists(user)
-                .flatMap { either ->
-                    either.fold(
-                        { Mono.just(Either.Left(it)) }
-                    ) {
-                        val userRepresentation = getUserRepresentation(user, credentialRepresentation)
-                        try {
-                            val response = keycloakRealm.users().create(userRepresentation)
-                            val userId = response.location.path.replace(".*/([^/]+)$".toRegex(), "$1")
-                            Mono.just(Either.Right(user.copy(id = UserId(userId))))
-                        } catch (exception: WebApplicationException) {
-                            log.error(
-                                "$errorSavingUser with cause: ${exception.cause} and message: ${exception.message}"
+                .flatMap { userAlreadyExists ->
+                    if (userAlreadyExists) {
+                        Mono.error(
+                            UserStoreException(
+                                """
+                                    User with email: ${user.email.value} or username: ${user.username.value} already exists.
+                                """.trimIndent()
                             )
-                            val userStoreException = UserStoreException(user.email.value, exception)
-                            Mono.just(Either.Left(userStoreException))
-                        }
+                        )
+                    } else {
+                        log.debug(
+                            "Trying to create user with email: {} and username: {}",
+                            user.email.value,
+                            user.username.value
+                        )
+                        val userRepresentation = getUserRepresentation(user, credentialRepresentation)
+                        userRepresentation.username = user.username.value
+                        val response = keycloakRealm.users().create(userRepresentation)
+                        val userId = response.location.path.replace(".*/([^/]+)$".toRegex(), "$1")
+                        Mono.just(user.copy(id = UserId(userId)))
                     }
                 }
         } catch (exception: BusinessRuleValidationException) {
-            log.error("$errorSavingUser with cause: ${exception.cause} and message: ${exception.message}")
-            val businessRuleException = UserStoreException(user.email.value, exception)
-            Mono.just(Either.Left(businessRuleException))
+            log.error(
+                "Error creating user with email: {} and username: {}",
+                user.email.value,
+                user.username.value,
+                exception
+            )
+            when (exception) {
+                is UserStoreException -> Mono.error(exception)
+                is CredentialException -> Mono.error(
+                    UserStoreException("Error creating user with email: ${user.email.value}", exception)
+                )
+
+                is UserException -> Mono.error(
+                    UserStoreException("Error creating user with email: ${user.email.value}", exception)
+                )
+
+                else -> Mono.error(UserStoreException("Error creating user with email: ${user.email.value}", exception))
+            }
+        } catch (exception: ClientErrorException) {
+            log.error("Error creating user with email: {}", user.email.value, exception)
+            Mono.error(UserStoreException("Error creating user with email: ${user.email.value}", exception))
         }
     }
 
     /**
-     * Checks if the user already exists in the user store.
+     * Checks if a user already exists.
      *
-     * @param user The user to check.
-     * @return A Mono that emits Either a UserStoreException if the user already exists,
-     * or the user object if it does not exist.
+     * @param user the user to check
+     * @return a Mono that emits a Boolean indicating whether the user already exists or not
      */
-    private suspend fun checkIfUserAlreadyExists(user: User): Mono<Either<UserStoreException, User>> {
+    private suspend fun checkIfUserAlreadyExists(user: User): Mono<Boolean> {
         val userByEmail = getUserByEmail(user.email.value)
         val userByUsername = getUserByUsername(user.username.value)
 
         return when {
-            userByEmail != null -> {
-                log.error("User with email: {} already exists", user.email.value)
-                Mono.just(Either.Left(UserStoreException("User with email: ${user.email.value} already exists")))
-            }
-
-            userByUsername != null -> {
-                log.error("User with username: {} already exists", user.username.value)
-                Mono.just(Either.Left(UserStoreException("User with username: ${user.username.value} already exists")))
-            }
-
-            else -> Mono.just(Either.Right(user))
+            userByEmail != null || userByUsername != null -> Mono.just(true)
+            else -> Mono.just(false)
         }
     }
 

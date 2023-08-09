@@ -11,9 +11,8 @@ import jakarta.validation.constraints.Size
  * This class is used to encapsulate the required data for registering a user.
  * It has properties for username, email, password, firstname, and lastname.
  *
- * @author Yuniel Acosta (acosta)
+ *
  * @created 2/7/23
- * @property username The username of the user. It must not be blank and must be between 3 and 100 characters.
  * @property email The email of the user. It must not be blank, must be a valid email address,
  * and must be less than 255 characters.
  * @property password The password of the user. It must not be blank and must be between 8 and 100 characters.
@@ -21,9 +20,6 @@ import jakarta.validation.constraints.Size
  * @property lastname The lastname of the user. It must not be blank and must be between 3 and 100 characters.
  */
 data class RegisterUserRequest(
-    @field:NotBlank(message = "Username cannot be blank")
-    @field:Size(min = 3, max = 100, message = "Username must be between 3 and 100 characters")
-    val username: String,
     @field:NotBlank(message = "Email cannot be blank")
     @field:Email(message = "Email must be valid")
     @field:Size(max = 255, message = "Email must be less than 255 characters")
@@ -46,7 +42,6 @@ data class RegisterUserRequest(
      */
     fun toRegisterUserCommand(): RegisterUserCommand {
         return RegisterUserCommand(
-            username,
             email,
             password,
             firstname,

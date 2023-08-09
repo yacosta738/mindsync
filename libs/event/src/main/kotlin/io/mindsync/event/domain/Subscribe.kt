@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  * @param filterBy Specifies the type of events that the annotated method should subscribe to.
  *                 Only events of the specified type or its subclasses will be delivered to the method.
  *                 If no type is specified, the method will be subscribed to all events.
- * @author Yuniel Acosta
+ *
  */
 annotation class Subscribe(
     val filterBy: KClass<*>

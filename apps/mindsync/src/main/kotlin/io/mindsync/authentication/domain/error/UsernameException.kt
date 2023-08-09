@@ -7,7 +7,6 @@ import io.mindsync.common.domain.error.BusinessRuleValidationException
  *
  * This class is a sealed class, meaning it can only be extended within the same file.
  * It extends the RuntimeException class which is an unchecked exception.
- * @author Yuniel Acosta
  */
 class UsernameException(override val message: String, override val cause: Throwable? = null) :
     BusinessRuleValidationException(message, cause)

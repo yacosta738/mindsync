@@ -8,24 +8,14 @@ import java.util.*
 /**
  * Represents a command to register a new user.
  *
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
- * @property username The username of the new user.
  * @property email The email of the new user.
  * @property password The password of the new user.
  * @property firstname The first name of the new user.
  * @property lastname The last name of the new user.
  * @property id The unique identifier of the command.
- *
- * @constructor Creates a new RegisterUserCommand instance.
- * @param username The username of the new user.
- * @param email The email of the new user.
- * @param password The password of the new user.
- * @param firstname The first name of the new user.
- * @param lastname The last name of the new user.
  */
 data class RegisterUserCommand(
-    val username: String,
     val email: String,
     val password: String,
     val firstname: String,
@@ -40,7 +30,6 @@ data class RegisterUserCommand(
     fun toUser(): User {
         return User(
             id = UUID.randomUUID(),
-            username = username,
             email = email,
             firstName = firstname,
             lastName = lastname,

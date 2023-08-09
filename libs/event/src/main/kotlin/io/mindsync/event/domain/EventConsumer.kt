@@ -4,7 +4,7 @@ package io.mindsync.event.domain
  * Functional interface for consuming events of type [E].
  *
  * @param E the type of event to be consumed.
- * @author Yuniel Acosta
+ *
  */
 fun interface EventConsumer<E : Any> {
     /**

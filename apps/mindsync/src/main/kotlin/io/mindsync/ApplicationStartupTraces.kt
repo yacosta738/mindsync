@@ -13,7 +13,6 @@ private const val SEPARATOR_LENGTH = 58
  * Utility class to log application's startup information.
  * This class is inspired by the [org.springframework.boot.StartupInfoLogger] class.
  * It logs the application's startup information in a more concise way.
- * @author Yuniel Acosta (acosta)
  * @created 8/7/23
  */
 object ApplicationStartupTraces {

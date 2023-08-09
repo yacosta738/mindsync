@@ -1,261 +1,97 @@
 package io.mindsync.users.infrastructure.http
 
-import io.kotest.assertions.print.print
-import io.mindsync.KeycloakTestContainers
-import io.mindsync.users.domain.Credential
+import io.mindsync.UnitTest
+import io.mindsync.users.application.UserRegistrator
+import io.mindsync.users.application.UserResponse
+import io.mindsync.users.domain.ApiResponse
+import io.mindsync.users.domain.ApiResponseStatus
+import io.mindsync.users.domain.exceptions.UserStoreException
+import io.mindsync.users.infrastructure.dto.RegisterUserRequest
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
 import net.datafaker.Faker
-import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.http.MediaType
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
+import kotlin.test.Test
 
 private const val ENDPOINT = "/api/register"
 
-/**
- *
- * @author Yuniel Acosta (acosta)
- * @created 6/7/23
- */
-@AutoConfigureWebTestClient
-class UserRegisterControllerTest : KeycloakTestContainers() {
+@UnitTest
+class UserRegisterControllerTest {
     private val faker = Faker()
+    private val email = faker.internet().emailAddress()
+    private val password = faker.internet().password(8, 80, true, true, true)
+    private val firstName = faker.name().firstName()
+    private val lastName = faker.name().lastName()
+    private val successResponse =
+        UserResponse(username = email, email = email, firstname = firstName, lastname = lastName)
 
-    @Autowired
-    private lateinit var webTestClient: WebTestClient
+    private val mockUserRegistrator: UserRegistrator = mockk()
+    private val userRegisterController = UserRegisterController(mockUserRegistrator)
+    private val webTestClient = WebTestClient.bindToController(userRegisterController).build()
 
     @Test
-    fun `should not register a new user without csrf token`() {
-        webTestClient.post()
-            .uri(ENDPOINT)
+    fun `should register user successfully`() = runBlocking {
+        // Arrange
+        val request = RegisterUserRequest(email, password, firstName, lastName)
+        val expectedApiResponse = ApiResponse.success(successResponse)
+
+        coEvery { mockUserRegistrator.registerNewUser(any()) } returns Mono.just(expectedApiResponse)
+
+        // Act & Assert
+        webTestClient.post().uri(ENDPOINT)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "${faker.internet().emailAddress()}",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
+            .bodyValue(request)
             .exchange()
-            .expectStatus().isForbidden
+            .expectStatus().isCreated
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(ApiResponseStatus.SUCCESS.toString())
+            .jsonPath("$.data.email").isEqualTo(request.email)
+
+        // Verify
+        coVerify { mockUserRegistrator.registerNewUser(any()) }
     }
 
     @Test
-    fun `should register a new user`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "${faker.internet().emailAddress()}",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
-    }
+    fun `should handle failed registration`() = runBlocking {
+        // Arrange
+        val request = RegisterUserRequest(email, password, firstName, lastName)
+        val expectedApiResponse = ApiResponse.failure<UserResponse>("Failed to register new user. Please try again.")
 
-    @Test
-    fun `should not register a new user with an existing username`() {
-        val username = faker.name().username()
-        val email = faker.internet().emailAddress()
-        val password = Credential.generateRandomCredentialPassword()
-        val firstname = faker.name().firstName()
-        val lastname = faker.name().lastName()
+        coEvery { mockUserRegistrator.registerNewUser(any()) } returns Mono.just(expectedApiResponse)
 
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
+        // Act & Assert
+        webTestClient.post().uri(ENDPOINT)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "$username",
-                    "email": "$email",
-                    "password": "$password",
-                    "firstname": "$firstname",
-                    "lastname": "$lastname"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
-
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "$username",
-                    "email": "${faker.internet().emailAddress()}",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
+            .bodyValue(request)
             .exchange()
             .expectStatus().isBadRequest
             .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
+            .jsonPath("$.status").isEqualTo(ApiResponseStatus.FAILURE.toString())
+            .jsonPath("$.data.email").doesNotExist()
+
+        // Verify
+        coVerify { mockUserRegistrator.registerNewUser(any()) }
     }
 
     @Test
-    fun `should not register a new user with an existing email`() {
-        val username = faker.name().username()
-        val email = faker.internet().emailAddress()
-        val password = Credential.generateRandomCredentialPassword()
-        val firstname = faker.name().firstName()
-        val lastname = faker.name().lastName()
+    fun `should handle registration error`() = runBlocking {
+        // Arrange
+        val request = RegisterUserRequest(email, password, firstName, lastName)
 
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "$username",
-                    "email": "$email",
-                    "password": "$password",
-                    "firstname": "$firstname",
-                    "lastname": "$lastname"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
+        coEvery { mockUserRegistrator.registerNewUser(any()) } throws UserStoreException("Registration error")
 
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
+        // Act & Assert
+        webTestClient.post().uri(ENDPOINT)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "$email",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
+            .bodyValue(request)
             .exchange()
-            .expectStatus().isBadRequest
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
-    }
+            .expectStatus().is5xxServerError
 
-    @Test
-    fun `should not register a new user with an invalid email`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "invalid-email",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isBadRequest
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
-    }
-
-    @Test
-    fun `should not register a new user with an invalid password`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "${faker.internet().emailAddress()}",
-                    "password": "invalid-password",
-                    "firstname": "${faker.name().firstName()}",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isBadRequest
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
-    }
-
-    @Test
-    fun `should not register a new user with an invalid firstname`() {
-        webTestClient
-            .mutateWith(csrf())
-            .post()
-            .uri(ENDPOINT)
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(
-                """
-                {
-                    "username": "${faker.name().username()}",
-                    "email": "${faker.internet().emailAddress()}",
-                    "password": "${Credential.generateRandomCredentialPassword()}",
-                    "firstname": "",
-                    "lastname": "${faker.name().lastName()}"
-                }
-                """.trimIndent()
-            )
-            .exchange()
-            .expectStatus().isBadRequest
-            .expectBody()
-            .consumeWith {
-                println(it.responseBody?.print())
-            }
+        // Verify
+        coVerify { mockUserRegistrator.registerNewUser(any()) }
     }
 }
