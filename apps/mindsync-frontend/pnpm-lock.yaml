@@ -1,9 +1,13 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@astrojs/image':
-    specifier: 0.17.2
-    version: 0.17.2(astro@2.9.0)(sharp@0.32.4)
+    specifier: 0.17.3
+    version: 0.17.3(astro@2.9.0)(sharp@0.32.4)
   '@astrojs/rss':
     specifier: 2.4.3
     version: 2.4.3
@@ -135,10 +139,10 @@ packages:
   /@astrojs/compiler@1.6.1:
     resolution: {integrity: sha512-QZZhV2kOhvyXEfpaGLgHWNPUOlkMVx3Zw+5IlXXU2p448NwtyYt3C6MuS7baVsTlluH3EedAoDBmelt9hPhfiQ==}
 
-  /@astrojs/image@0.17.2(astro@2.9.0)(sharp@0.32.4):
-    resolution: {integrity: sha512-hw5vGBlyPwyt9E4ux7eej7dJrcSlTAaMYKYd8OWIJVsFSbV75sXNi+5lwbpNjDLGVIS6Baa4nzayjN5Gxo73MQ==}
+  /@astrojs/image@0.17.3(astro@2.9.0)(sharp@0.32.4):
+    resolution: {integrity: sha512-5xF4d4dmyjSdEeA0E2M8YS5Usf0SxPHUp4w/xAsbArQP27p6BcA+952Ay8+UJfRdT+9dUGGvRafDtjEZOkefxQ==}
     peerDependencies:
-      astro: ^2.7.3
+      astro: ^2.10.0
       sharp: '>=0.31.0'
     peerDependenciesMeta:
       sharp:
@@ -149,7 +153,7 @@ packages:
       http-cache-semantics: 4.1.1
       image-size: 1.0.2
       kleur: 4.1.5
-      magic-string: 0.27.0
+      magic-string: 0.30.2
       mime: 3.0.0
       sharp: 0.32.4
     dev: false
@@ -971,6 +975,10 @@ packages:
 
   /@jridgewell/sourcemap-codec@1.4.14:
     resolution: {integrity: sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==}
+
+  /@jridgewell/sourcemap-codec@1.4.15:
+    resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
+    dev: false
 
   /@jridgewell/trace-mapping@0.3.17:
     resolution: {integrity: sha512-MCNzAp77qzKca9+W/+I0+sEpaUnZoeasnghNeVc41VZCEKaCH73Vq3BZZ/SzWIgrqE4H4ceI+p+b6C0mHf9T4g==}
@@ -4690,6 +4698,13 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.14
 
+  /magic-string@0.30.2:
+    resolution: {integrity: sha512-lNZdu7pewtq/ZvWUp9Wpf/x7WzMTsR26TWV03BRZrXFsv+BI6dy8RAiKgm1uM/kyR0rCfUcqvOlXKG66KhIGug==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
   /map-cache@0.2.2:
     resolution: {integrity: sha512-8y/eV9QQZCiyn1SprXSrCmqJN0yNRATe+PO8ztwqrvrbdRLA3eYJF0yaR0YayLWkMbsQSKWS9N2gPcGEc4UsZg==}
     engines: {node: '>=0.10.0'}
@@ -5692,7 +5707,7 @@ packages:
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-jsx@0.36.4)(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.26)
     dev: true
 
   /postcss-import@14.1.0(postcss@8.4.26):
@@ -5725,7 +5740,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.9
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-jsx@0.36.4)(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.26)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5778,7 +5793,7 @@ packages:
       postcss-syntax: '>=0.36.0'
     dependencies:
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-jsx@0.36.4)(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.26)
       remark: 10.0.1
       unist-util-find-all-after: 1.0.5
     dev: true
@@ -5890,7 +5905,7 @@ packages:
       postcss: 8.4.26
     dev: true
 
-  /postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-jsx@0.36.4)(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39):
+  /postcss-syntax@0.36.2(postcss@8.4.26):
     resolution: {integrity: sha512-nBRg/i7E3SOHWxF3PpF5WnJM/jQ1YpY9000OaVXlAQj6Zp/kIqJxEDWIZ67tAd7NLuk7zqN4yqe9nc0oNAOs1w==}
     peerDependencies:
       postcss: '>=5.0.0'
@@ -5911,12 +5926,7 @@ packages:
       postcss-scss:
         optional: true
     dependencies:
-      postcss: 7.0.39
-      postcss-html: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
-      postcss-jsx: 0.36.4(postcss-syntax@0.36.2)(postcss@7.0.39)
-      postcss-less: 3.1.4
-      postcss-markdown: 0.36.0(postcss-syntax@0.36.2)(postcss@7.0.39)
-      postcss-scss: 2.1.1
+      postcss: 8.4.26
     dev: true
 
   /postcss-value-parser@3.3.1:
@@ -7044,7 +7054,7 @@ packages:
       postcss-sass: 0.3.5
       postcss-scss: 2.1.1
       postcss-selector-parser: 3.1.2
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-jsx@0.36.4)(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.26)
       postcss-value-parser: 3.3.1
       resolve-from: 4.0.0
       signal-exit: 3.0.7
@@ -7943,7 +7953,3 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
