@@ -58,7 +58,7 @@ class KeycloakRepositoryTest {
     @Test
     fun `should create user and return user with ID`() = runBlocking {
         // Arrange
-        val user = createUser() // Implement this method or use your actual user creation logic
+        val user = createUser()
         val userRepresentation = createUserRepresentation(user)
         val response = createResponse(userRepresentation)
 
@@ -82,7 +82,7 @@ class KeycloakRepositoryTest {
     @Test
     fun `should not create user if email already exists`() = runBlocking {
         // Arrange
-        val user = createUser() // Implement this method or use your actual user creation logic
+        val user = createUser()
         val userRepresentation = createUserRepresentation(user)
         val response = createResponse(userRepresentation)
 
@@ -105,7 +105,7 @@ class KeycloakRepositoryTest {
     @Test
     fun `should not create user if username already exists`() = runBlocking {
         // Arrange
-        val user = createUser() // Implement this method or use your actual user creation logic
+        val user = createUser()
         val userRepresentation = createUserRepresentation(user)
         val response = createResponse(userRepresentation)
 
@@ -126,6 +126,30 @@ class KeycloakRepositoryTest {
         coVerify(exactly = 0) { keycloakUserResource.create(any()) }
     }
 
+    @Test
+    fun `should not create user if keycloak returns error`() = runBlocking {
+        // Arrange
+        val user = createUser()
+
+        coEvery { keycloakUserResource.searchByEmail(any(), any()) } returns listOf()
+        coEvery { keycloakUserResource.searchByUsername(any(), any()) } returns listOf()
+        coEvery {
+            keycloakUserResource.create(any())
+        } throws UserStoreException("Error creating user with email: ${user.email.value}")
+
+        // Act
+        val resultMono = keycloakRepository.create(user)
+
+        StepVerifier.create(resultMono)
+            .expectError(UserStoreException::class.java)
+            .verifyThenAssertThat()
+
+        // Verify that the expected methods were called
+        coVerify { keycloakUserResource.searchByEmail(any(), eq(true)) }
+        coVerify { keycloakUserResource.searchByUsername(any(), eq(true)) }
+        coVerify { keycloakUserResource.create(any()) }
+    }
+
     private fun createUser(
         email: String = faker.internet().emailAddress(),
         firstName: String = faker.name().firstName(),
@@ -144,6 +168,7 @@ class KeycloakRepositoryTest {
         userRepresentation.credentials = createCredentialRepresentation(user.credentials)
         return userRepresentation
     }
+
     private fun createCredentialRepresentation(credentials: MutableList<Credential>): List<CredentialRepresentation> {
         return credentials.map {
             val credentialRepresentation = CredentialRepresentation()
@@ -153,6 +178,7 @@ class KeycloakRepositoryTest {
             credentialRepresentation
         }
     }
+
     private fun createResponse(userRepresentation: UserRepresentation): Response {
         val userId = userRepresentation.id
         val responsePath = "/auth/admin/realms/$REALM/users/$userId"
