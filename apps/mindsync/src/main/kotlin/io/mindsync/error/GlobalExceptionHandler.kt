@@ -1,5 +1,6 @@
 package io.mindsync.error
 
+import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
@@ -33,6 +34,31 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         problemDetail.title = "User authentication failed"
         problemDetail.setType(URI.create("https://mindsync.io/errors/user-authentication-failed"))
         problemDetail.setProperty("errorCategory", "AUTHENTICATION")
+        problemDetail.setProperty("timestamp", Instant.now())
+        return problemDetail
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException::class, BusinessRuleValidationException::class)
+    fun handleIllegalArgumentException(e: Exception): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message ?: "Bad request")
+        problemDetail.title = "Bad request"
+        problemDetail.setType(URI.create("https://mindsync.io/errors/bad-request"))
+        problemDetail.setProperty("errorCategory", "BAD_REQUEST")
+        problemDetail.setProperty("timestamp", Instant.now())
+        return problemDetail
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception::class)
+    fun handleException(e: Exception): ProblemDetail {
+        val problemDetail = ProblemDetail.forStatusAndDetail(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            e.message ?: "Internal server error"
+        )
+        problemDetail.title = "Internal server error"
+        problemDetail.setType(URI.create("https://mindsync.io/errors/internal-server-error"))
+        problemDetail.setProperty("errorCategory", "INTERNAL_SERVER_ERROR")
         problemDetail.setProperty("timestamp", Instant.now())
         return problemDetail
     }

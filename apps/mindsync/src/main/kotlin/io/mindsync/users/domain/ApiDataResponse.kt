@@ -6,18 +6,18 @@ enum class ApiResponseStatus {
     FAILURE
 }
 
-data class ApiResponse<T>(
+data class ApiDataResponse<T>(
     val status: ApiResponseStatus,
     val data: T? = null,
     val error: String? = null
 ) : Response {
     companion object {
-        fun <T> success(data: T): ApiResponse<T> {
-            return ApiResponse(ApiResponseStatus.SUCCESS, data)
+        fun <T> success(data: T): ApiDataResponse<T> {
+            return ApiDataResponse(ApiResponseStatus.SUCCESS, data)
         }
 
-        fun <T> failure(error: String): ApiResponse<T> {
-            return ApiResponse(ApiResponseStatus.FAILURE, error = error)
+        fun <T> failure(error: String): ApiDataResponse<T> {
+            return ApiDataResponse(ApiResponseStatus.FAILURE, error = error)
         }
     }
 }

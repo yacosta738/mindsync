@@ -3,6 +3,7 @@ package io.mindsync.config.springdoc
 import io.mindsync.common.domain.Generated
 import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
 import org.springdoc.core.GroupedOpenApi
@@ -26,9 +27,15 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @Generated(reason = "Not testing technical configuration")
-internal class SpringdocConfiguration {
+class SpringdocConfiguration {
     @Value("\${application.version:undefined}")
     private val version: String? = null
+
+    @Value("\${application.name:MindSync}")
+    private val name: String? = null
+
+    @Value("\${application.description:undefined}")
+    private val description: String? = null
 
     @Bean
     fun mindsyncOpenAPI(): OpenAPI {
@@ -36,7 +43,9 @@ internal class SpringdocConfiguration {
     }
 
     private fun swaggerInfo(): Info {
-        return Info().title("Project API").description("Project description API").version(version)
+        val contact = Contact().name("Yuniel Acosta").url("www.yunielacosta.com").email("ylaz@gft.com")
+        return Info().title("${name?.uppercase()} API").description(description).version(version)
+            .contact(contact)
             .license(License().name("No license").url(""))
     }
 

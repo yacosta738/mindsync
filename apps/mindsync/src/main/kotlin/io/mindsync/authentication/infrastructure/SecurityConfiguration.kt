@@ -1,5 +1,6 @@
 package io.mindsync.authentication.infrastructure
 
+import io.mindsync.authentication.domain.Role
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -86,6 +87,8 @@ class SecurityConfiguration(
                 .requestMatchers("/content/**")
                 .requestMatchers("/swagger-ui/**")
                 .requestMatchers("/swagger-ui.html")
+                .requestMatchers("/webjars/**")
+                .requestMatchers("/api-docs/**")
                 .requestMatchers("/v3/api-docs/**")
                 .requestMatchers("/test/**")
         }
@@ -126,7 +129,19 @@ class SecurityConfiguration(
                     .pathMatchers("/health-check").permitAll()
                     .pathMatchers("/api/register").permitAll()
                     .pathMatchers("/api/login").permitAll()
+                    .pathMatchers("/api/logout").permitAll()
+                    .pathMatchers("/swagger-ui/**").permitAll()
+                    .pathMatchers("/webjars/**").permitAll()
+                    .pathMatchers("/api-docs/**").permitAll()
+                    .pathMatchers("/swagger-ui.html").permitAll()
+                    .pathMatchers("/v3/api-docs/**").permitAll()
+                    .pathMatchers("/v3/api-docs.yaml").permitAll()
+                    .pathMatchers("/actuator/**").authenticated()
                     .pathMatchers("/api/**").authenticated()
+                    .pathMatchers("/management/health").permitAll()
+                    .pathMatchers("/management/info").permitAll()
+                    .pathMatchers("/management/prometheus").permitAll()
+                    .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())
