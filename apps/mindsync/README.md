@@ -102,6 +102,9 @@ You can execute the following command to test the application with coverage:
 ./gradlew clean check sonar jacocoTestReport aggregateReports
 ```
 
+### 📄 Documentation
+
+The MindSync Backend Application is documented using Swagger. You can access the Swagger UI at [http://localhost:8080/api-docs](http://localhost:8080/api-docs) and the Swagger JSON at [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs).
 
 ### 🐉 Why Spring Webflux?
 

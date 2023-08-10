@@ -58,8 +58,8 @@ class ApplicationSecurityProperties(
             var audience: MutableList<String> = ArrayList()
         )
 
-        private val CONTENT_SECURITY_POLICY = """
-    default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' data: https://fonts.gstatic.com;
-        """.trimIndent()
+        @Suppress("MaxLineLength")
+        private const val CONTENT_SECURITY_POLICY =
+            "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"
     }
 }

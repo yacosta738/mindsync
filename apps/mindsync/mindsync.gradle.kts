@@ -22,9 +22,8 @@ dependencies {
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("org.springframework.security:spring-security-oauth2-jose")
     implementation("org.springframework.security:spring-security-oauth2-resource-server")
-    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
-    implementation("org.springdoc:springdoc-openapi-starter-webflux-api:2.2.0")
-//    implementation("org.springdoc:springdoc-openapi-webflux-ui")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-api")
     implementation(libs.moshi)
     implementation(libs.keycloak.admin.client)
 
