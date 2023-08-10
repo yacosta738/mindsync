@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 
 /**
  * This class is a controller responsible for handling user authentication related requests.
@@ -24,6 +25,12 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 class UserAuthenticatorController(private val authenticateUserQueryHandler: AuthenticateUserQueryHandler) {
 
+    /**
+     * Logs in a user with the provided username and password.
+     *
+     * @param loginRequest The login request containing the username and password.
+     * @return A Mono of ResponseEntity containing the response object with the access token.
+     */
     @Operation(summary = "Login endpoint")
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "OK"),
@@ -31,13 +38,14 @@ class UserAuthenticatorController(private val authenticateUserQueryHandler: Auth
         ApiResponse(responseCode = "401", description = "Unauthorized"),
         ApiResponse(responseCode = "500", description = "Internal server error")
     )
-    @PostMapping("/login")
-    suspend fun login(@Validated @RequestBody loginRequest: LoginRequest): ResponseEntity<AccessToken> {
-        val authenticateUserQuery = AuthenticateUserQuery(
-            username = loginRequest.username,
-            password = loginRequest.password
-        )
+    @PostMapping(LOGIN_ROUTE)
+    suspend fun login(@Validated @RequestBody loginRequest: LoginRequest): Mono<ResponseEntity<AccessToken>> {
+        val (username, password) = loginRequest
+        val authenticateUserQuery = AuthenticateUserQuery(username = username, password = password)
         val accessToken = authenticateUserQueryHandler.handle(authenticateUserQuery)
-        return ResponseEntity.ok(accessToken)
+        return Mono.just(ResponseEntity.ok(accessToken))
+    }
+    companion object {
+        const val LOGIN_ROUTE = "/login"
     }
 }
