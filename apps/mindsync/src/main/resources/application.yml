@@ -62,3 +62,5 @@ springdoc:
     swagger-ui:
         enabled: true
         path: /api-docs
+        csrf:
+            enabled: true

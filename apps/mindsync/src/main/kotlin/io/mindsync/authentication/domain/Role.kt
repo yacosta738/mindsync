@@ -45,7 +45,7 @@ enum class Role {
     companion object {
         private const val PREFIX = "ROLE_"
         private val ROLES: Map<String, Role> = buildRoles()
-        private fun buildRoles(): Map<String, Role> = values().associateBy { it.key() }
+        private fun buildRoles(): Map<String, Role> = entries.associateBy { it.key() }
 
         /**
          * Returns a [Role] object based on the provided role string. If the provided role string is blank,

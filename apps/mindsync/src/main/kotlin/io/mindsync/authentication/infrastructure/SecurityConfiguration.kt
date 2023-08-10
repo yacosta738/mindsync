@@ -1,5 +1,6 @@
 package io.mindsync.authentication.infrastructure
 
+import io.mindsync.authentication.domain.Role
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -137,6 +138,10 @@ class SecurityConfiguration(
                     .pathMatchers("/v3/api-docs.yaml").permitAll()
                     .pathMatchers("/actuator/**").authenticated()
                     .pathMatchers("/api/**").authenticated()
+                    .pathMatchers("/management/health").permitAll()
+                    .pathMatchers("/management/info").permitAll()
+                    .pathMatchers("/management/prometheus").permitAll()
+                    .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())

@@ -27,8 +27,8 @@ class UserAuthenticatorController(private val authenticateUserQueryHandler: Auth
     @Operation(summary = "Login endpoint")
     @ApiResponses(
         ApiResponse(responseCode = "200", description = "OK"),
-        ApiResponse(responseCode = "401", description = "Unauthorized"),
         ApiResponse(responseCode = "400", description = "Bad request"),
+        ApiResponse(responseCode = "401", description = "Unauthorized"),
         ApiResponse(responseCode = "500", description = "Internal server error")
     )
     @PostMapping("/login")
