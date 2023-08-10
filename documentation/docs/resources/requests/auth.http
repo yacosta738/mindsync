@@ -1,0 +1,31 @@
+POST http://127.0.0.1:8080/api/register
+Accept: application/vnd.api.v1+json
+X-XSRF-TOKEN: 470b1cbc-ed68-4f16-a406-5e072e863d04
+Content-Type: application/json
+Cookie: XSRF-TOKEN=470b1cbc-ed68-4f16-a406-5e072e863d04
+
+{
+  "email": "random@gmail.com",
+  "password": "My5up3r5tr0ngP@55w0rd",
+  "firstname": "John",
+  "lastname": "Doe"
+}
+<> 2023-08-10T201918.201.json
+
+###
+
+POST http://127.0.0.1:8080/api/login
+Accept: application/vnd.api.v1+json
+X-XSRF-TOKEN: 470b1cbc-ed68-4f16-a406-5e072e863d04
+Content-Type: application/json
+Cookie: XSRF-TOKEN=470b1cbc-ed68-4f16-a406-5e072e863d04
+
+{
+  "username": "john.doe@mindsync.com",
+  "password": "S3cr3tP@ssw0rd*123"
+}
+
+<> 2023-08-10T202054.200.json
+
+###
+

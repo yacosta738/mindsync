@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono
  * @created 31/7/23
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api", produces = ["application/vnd.api.v1+json"])
 class UserAuthenticatorController(private val authenticateUserQueryHandler: AuthenticateUserQueryHandler) {
 
     /**

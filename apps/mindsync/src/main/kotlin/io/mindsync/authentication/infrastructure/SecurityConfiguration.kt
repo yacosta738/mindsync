@@ -13,7 +13,6 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -33,6 +32,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler
 import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter
+import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher
+import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
@@ -72,29 +74,6 @@ class SecurityConfiguration(
     }
 
     /**
-     * Creates a customizer for configuring web security settings.
-     *
-     * @return the WebSecurityCustomizer instance
-     */
-    @Bean
-    fun webSecurityCustomizer(): WebSecurityCustomizer {
-        return WebSecurityCustomizer { web: WebSecurity ->
-            web
-                .ignoring()
-                .requestMatchers(HttpMethod.OPTIONS, "/**")
-                .requestMatchers("/**")
-                .requestMatchers("/_astro/**")
-                .requestMatchers("/content/**")
-                .requestMatchers("/swagger-ui/**")
-                .requestMatchers("/swagger-ui.html")
-                .requestMatchers("/webjars/**")
-                .requestMatchers("/api-docs/**")
-                .requestMatchers("/v3/api-docs/**")
-                .requestMatchers("/test/**")
-        }
-    }
-
-    /**
      * Builds a SecurityWebFilterChain for the provided ServerHttpSecurity instance.
      *
      * @param http The ServerHttpSecurity instance to configure the filter chain.
@@ -104,6 +83,9 @@ class SecurityConfiguration(
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         // @formatter:off
         return http
+            .securityMatcher(
+                serverWebExchangeMatcher()
+            )
             .csrf {
                     csrf ->
                 csrf
@@ -155,6 +137,24 @@ class SecurityConfiguration(
             .build()
         // @formatter:on
     }
+
+    private fun serverWebExchangeMatcher() = NegatedServerWebExchangeMatcher(
+        OrServerWebExchangeMatcher(
+            ServerWebExchangeMatchers.pathMatchers(
+                "/app/**",
+                "/_app/**",
+                "/i18n/**",
+                "/img/**",
+                "/content/**",
+                "/swagger-ui/**",
+                "/webjars/**",
+                "/api-docs/**",
+                "/v3/api-docs/**",
+                "/test/**"
+            ),
+            ServerWebExchangeMatchers.pathMatchers(HttpMethod.OPTIONS, "/**")
+        )
+    )
 
     /**
      * Converts a Jwt token into a Mono of [AbstractAuthenticationToken],

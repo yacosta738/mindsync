@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono
  * @created 30/6/23
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api", produces = ["application/vnd.api.v1+json"])
 class UserRegisterController(private val userRegistrator: UserRegistrator) {
 
     /**
