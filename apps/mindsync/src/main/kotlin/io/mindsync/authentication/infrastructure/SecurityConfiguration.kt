@@ -86,6 +86,8 @@ class SecurityConfiguration(
                 .requestMatchers("/content/**")
                 .requestMatchers("/swagger-ui/**")
                 .requestMatchers("/swagger-ui.html")
+                .requestMatchers("/webjars/**")
+                .requestMatchers("/api-docs/**")
                 .requestMatchers("/v3/api-docs/**")
                 .requestMatchers("/test/**")
         }
@@ -126,6 +128,14 @@ class SecurityConfiguration(
                     .pathMatchers("/health-check").permitAll()
                     .pathMatchers("/api/register").permitAll()
                     .pathMatchers("/api/login").permitAll()
+                    .pathMatchers("/api/logout").permitAll()
+                    .pathMatchers("/swagger-ui/**").permitAll()
+                    .pathMatchers("/webjars/**").permitAll()
+                    .pathMatchers("/api-docs/**").permitAll()
+                    .pathMatchers("/swagger-ui.html").permitAll()
+                    .pathMatchers("/v3/api-docs/**").permitAll()
+                    .pathMatchers("/v3/api-docs.yaml").permitAll()
+                    .pathMatchers("/actuator/**").authenticated()
                     .pathMatchers("/api/**").authenticated()
             }
             .oauth2Login(withDefaults())

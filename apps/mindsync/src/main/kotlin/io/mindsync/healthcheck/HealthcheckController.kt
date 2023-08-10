@@ -1,5 +1,8 @@
 package io.mindsync.healthcheck
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -21,6 +24,11 @@ class HealthcheckController {
      *
      * @return a Mono emitting a string "OK" indicating that the application is healthy.
      */
+    @Operation(summary = "Health check endpoint")
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "OK"),
+        ApiResponse(responseCode = "500", description = "Internal server error")
+    )
     @GetMapping
     fun healthcheck(): Mono<String> = Mono.just("OK")
 }

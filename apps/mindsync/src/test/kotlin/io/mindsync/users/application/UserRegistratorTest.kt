@@ -3,7 +3,7 @@ package io.mindsync.users.application
 import io.kotest.common.runBlocking
 import io.mindsync.UnitTest
 import io.mindsync.users.application.command.RegisterUserCommand
-import io.mindsync.users.domain.ApiResponse
+import io.mindsync.users.domain.ApiDataResponse
 import io.mindsync.users.domain.ApiResponseStatus
 import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.event.UserCreatedEvent
@@ -31,7 +31,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand()
 
         runBlocking {
-            val result: Mono<ApiResponse<UserResponse>> =
+            val result: Mono<ApiDataResponse<UserResponse>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()
@@ -50,7 +50,7 @@ class UserRegistratorTest {
         val invalidEmail = "test"
         val registerUserCommand = createRegisterUserCommand(email = invalidEmail)
 
-        val result: Mono<ApiResponse<UserResponse>> =
+        val result: Mono<ApiDataResponse<UserResponse>> =
             userRegistrator.registerNewUser(registerUserCommand)
 
         val response = result.block()
@@ -68,7 +68,7 @@ class UserRegistratorTest {
         val invalidPassword = "ab@W"
         val registerUserCommand = createRegisterUserCommand(password = invalidPassword)
 
-        val result: Mono<ApiResponse<UserResponse>> =
+        val result: Mono<ApiDataResponse<UserResponse>> =
             userRegistrator.registerNewUser(registerUserCommand)
 
         val response = result.block()
@@ -86,7 +86,7 @@ class UserRegistratorTest {
         val invalidFirstname = "ab!@#$%^&*()_+"
         val registerUserCommand = createRegisterUserCommand(firstname = invalidFirstname)
 
-        val result: Mono<ApiResponse<UserResponse>> =
+        val result: Mono<ApiDataResponse<UserResponse>> =
             userRegistrator.registerNewUser(registerUserCommand)
 
         val response = result.block()
@@ -106,7 +106,7 @@ class UserRegistratorTest {
         val invalidLastname = (charUppercase + charLowercase).shuffled().joinToString("").repeat(4)
         val registerUserCommand = createRegisterUserCommand(lastname = invalidLastname)
 
-        val result: Mono<ApiResponse<UserResponse>> =
+        val result: Mono<ApiDataResponse<UserResponse>> =
             userRegistrator.registerNewUser(registerUserCommand)
 
         val response = result.block()
@@ -123,7 +123,7 @@ class UserRegistratorTest {
     fun `should not register new user with existing email`(): Unit = runBlocking {
         val registerUserCommand = createRegisterUserCommand(email = "test@google.com")
 
-        var result: Mono<ApiResponse<UserResponse>> =
+        var result: Mono<ApiDataResponse<UserResponse>> =
             userRegistrator.registerNewUser(registerUserCommand)
 
         var response = result.block()
@@ -154,7 +154,7 @@ class UserRegistratorTest {
         val registerUserCommand = createRegisterUserCommand()
 
         runBlocking {
-            val result: Mono<ApiResponse<UserResponse>> =
+            val result: Mono<ApiDataResponse<UserResponse>> =
                 userRegistrator.registerNewUser(registerUserCommand)
 
             val response = result.block()

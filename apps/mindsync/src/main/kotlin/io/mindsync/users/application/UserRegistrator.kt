@@ -5,7 +5,7 @@ import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.event.domain.EventBroadcaster
 import io.mindsync.event.domain.EventPublisher
 import io.mindsync.users.application.command.RegisterUserCommand
-import io.mindsync.users.domain.ApiResponse
+import io.mindsync.users.domain.ApiDataResponse
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator
 import io.mindsync.users.domain.event.UserCreatedEvent
@@ -24,7 +24,7 @@ class UserRegistrator(
         this.eventPublisher.use(eventPublisher)
     }
 
-    suspend fun registerNewUser(registerUserCommand: RegisterUserCommand): Mono<ApiResponse<UserResponse>> {
+    suspend fun registerNewUser(registerUserCommand: RegisterUserCommand): Mono<ApiDataResponse<UserResponse>> {
         log.info(
             "Registering new user with email: {}",
             registerUserCommand.email
@@ -43,15 +43,15 @@ class UserRegistrator(
                         createdUser.name?.lastName?.value
                     )
 
-                    ApiResponse.success(userResponse)
+                    ApiDataResponse.success(userResponse)
                 }
                 .onErrorResume { throwable ->
                     log.error("Failed to register new user", throwable)
-                    Mono.just(ApiResponse.failure("Failed to register new user. Please try again."))
+                    Mono.just(ApiDataResponse.failure("Failed to register new user. Please try again."))
                 }
         } catch (e: BusinessRuleValidationException) {
             log.error("Failed to register new user", e)
-            Mono.just(ApiResponse.failure(e.message))
+            Mono.just(ApiDataResponse.failure(e.message))
         }
     }
 
