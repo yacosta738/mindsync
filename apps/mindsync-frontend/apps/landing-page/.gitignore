@@ -1,7 +1,8 @@
 # build output
-build/
+dist/
 
-tsconfig.tsbuildinfo
+# generated types
+.astro/
 
 # dependencies
 node_modules/
