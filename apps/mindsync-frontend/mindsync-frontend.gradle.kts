@@ -11,6 +11,7 @@ frontend {
     assembleScript.set("run build")
     cleanScript.set("run clean")
     checkScript.set("run check")
+    installScript.set("run preinstall setup")
     verboseModeEnabled.set(true)
 }
 

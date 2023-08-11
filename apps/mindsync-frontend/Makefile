@@ -2,6 +2,14 @@
 # Author: Yuniel Acosta <https://twitter.com/yacosta738>
 
 # Path: apps/mindsync-frontend/Makefile (start)
+.PHONY: setup
+setup:
+	@pnpm run setup
+
+.PHONY: update-deps
+update-deps:
+	@pnpm run update-deps
+
 .PHONY: build
 build: deps compile
 
