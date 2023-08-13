@@ -1,60 +1,61 @@
 {
-    "name": "mindsync",
-    "version": "0.0.1",
-    "private": true,
-    "description": "MindSync is the take note of the future. It's a note taking app that uses AI to help you take notes.",
-    "author": "MindSync Inc.",
-    "license": "GPL-3.0",
-    "main": "index.js",
-    "workspaces": [
-        "apps/**",
-        "libs/**"
-    ],
-    "contributors": [
-        "Yuniel Acosta <https://twitter.com/yacosta738>"
-    ],
-    "engines": {
-        "node": ">18.0.0",
-        "pnpm": ">=8"
-    },
-    "scripts": {
-        "update-deps": "pnpm update -i -r --latest",
-        "preinstall": "only-allow pnpm",
-        "setup": "pnpm install",
-        "dev": "pnpm --recursive --parallel --stream run dev",
-        "start": "pnpm --recursive --parallel --stream run start",
-        "changelog": "echo 'generate master changelog' && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
-        "changeset": "changeset",
-        "clean": "echo 🧹 Cleaning repo && pnpm --recursive --parallel --stream run clean",
-        "check": "echo ✔︎ Checking frontend && pnpm --recursive --parallel --stream run check",
-        "lint": "echo 🪄 Linting && pnpm --recursive --parallel --stream run lint",
-        "lint:fix": "echo 🪄 Linting Fix && pnpm --recursive --parallel --stream run lint:fix",
-        "build": "echo 🚧 Building && pnpm --stream -r run build",
-        "build-via-npm": "npm run build -ws",
-        "build-via-pnpm": "pnpm --recursive --parallel --stream run build",
-        "test": "pnpm test -r",
-        "publish": "pnpm publish -r",
-        "ci:version": "pnpm changelog && pnpx changeset version && pnpm install --no-frozen-lockfile && git add .",
-        "ci:publish": "pnpm build-pkgs && git status && pnpm publish -r && pnpm changeset tag",
-        "changeset-publish": "changeset publish",
-        "changeset-tag": "changeset tag"
-    },
-    "devDependencies": {
-        "@changesets/changelog-github": "^0.4.8",
-        "@changesets/cli": "^2.26.2",
-        "concurrently": "^8.2.0",
-        "conventional-changelog-cli": "^3.0.0",
-        "esm": "^3.2.25",
-        "only-allow": "^1.1.1",
-        "servor": "^4.0.2",
-        "stylelint": "^15.0.0",
-        "stylelint-config-rational-order": "^0.1.2",
-        "stylelint-config-standard-scss": "^10.0.0",
-        "stylelint-order": "^6.0.0",
-        "typescript": "^5.1.6",
-        "vite": "^4.4.5",
-        "vitest": "^0.34.1",
-        "watchlist": "^0.3.1"
-    },
-    "packageManager": "pnpm@8.6.12"
+  "name": "mindsync",
+  "version": "0.0.1",
+  "private": true,
+  "description": "MindSync is the take note of the future. It's a note taking app that uses AI to help you take notes.",
+  "author": "MindSync Inc.",
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "workspaces": [
+    "apps/**",
+    "libs/**"
+  ],
+  "contributors": [
+    "Yuniel Acosta <https://twitter.com/yacosta738>"
+  ],
+  "engines": {
+    "node": ">18.0.0",
+    "pnpm": ">=8"
+  },
+  "scripts": {
+    "update-deps": "pnpm update -i -r --latest",
+    "preinstall": "only-allow pnpm",
+    "setup": "pnpm install",
+    "dev": "pnpm --recursive --parallel --stream run dev",
+    "start": "pnpm --recursive --parallel --stream run start",
+    "changelog": "echo 'generate master changelog' && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "changeset": "changeset",
+    "clean": "echo 🧹 Cleaning repo && pnpm --recursive --parallel --stream run clean",
+    "check": "echo ✔︎ Checking frontend && pnpm --recursive --parallel --stream run check",
+    "lint": "echo 🪄 Linting && pnpm --recursive --parallel --stream run lint",
+    "lint:fix": "echo 🪄 Linting Fix && pnpm --recursive --parallel --stream run lint:fix",
+    "build": "echo 🚧 Building && pnpm --stream -r run build",
+    "build-via-npm": "npm run build -ws",
+    "build-via-pnpm": "pnpm --recursive --parallel --stream run build",
+    "test": "pnpm test -r",
+    "publish": "pnpm publish -r",
+    "ci:version": "pnpm changelog && pnpx changeset version && pnpm install --no-frozen-lockfile && git add .",
+    "ci:publish": "pnpm build-pkgs && git status && pnpm publish -r && pnpm changeset tag",
+    "changeset-publish": "changeset publish",
+    "changeset-tag": "changeset tag"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.2",
+    "@playwright/test": "^1.37.0",
+    "concurrently": "^8.2.0",
+    "conventional-changelog-cli": "^3.0.0",
+    "esm": "^3.2.25",
+    "only-allow": "^1.1.1",
+    "servor": "^4.0.2",
+    "stylelint": "^15.0.0",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard-scss": "^10.0.0",
+    "stylelint-order": "^6.0.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.5",
+    "vitest": "^0.34.1",
+    "watchlist": "^0.3.1"
+  },
+  "packageManager": "pnpm@8.6.12"
 }

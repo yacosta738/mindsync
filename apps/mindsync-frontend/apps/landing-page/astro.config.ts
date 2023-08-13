@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind';
 import astroI18next from 'astro-i18next';
 import image from "@astrojs/image";
 
-const DEV_PORT = 2121;
+const DEV_PORT = 3000;
 
 // https://astro.build/config
 
