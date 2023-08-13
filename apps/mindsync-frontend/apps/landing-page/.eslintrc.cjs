@@ -48,6 +48,9 @@ module.exports = {
 			],
 
 			rules: {
+                'import/no-relative-packages': 'off',
+                'import/export': 'off',
+                'import/no-extraneous-dependencies': 'off',
 				'tsdoc/syntax': 'warn',
 				'@typescript-eslint/no-unused-vars': [
 					'error',
