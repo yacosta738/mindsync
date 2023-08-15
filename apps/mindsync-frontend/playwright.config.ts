@@ -21,8 +21,6 @@ const config: PlaywrightTestConfig = {
          */
         timeout: 5000
     },
-    /* Run tests in files in parallel */
-    fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
@@ -52,17 +50,17 @@ const config: PlaywrightTestConfig = {
         },
 
         {
-        	name: 'firefox',
-        	use: {
-        		...devices['Desktop Firefox']
-        	}
+            name: 'firefox',
+            use: {
+                ...devices['Desktop Firefox']
+            }
         },
 
         {
-        	name: 'webkit',
-        	use: {
-        		...devices['Desktop Safari']
-        	}
+            name: 'webkit',
+            use: {
+                ...devices['Desktop Safari']
+            }
         }
 
         /* Test against mobile viewports. */

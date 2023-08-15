@@ -32,8 +32,8 @@
 		"preview": "astro preview",
 		"i18n:generate": "astro-i18next generate",
 		"start": "astro dev",
-        "test": "echo \uD83E\uDDEA Testing Landing Page && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
-        "test:unit": "echo \uD83E\uDDEA Testing Unit",
+        "test": "echo \uD83E\uDDEA Testing MINDSYNC LANDING PAGE && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
+        "test:unit": "echo \uD83E\uDDEA Unit Tests: Coming Soon!",
         "test:playwright": "npx playwright test",
         "test:e2e": "npx start-server-and-test 'pnpm run start' http://localhost:3000 'pnpm run test:playwright'"
     },
