@@ -6,13 +6,13 @@ import HeadSEO from '../organisms/HeadSEO.astro';
 
 const {class: clazz} = Astro.props;
 let {
-    title = pkg.name,
+    title = t('seo.title'),
     description = t('seo.description'),
     image = '/favicon.svg',
     ogImageAlt = t('seo.ogImageAlt')
 } = Astro.props
 
-title = title ?? pkg.name
+title = title ?? t('seo.title')
 description = description ?? t('seo.description')
 image = image ?? '/favicon.svg'
 ogImageAlt = ogImageAlt ?? t('seo.ogImageAlt')
