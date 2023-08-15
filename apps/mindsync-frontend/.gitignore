@@ -26,3 +26,7 @@ dist-ssr
 
 # Ignore DevSpace cache and log folder
 .devspace/
+
+# Ignore Frontend gradle plugin
+.frontend-gradle-plugin
+node
