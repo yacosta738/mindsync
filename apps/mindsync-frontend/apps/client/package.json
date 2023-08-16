@@ -7,6 +7,7 @@
     "start": "pnpm run dev",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
+    "check": "echo ✔︎ Checking Landing Page && pnpm run test",
     "test": "echo 🧪 Testing MINDSYNC APP && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",

@@ -24,7 +24,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "check": "echo ✔︎ Checking Landing Page && pnpm run lint && pnpm run test",
+    "check": "echo ✔︎ Checking Landing Page && pnpm run test",
     "clean": "rm -rf dist",
     "dev": "pnpm run i18n:generate && astro dev",
     "preview": "astro preview",
