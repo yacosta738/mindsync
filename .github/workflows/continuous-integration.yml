@@ -30,7 +30,7 @@ jobs:
                     java-version: 17
             -   name: 🧪 Run Check and Sonar
                 id: gradle
-                run: ./gradlew clean classes testClasses testIntegrationClasses
+                run: ./gradlew clean classes testClasses testIntegrationClasses assembleFrontend
     tests:
         name: 🧪 Tests
         needs: compile
