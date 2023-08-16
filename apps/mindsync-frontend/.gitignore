@@ -30,3 +30,7 @@ dist-ssr
 # Ignore Frontend gradle plugin
 .frontend-gradle-plugin
 node
+
+# Ignore Playwright Folder
+**/playwright-report/
+**/test-results/
