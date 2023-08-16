@@ -1,22 +1,22 @@
 {
-      "name": "MindSync, Inc",
-      "description": "Second Brain, notes, and knowledge management for power users.",
-      "short_name": "mindsync",
-      "icons": [
-      {
+  "name": "MindSync, Inc",
+  "description": "Second Brain, notes, and knowledge management for power users.",
+  "short_name": "mindsync",
+  "icons": [
+    {
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
-      },
-      {
+    },
+    {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
-      }
-      ],
-      "scope": "/",
-      "start_url": "/?source=pwa",
-      "theme_color": "#A751FB",
-      "background_color": "#09090B",
-      "display": "standalone"
+    }
+  ],
+  "scope": "/",
+  "start_url": "/?source=pwa",
+  "theme_color": "#A751FB",
+  "background_color": "#09090B",
+  "display": "standalone"
 }

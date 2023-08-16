@@ -1,23 +1,11 @@
 ---
+import BannerSection from 'molecules:BannerSection'
 import Hero from 'molecules:Hero'
 import ItemsSection from 'molecules:ItemsSection'
-import BannerSection from "molecules:BannerSection";
 ---
 
 <div class="flex flex-col min-h-screen">
-    <Hero />
-    <ItemsSection />
-    <BannerSection />
+	<Hero />
+	<ItemsSection />
+	<BannerSection />
 </div>
-
-<style>
-    /* Override in Markdown H1 title */
-    .readme :global(h1:nth-of-type(2)) {
-        display: none;
-    }
-
-    .svg-inline :global(svg) {
-        height: 100%;
-        width: 100%;
-    }
-</style>

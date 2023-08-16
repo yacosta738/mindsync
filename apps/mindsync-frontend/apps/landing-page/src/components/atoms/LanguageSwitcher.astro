@@ -1,21 +1,21 @@
 ---
-import {LanguageSelector} from "astro-i18next/components";
-import {localizePath} from "astro-i18next";
-import i18next from "i18next";
+import { localizePath } from 'astro-i18next'
+import { LanguageSelector } from 'astro-i18next/components'
+import i18next from 'i18next'
 
 interface LanguageMapping {
   [localeCode: string]: string;
 }
 
 const flags = [
-    {
-        'code': 'en',
-        'flag': '🇬🇧'
-    },
-    {
-        'code': 'es',
-        'flag': '🇪🇸'
-    }
+	{
+		code: 'en',
+		flag: '🇬🇧'
+	},
+	{
+		code: 'es',
+		flag: '🇪🇸'
+	}
 ]
 
 interface Props extends astroHTML.JSX.SelectHTMLAttributes {
@@ -23,32 +23,33 @@ interface Props extends astroHTML.JSX.SelectHTMLAttributes {
     languageMapping?: LanguageMapping;
 }
 
-const supportedLanguages = i18next.languages;
-const currentLanguage = i18next.language;
+const supportedLanguages = i18next.languages
+const currentLanguage = i18next.language
 
-const { pathname } = Astro.url;
+const { pathname } = Astro.url
 
 const { displayType = 'flag', languageMapping, ...attributes } = Astro.props;
 ---
 {
-    displayType === 'text' || displayType === 'both' ? <LanguageSelector
-        showFlag={displayType === 'both'}
-        languageMapping={languageMapping}
-        tabindex="0"
-        {...attributes}
-    /> :
-    <select onchange="location = this.value;" {...attributes}>
-        {
-            supportedLanguages.map((supportedLanguage: string) => {
-            const localeValue = localizePath(pathname, supportedLanguage);
-            const flag = flags.find((f) => f.code === supportedLanguage)?.flag || supportedLanguage;
+	displayType === 'text' || displayType === 'both'
+		? <LanguageSelector
+			showFlag={displayType === 'both'}
+			languageMapping={languageMapping}
+			tabindex="0"
+			{...attributes}
+		/>
+		: <select onchange="location = this.value;" {...attributes}>
+			{
+				supportedLanguages.map((supportedLanguage: string) => {
+					const localeValue = localizePath(pathname, supportedLanguage)
+					const flag = flags.find((f) => f.code === supportedLanguage)?.flag || supportedLanguage
 
-            return (
-                <option value={localeValue} selected={supportedLanguage === currentLanguage}>
-                {flag}
-                </option>
-            );
-            })
-        }
-    </select>
+					return (
+						<option value={localeValue} selected={supportedLanguage === currentLanguage}>
+							{flag}
+						</option>
+					)
+				})
+			}
+		</select>
 }

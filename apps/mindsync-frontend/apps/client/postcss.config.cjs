@@ -1,1 +1,1 @@
-module.exports = require("@mindsync/tailwind-config/postcss.config.cjs")
+module.exports = require('@mindsync/tailwind-config/postcss.config.cjs');

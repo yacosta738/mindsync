@@ -1,10 +1,41 @@
 {
+  "root": true,
   "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
+    "node": true,
+    "es2022": true,
+    "browser": true
   },
-  "extends": ["eslint:recommended", "plugin:import/recommended", "prettier"],
+  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "extends": [
+    "airbnb-typescript/base",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.workspace.*",
+          "**/*.config.*",
+          "**/*.stories.*",
+          "**/.storybook/**/*.*",
+          "**/*.test.*",
+          "**/*.spec.*",
+          "**/*.e2e.*",
+          "**/*.mock.*"
+        ],
+        "peerDependencies": true
+      }
+    ]
+  },
   "overrides": [
     {
       "files": "*.vue",
@@ -13,29 +44,43 @@
         "plugin:vue/vue3-recommended",
         "eslint:recommended",
         "plugin:import/recommended",
+        "@vue/eslint-config-typescript",
+        "@vue/eslint-config-prettier/skip-formatting",
         "prettier"
       ],
-      "plugins": ["vue", "@typescript-eslint", "simple-import-sort"],
+      "plugins": [
+        "vue",
+        "@typescript-eslint",
+        "eslint-plugin-import",
+        "prettier"
+      ],
       "rules": {
         // FIXME: Causes problems with imports from Vue
         "import/named": "off"
+      },
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "project": "./tsconfig.json",
+        "ecmaVersion": "latest"
+      }
+    },
+    {
+      "files": ["*.astro"],
+      "extends": ["plugin:astro/recommended", "plugin:astro/jsx-a11y-strict"],
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [".astro"],
+        "sourceType": "module"
+      },
+      "rules": {
+        // prevent XSS attack
+        "astro/no-set-html-directive": "error",
+        "astro/no-set-text-directive": "error",
+        "astro/no-unused-css-selector": "off",
+        "astro/prefer-class-list-directive": "error",
+        "no-unused-vars": ["error", { "varsIgnorePattern": "Props" }]
       }
     }
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-    "extraFileExtensions": [".vue"]
-  },
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
-  "rules": {
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "import/first": "error",
-    "import/named": "off",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error"
-  }
+  ]
 }

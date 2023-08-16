@@ -1,32 +1,32 @@
 {
-    "seo": {
-        "title": "Mindsync",
-        "description": "Second Brain, notes, and knowledge management for power users.",
-        "ogTitle": "Mindsync",
-        "ogImageAlt": "Mindsync logo"
+  "seo": {
+    "title": "Mindsync",
+    "description": "Second Brain, notes, and knowledge management for power users.",
+    "ogTitle": "Mindsync",
+    "ogImageAlt": "Mindsync logo"
+  },
+  "menus": {
+    "about": "About",
+    "documentation": "Documentation",
+    "download": "Download"
+  },
+  "tooltip-toggle": "Toggle dark mode",
+  "hero": {
+    "title": "Second Brain, notes, and knowledge management for power users.",
+    "subtitle": "With MindSync, you'll be able to bring your ideas to life in record time.",
+    "download": "Download",
+    "world-graph": {
+      "title": "Unleash your mind's potential with our digital second brain."
     },
-    "menus": {
-        "about": "About",
-        "documentation": "Documentation",
-        "download": "Download"
-      },
-      "tooltip-toggle": "Toggle dark mode",
-      "hero": {
-        "title": "Second Brain, notes, and knowledge management for power users.",
-        "subtitle": "With MindSync, you'll be able to bring your ideas to life in record time.",
-        "download": "Download",
-        "world-graph": {
-            "title": "Unleash your mind's potential with our digital second brain."
-        },
-        "app-interface": "Image of the app interface"
-      },
-      "items-section":{
-          "title": "How MindSync helps you on a daily basis"
-      },
-      "banner-section":{
-            "title": "Work fast from anywhere",
-            "subtitle": "Stay up to date and move work forward with Mindsync on iOS & Android. Download the app today.",
-            "apple-store": "Download on the",
-            "google-play": "Get in on"
-        }
+    "app-interface": "Image of the app interface"
+  },
+  "items-section": {
+    "title": "How MindSync helps you on a daily basis"
+  },
+  "banner-section": {
+    "title": "Work fast from anywhere",
+    "subtitle": "Stay up to date and move work forward with Mindsync on iOS & Android. Download the app today.",
+    "apple-store": "Download on the",
+    "google-play": "Get in on"
+  }
 }

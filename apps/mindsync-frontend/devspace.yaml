@@ -54,25 +54,25 @@ dev:
       enabled: true
       lastLines: 100
     ports:
-      - port: "8000"
+      - port: '8000'
     open:
       - url: http://localhost:8000
     sync:
       - path: ./apps/client
         excludePaths:
-          - "node_modules"
-          - "dist"
+          - 'node_modules'
+          - 'dist'
         uploadExcludePaths:
-          - "node_modules"
-          - "dist"
+          - 'node_modules'
+          - 'dist'
       - path: ./libs/tailwind-config
         excludePaths:
-          - "node_modules"
+          - 'node_modules'
         uploadExcludePaths:
-          - "node_modules"
+          - 'node_modules'
       - path: ./libs/ui-lib/dist
 
-# Use the `commands` section to define repeatable dev workflows for this project 
+# Use the `commands` section to define repeatable dev workflows for this project
 commands:
   migrate-db:
     command: |-

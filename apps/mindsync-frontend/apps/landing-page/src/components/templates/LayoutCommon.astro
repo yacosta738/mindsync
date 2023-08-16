@@ -1,65 +1,67 @@
 ---
-import i18next, {t, setDefaultNamespace} from 'i18next';
-import {HeadHrefLangs} from 'astro-i18next/components';
-import pkg from '../../../package.json' assert {type: 'json'};
-import HeadSEO from '../organisms/HeadSEO.astro';
+import { HeadHrefLangs } from 'astro-i18next/components'
+import i18next, { setDefaultNamespace, t } from 'i18next'
 
-const {class: clazz} = Astro.props;
+import pkg from '../../../package.json' assert { type: 'json' }
+import HeadSEO from '../organisms/HeadSEO.astro'
+
+const { class: clazz } = Astro.props
 let {
-    title = t('seo.title'),
-    description = t('seo.description'),
-    image = '/favicon.svg',
-    ogImageAlt = t('seo.ogImageAlt')
+	title = t('seo.title'),
+	description = t('seo.description'),
+	image = '/favicon.svg',
+	ogImageAlt = t('seo.ogImageAlt')
 } = Astro.props
 
 title = title ?? t('seo.title')
 description = description ?? t('seo.description')
 image = image ?? '/favicon.svg'
 ogImageAlt = ogImageAlt ?? t('seo.ogImageAlt')
-setDefaultNamespace('common')
+setDefaultNamespace('common');
 ---
 
 <!DOCTYPE html>
 <html lang={i18next.language}>
-<head>
-    <meta charset='utf-8'/>
-    <meta name='viewport' content='width=device-width'/>
-    <HeadSEO title={title} description={description} image={image} ogImageAlt={ogImageAlt}/>
-    <HeadHrefLangs/>
+	<head>
+		<meta charset='utf-8' />
+		<meta name='viewport' content='width=device-width' />
+		<HeadSEO
+			title={title}
+			description={description}
+			image={image}
+			ogImageAlt={ogImageAlt}
+		/>
+		<HeadHrefLangs />
 
-    <meta
-        name="author"
-        content={pkg.author}
-    />
-    <meta name="copyright" content={pkg.license}/>
+		<meta name='author' content={pkg.author} />
+		<meta name='copyright' content={pkg.license} />
 
-    <script is:inline>
-        if (
-            localStorage.getItem('color-theme') === 'dark' ||
-            (!('color-theme' in localStorage) &&
-                window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
-</head>
-<body
-    class:list={[
-        clazz,
-        'bg-tertiary-100 dark:bg-tertiary-950',
-        'scrollbar scrollbar-w-1 scrollbar-thumb-rounded-[0.25rem]',
-        'scrollbar-track-slate-200  scrollbar-thumb-gray-400',
-        'dark:scrollbar-track-gray-900 dark:scrollbar-thumb-gray-700',
-    ]}
->
-    <slot/>
-</body>
-</html>
-
-<script>
-    import 'flowbite';
-    // eslint-disable-next-line import/extensions
-    import 'flowbite/dist/datepicker.js';
+		<script is:inline>
+if (
+      	localStorage.getItem('color-theme') === 'dark' ||
+        (!('color-theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+) {
+      	document.documentElement.classList.add('dark')
+} else {
+      	document.documentElement.classList.remove('dark')
+}
 </script>
+	</head>
+	<body
+		class:list={[
+			clazz,
+			'bg-tertiary-100 dark:bg-tertiary-950',
+			'scrollbar scrollbar-w-1 scrollbar-thumb-rounded-[0.25rem]',
+			'scrollbar-track-slate-200  scrollbar-thumb-gray-400',
+			'dark:scrollbar-track-gray-900 dark:scrollbar-thumb-gray-700'
+		]}
+	>
+		<slot />
+		<script>
+import 'flowbite'
+// eslint-disable-next-line import/extensions
+import 'flowbite/dist/datepicker.js'
+</script>
+	</body>
+</html>

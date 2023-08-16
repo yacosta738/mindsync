@@ -1,4 +1,5 @@
-const config = require("./tailwind.config.cjs");
+/* eslint-disable @typescript-eslint/no-var-requires */
+const config = require('./tailwind.config.cjs');
 
 module.exports = {
   plugins: {

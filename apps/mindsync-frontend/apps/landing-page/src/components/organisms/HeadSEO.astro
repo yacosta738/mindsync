@@ -1,6 +1,6 @@
 ---
-import { SEO } from 'astro-seo';
-import { t } from 'i18next';
+import { SEO } from 'astro-seo'
+import { t } from 'i18next'
 
 export interface Props {
     title: string
@@ -26,25 +26,25 @@ ogImageAlt = ogImageAlt ?? t('seo.ogImageAlt')
 <meta name="theme-color" content="#8071c0">
 
 <SEO
-    title={title}
-    description={description}
-    canonical={canonicalUrl}
-    openGraph={{
-        basic: {
-            title: t('seo.ogTitle'),
-            type: 'website',
-            image,
-            url: canonicalUrl
-        },
-        optional: {
-            description: t('seo.description') ?? undefined,
-        },
-        image: {
-            alt: ogImageAlt,
-            width: 1200,
-            height: 630,
-            type: 'image/jpeg'
-        }
-    }}
-    twitter={{ card: 'summary_large_image', creator: '@yacosta738' }}
+	title={title}
+	description={description}
+	canonical={canonicalUrl}
+	openGraph={{
+		basic: {
+			title: t('seo.ogTitle'),
+			type: 'website',
+			image,
+			url: canonicalUrl
+		},
+		optional: {
+			description: t('seo.description') ?? undefined
+		},
+		image: {
+			alt: ogImageAlt,
+			width: 1200,
+			height: 630,
+			type: 'image/jpeg'
+		}
+	}}
+	twitter={{ card: 'summary_large_image', creator: '@yacosta738' }}
 />

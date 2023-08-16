@@ -1,65 +1,65 @@
 ---
-import LinkButton from 'atoms:LinkButton';
-import Logo from 'atoms:Logo';
-import ThemeSwitcher from 'atoms:ThemeSwitcher';
-import LanguageSwitcher from 'atoms:LanguageSwitcher';
-import Drawer from 'molecules:Drawer';
-import Menu from './Menu.astro';
-import {navMenus} from "../../models/Menu";
+import LanguageSwitcher from 'atoms:LanguageSwitcher'
+import LinkButton from 'atoms:LinkButton'
+import Logo from 'atoms:Logo'
+import ThemeSwitcher from 'atoms:ThemeSwitcher'
+import Drawer from 'molecules:Drawer'
 
-const drawerMenuId = 'mobile-menu';
+import { navMenus } from '../../models/Menu'
+import Menu from './Menu.astro'
+
+const drawerMenuId = 'mobile-menu'
 const ariaLabelledby = 'mobile-menu-top-label';
 ---
 
 <nav
-    class="fixed z-50 w-full flex-col justify-start items-center inline-flex px-2 sm:py-2 bg-tertiary-100 border-tertiary-50 dark:bg-tertiary-950 dark:border-tertiary-900"
+	class="fixed z-50 w-full flex-col justify-start items-center inline-flex px-2 sm:py-2 bg-tertiary-100 border-tertiary-50 dark:bg-tertiary-950 dark:border-tertiary-900"
 >
-    <div class="container py-3 mx-auto">
-        <div class="flex items-center justify-between mx-1">
-            <div class="flex items-center justify-start">
-                <Logo />
-                <div class="hidden sm:flex sm:ml-6">
-                    <Menu menus={navMenus}/>
-                </div>
-            </div>
+	<div class="container py-3 mx-auto">
+		<div class="flex items-center justify-between mx-1">
+			<div class="flex items-center justify-start">
+				<Logo />
+				<div class="hidden sm:flex sm:ml-6">
+					<Menu menus={navMenus}/>
+				</div>
+			</div>
 
-            <div class="flex justify-items-center justify-center ">
-                <ThemeSwitcher class="hidden sm:flex"/>
-                <LanguageSwitcher
-                    class='hidden sm:flex language-selector mx-1'
-                    tabindex="0"
-                />
-                <LinkButton
-                    secondary
-                    href="/login"
-                    class="hidden sm:flex">
+			<div class="flex justify-items-center justify-center ">
+				<ThemeSwitcher class="hidden sm:flex"/>
+				<LanguageSwitcher
+					class='hidden sm:flex language-selector mx-1'
+					tabindex="0"
+				/>
+				<LinkButton
+					secondary
+					href="/login"
+					class="hidden sm:flex">
                     Login
-                </LinkButton>
-                <Drawer id={drawerMenuId} tabindex="-1" ariaLabelledby = {ariaLabelledby}>
-                    <Logo slot="nav-title"/>
-                    <Menu menus={navMenus}>
-                        <div slot="last-menu" class="flex flex-col">
-                            <hr class="h-px my-2 bg-tertiary-700 border-0 dark:bg-tertiary-100">
-                            <LinkButton secondary href="/login"
-                            class="my-2">
+				</LinkButton>
+				<Drawer id={drawerMenuId} tabindex="-1" ariaLabelledby = {ariaLabelledby}>
+					<Logo slot="nav-title"/>
+					<Menu menus={navMenus}>
+						<div slot="last-menu" class="flex flex-col">
+							<hr class="h-px my-2 bg-tertiary-700 border-0 dark:bg-tertiary-100">
+							<LinkButton secondary href="/login"
+										class="my-2">
                                 Login
-                            </LinkButton>
-                            <LanguageSwitcher
-                                displayType="both"
-                                class='language-selector'
-                                tabindex="0"
-                            />
-                        </div>
-                    </Menu>
-                </Drawer>
-            </div>
-        </div>
-    </div>
+							</LinkButton>
+							<LanguageSwitcher
+								displayType="both"
+								class='language-selector'
+								tabindex="0"
+							/>
+						</div>
+					</Menu>
+				</Drawer>
+			</div>
+		</div>
+	</div>
 </nav>
-
 <style>
-    .language-selector {
-        @apply cursor-pointer select-none text-center text-tertiary-50 bg-tertiary-800 dark:bg-tertiary-800
-        font-sans font-semibold uppercase rounded border-tertiary-700 px-2.5 py-2.5;
-    }
+	.language-selector {
+		@apply cursor-pointer select-none text-center text-tertiary-50 bg-tertiary-800 dark:bg-tertiary-800
+		font-sans font-semibold uppercase rounded border-tertiary-700 px-2.5 py-2.5;
+	}
 </style>

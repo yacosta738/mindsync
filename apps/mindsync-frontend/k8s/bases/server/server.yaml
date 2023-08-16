@@ -15,13 +15,13 @@ spec:
         app: server
     spec:
       containers:
-      - name: server
-        image: server-dev
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            cpu: 300m
-            memory: 512Mi
-          requests:
-            cpu: 200m
-            memory: 256Mi
+        - name: server
+          image: server-dev
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi

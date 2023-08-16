@@ -1,50 +1,50 @@
 [
-    {
-        "title": "Review notes",
-        "description": "Capture, structure, and review all of your class notes with ease using the Linked References, Queries, and Search features.",
-        "icon": "sticky-note-outline",
-        "language": "en"
-    },
-    {
-        "title": "Revisar notas",
-        "description": "Capture, estructure y revise todas sus notas de clase con facilidad utilizando las funciones de Referencias vinculadas, Consultas y Búsqueda.",
-        "icon": "sticky-note-outline",
-        "language": "es"
-    },
-    {
-        "title": "Manage sources",
-        "description": "Keep track of your research and easily manage your sources using the built-in Zotero integration.",
-        "icon": "book-library-shelf-stack",
-        "language": "en"
-    },
-    {
-        "title": "Gestionar fuentes",
-        "description": "Haga un seguimiento de su investigación y gestione fácilmente sus fuentes utilizando la integración incorporada de Zotero.",
-        "icon": "book-library-shelf-stack",
-        "language": "es"
-    },
-    {
-        "title": "Investigate claims",
-        "description": "Spin your web of knowledge and see what evidence supports or contradicts claims.",
-        "icon": "experiment-lab-flask-science-chemistry-solution",
-        "language": "en"
-    },
-    {
-        "title": "Investigar afirmaciones",
-        "description": "Teje tu red de conocimiento y observa qué evidencia respalda o contradice las afirmaciones.",
-        "icon": "experiment-lab-flask-science-chemistry-solution",
-        "language": "es"
-    },
-    {
-        "title": "Outline papers",
-        "description": "Manage your writing process and ensure that your papers are well-organized and flow smoothly.",
-        "icon": "jam:write",
-        "language": "en"
-    },
-    {
-        "title": "Esquematizar trabajos",
-        "description": "Administra tu proceso de escritura y asegúrate de que tus trabajos estén bien organizados y fluyan sin problemas.",
-        "icon": "jam:write",
-        "language": "es"
-    }
+  {
+    "title": "Review notes",
+    "description": "Capture, structure, and review all of your class notes with ease using the Linked References, Queries, and Search features.",
+    "icon": "sticky-note-outline",
+    "language": "en"
+  },
+  {
+    "title": "Revisar notas",
+    "description": "Capture, estructure y revise todas sus notas de clase con facilidad utilizando las funciones de Referencias vinculadas, Consultas y Búsqueda.",
+    "icon": "sticky-note-outline",
+    "language": "es"
+  },
+  {
+    "title": "Manage sources",
+    "description": "Keep track of your research and easily manage your sources using the built-in Zotero integration.",
+    "icon": "book-library-shelf-stack",
+    "language": "en"
+  },
+  {
+    "title": "Gestionar fuentes",
+    "description": "Haga un seguimiento de su investigación y gestione fácilmente sus fuentes utilizando la integración incorporada de Zotero.",
+    "icon": "book-library-shelf-stack",
+    "language": "es"
+  },
+  {
+    "title": "Investigate claims",
+    "description": "Spin your web of knowledge and see what evidence supports or contradicts claims.",
+    "icon": "experiment-lab-flask-science-chemistry-solution",
+    "language": "en"
+  },
+  {
+    "title": "Investigar afirmaciones",
+    "description": "Teje tu red de conocimiento y observa qué evidencia respalda o contradice las afirmaciones.",
+    "icon": "experiment-lab-flask-science-chemistry-solution",
+    "language": "es"
+  },
+  {
+    "title": "Outline papers",
+    "description": "Manage your writing process and ensure that your papers are well-organized and flow smoothly.",
+    "icon": "jam:write",
+    "language": "en"
+  },
+  {
+    "title": "Esquematizar trabajos",
+    "description": "Administra tu proceso de escritura y asegúrate de que tus trabajos estén bien organizados y fluyan sin problemas.",
+    "icon": "jam:write",
+    "language": "es"
+  }
 ]

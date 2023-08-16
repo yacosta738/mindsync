@@ -15,13 +15,13 @@ spec:
         app: client
     spec:
       containers:
-      - name: client
-        image: client-dev
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            cpu: 500m
-            memory: 1Gi
-          requests:
-            cpu: 200m
-            memory: 256Mi
+        - name: client
+          image: client-dev
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 200m
+              memory: 256Mi

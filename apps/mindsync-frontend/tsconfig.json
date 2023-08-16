@@ -1,4 +1,5 @@
 {
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -9,6 +10,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true
   },

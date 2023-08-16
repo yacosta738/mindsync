@@ -1,36 +1,37 @@
 ---
-import {t} from 'i18next';
-import { Image } from '@astrojs/image/components';
-import {Icon} from 'astro-icon';
-import LinkButton from 'atoms:LinkButton';
-import WorldGraph from 'atoms:WorldGraph';
+import { Image } from '@astrojs/image/components'
+import { Icon } from 'astro-icon'
+import LinkButton from 'atoms:LinkButton'
+import WorldGraph from 'atoms:WorldGraph'
+import { t } from 'i18next'
+
 import appInterface from '../../assets/images/app-interface.png';
 ---
 
 <header class="p-6 sm:p-8 flex justify-start items-start flex-wrap flex-col w-full mt-0 sm:mt-1 md:mt-8 lg:mt-16">
-    <div class="flex flex-col justify-start items-start gap-6">
-        <h1
-        class="text-center sm:text-left font-sans dark:text-tertiary-50 mb-4 font-medium  leading-none tracking-normal md:leading-tight md:tracking-wider  text-3xl md:text-4xl lg:text-[64px] sm:max-w-4xl">
-            {t("hero.title")}
-        </h1>
-        <div class="self-stretch flex flex-col sm:flex-row justify-between items-center gap-6 font-sans sm:max-w-xl">
-            <h3 class="text-base sm:text-lg font-normal leading-tight tracking-tight text-tertiary-900 dark:text-tertiary-50">
-                {t("hero.subtitle")}
-            </h3>
-            <LinkButton href="/"
-                class="download-button">
-                <Icon name="mdi:download" class="mr-2 h-5 w-5"/>
-                {t("hero.download")}
-            </LinkButton>
-        </div>
-    </div>
-   <div class="flex items-center justify-center mt-28 sm:mt-5 relative w-full">
-    <div class="absolute z-30 shrink-0 sm:hidden flex items-center justify-center">
-        <WorldGraph />
-    </div>
-    <div id="hero-mask-shape" class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-tertiary-50 dark:to-tertiary-950 opacity-90"></div>
-    <Image src={appInterface} alt={t('hero.app-interface')} class="w-full h-full"/>
-   </div>
+	<div class="flex flex-col justify-start items-start gap-6">
+		<h1
+			class="text-center sm:text-left font-sans dark:text-tertiary-50 mb-4 font-medium  leading-none tracking-normal md:leading-tight md:tracking-wider  text-3xl md:text-4xl lg:text-[64px] sm:max-w-4xl">
+			{t('hero.title')}
+		</h1>
+		<div class="self-stretch flex flex-col sm:flex-row justify-between items-center gap-6 font-sans sm:max-w-xl">
+			<h3 class="text-base sm:text-lg font-normal leading-tight tracking-tight text-tertiary-900 dark:text-tertiary-50">
+				{t('hero.subtitle')}
+			</h3>
+			<LinkButton href="/"
+				class="download-button">
+				<Icon name="mdi:download" class="mr-2 h-5 w-5"/>
+				{t('hero.download')}
+			</LinkButton>
+		</div>
+	</div>
+	<div class="flex items-center justify-center mt-28 sm:mt-5 relative w-full">
+		<div class="absolute z-30 shrink-0 sm:hidden flex items-center justify-center">
+			<WorldGraph />
+		</div>
+		<div id="hero-mask-shape" class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-tertiary-50 dark:to-tertiary-950 opacity-90"></div>
+		<Image src={appInterface} alt={t('hero.app-interface')} class="w-full h-full"/>
+	</div>
 </header>
 
 <style>

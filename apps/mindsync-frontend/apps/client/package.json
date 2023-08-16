@@ -7,13 +7,12 @@
     "start": "pnpm run dev",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
-    "test": "echo \uD83E\uDDEA Testing MINDSYNC APP && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
+    "test": "echo 🧪 Testing MINDSYNC APP && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
   "dependencies": {
