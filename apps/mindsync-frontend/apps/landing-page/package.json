@@ -60,7 +60,7 @@
 		"astro-eslint-parser": "^0.14.0",
 		"astro-i18next": "1.0.0-beta.21",
 		"astro-icon": "^0.8.1",
-		"astro-seo": "0.7.5",
+		"astro-seo": "0.7.6",
 		"eslint": "^8.47.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-airbnb-typescript": "^17.1.0",
