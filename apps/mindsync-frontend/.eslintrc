@@ -18,6 +18,25 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "settings": {
+    "import/resolver": {
+    "typescript": {},
+    "alias": {
+        "map": [
+          ["@", "./src"],
+          ["@components/*","./src/components/*"],
+          ["@views/*","./src/views/*"],
+          ["@router/*","./src/router/*"],
+          ["@store/*","./src/store/*"],
+          ["@assets/*","./src/assets/*"],
+          ["@atoms/*","./src/components/atoms/*"],
+          ["@molecules/*","./src/components/molecules/*"],
+          ["@organisms/*","./src/components/organisms/*"],
+          ["@templates/*","./src/components/templates/*"]
+        ]
+      }
+    }
+  },
   "rules": {
     "import/no-extraneous-dependencies": [
       "error",
@@ -34,7 +53,8 @@
         ],
         "peerDependencies": true
       }
-    ]
+    ],
+    "import/no-unresolved": "error"
   },
   "overrides": [
     {

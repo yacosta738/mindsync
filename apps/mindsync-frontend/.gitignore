@@ -36,3 +36,6 @@ node
 # Ignore Playwright Folder
 **/playwright-report/
 **/test-results/
+
+# Ignore Env Files
+.env

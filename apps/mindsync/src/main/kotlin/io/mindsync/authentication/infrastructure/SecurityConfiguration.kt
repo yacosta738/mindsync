@@ -1,6 +1,8 @@
 package io.mindsync.authentication.infrastructure
 
 import io.mindsync.authentication.domain.Role
+import io.mindsync.authentication.infrastructure.filter.CookieCsrfFilter
+import io.mindsync.authentication.infrastructure.filter.SpaWebFilter
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -15,6 +17,7 @@ import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
@@ -35,6 +38,9 @@ import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHe
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
@@ -74,6 +80,38 @@ class SecurityConfiguration(
     }
 
     /**
+     * Returns a [CorsConfigurationSource] object that is configured based on the properties defined in the applicationSecurityProperties.
+     * This method is annotated with @Bean, indicating that it should be treated as a bean and managed by Spring framework.
+     *
+     * @return A [CorsConfigurationSource] object that is configured based on the applicationSecurityProperties.
+     */
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = applicationSecurityProperties.cors.allowedOrigins
+        configuration.allowedMethods = applicationSecurityProperties.cors.allowedMethods
+        configuration.allowedHeaders = applicationSecurityProperties.cors.allowedHeaders
+        configuration.exposedHeaders = applicationSecurityProperties.cors.exposedHeaders
+        configuration.allowCredentials = applicationSecurityProperties.cors.allowCredentials
+        configuration.maxAge = applicationSecurityProperties.cors.maxAge
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source.also {
+            println(
+                """
+            CorsConfigurationSource:
+            allowedOrigins: ${applicationSecurityProperties.cors.allowedOrigins}
+            allowedMethods: ${applicationSecurityProperties.cors.allowedMethods}
+            allowedHeaders: ${applicationSecurityProperties.cors.allowedHeaders}
+            exposedHeaders: ${applicationSecurityProperties.cors.exposedHeaders}
+            allowCredentials: ${applicationSecurityProperties.cors.allowCredentials}
+            maxAge: ${applicationSecurityProperties.cors.maxAge}
+                """.trimIndent()
+            )
+        }
+    }
+
+    /**
      * Builds a SecurityWebFilterChain for the provided ServerHttpSecurity instance.
      *
      * @param http The ServerHttpSecurity instance to configure the filter chain.
@@ -92,6 +130,12 @@ class SecurityConfiguration(
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(ServerCsrfTokenRequestAttributeHandler())
             }
+            .cors {
+                    cors ->
+                cors.configurationSource(corsConfigurationSource())
+            }
+            .addFilterAt(CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
+            .addFilterAfter(SpaWebFilter(), SecurityWebFiltersOrder.HTTPS_REDIRECT)
             .headers {
                     headers ->
                 headers.contentSecurityPolicy { applicationSecurityProperties.contentSecurityPolicy }
@@ -106,24 +150,7 @@ class SecurityConfiguration(
             }
             .authorizeExchange {
                     auth ->
-                auth
-                    .pathMatchers("/").permitAll()
-                    .pathMatchers("/health-check").permitAll()
-                    .pathMatchers("/api/register").permitAll()
-                    .pathMatchers("/api/login").permitAll()
-                    .pathMatchers("/api/logout").permitAll()
-                    .pathMatchers("/swagger-ui/**").permitAll()
-                    .pathMatchers("/webjars/**").permitAll()
-                    .pathMatchers("/api-docs/**").permitAll()
-                    .pathMatchers("/swagger-ui.html").permitAll()
-                    .pathMatchers("/v3/api-docs/**").permitAll()
-                    .pathMatchers("/v3/api-docs.yaml").permitAll()
-                    .pathMatchers("/actuator/**").authenticated()
-                    .pathMatchers("/api/**").authenticated()
-                    .pathMatchers("/management/health").permitAll()
-                    .pathMatchers("/management/info").permitAll()
-                    .pathMatchers("/management/prometheus").permitAll()
-                    .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
+                configureAuthorization(auth)
             }
             .oauth2Login(withDefaults())
             .oauth2Client(withDefaults())
@@ -136,6 +163,28 @@ class SecurityConfiguration(
             }
             .build()
         // @formatter:on
+    }
+
+    private fun configureAuthorization(auth: ServerHttpSecurity.AuthorizeExchangeSpec) {
+        auth
+            .pathMatchers("/").permitAll()
+            .pathMatchers("/*.*").permitAll()
+            .pathMatchers("/health-check").permitAll()
+            .pathMatchers("/api/register").permitAll()
+            .pathMatchers("/api/login").permitAll()
+            .pathMatchers("/api/logout").permitAll()
+            .pathMatchers("/swagger-ui/**").permitAll()
+            .pathMatchers("/webjars/**").permitAll()
+            .pathMatchers("/api-docs/**").permitAll()
+            .pathMatchers("/swagger-ui.html").permitAll()
+            .pathMatchers("/v3/api-docs/**").permitAll()
+            .pathMatchers("/v3/api-docs.yaml").permitAll()
+            .pathMatchers("/actuator/**").authenticated()
+            .pathMatchers("/api/**").authenticated()
+            .pathMatchers("/management/health").permitAll()
+            .pathMatchers("/management/info").permitAll()
+            .pathMatchers("/management/prometheus").permitAll()
+            .pathMatchers("/management/**").hasAuthority(Role.ADMIN.key())
     }
 
     private fun serverWebExchangeMatcher() = NegatedServerWebExchangeMatcher(

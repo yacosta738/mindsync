@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@astrojs/tailwind": "^4.0.0",
-    "@mindsync/tailwind-config": "workspace:^0.0.0",
+    "@mindsync/tailwind-config": "workspace:*",
     "flowbite": "^1.8.1",
     "flowbite-typography": "^1.0.3",
     "@playwright/test": "^1.37.0",

@@ -23,7 +23,7 @@ compile:
 
 .PHONY: start
 start:
-	@pnpm start
+	@pnpm dev
 
 .PHONY: test
 test:

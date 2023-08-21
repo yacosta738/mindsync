@@ -7,6 +7,7 @@ import Drawer from 'molecules:Drawer'
 
 import { navMenus } from '../../models/Menu'
 import Menu from './Menu.astro'
+import { APP_URL } from "../../constants";
 
 const drawerMenuId = 'mobile-menu'
 const ariaLabelledby = 'mobile-menu-top-label';
@@ -32,7 +33,7 @@ const ariaLabelledby = 'mobile-menu-top-label';
 				/>
 				<LinkButton
 					secondary
-					href="/login"
+					href={`${APP_URL}/login`}
 					class="hidden sm:flex">
                     Login
 				</LinkButton>
@@ -41,7 +42,7 @@ const ariaLabelledby = 'mobile-menu-top-label';
 					<Menu menus={navMenus}>
 						<div slot="last-menu" class="flex flex-col">
 							<hr class="h-px my-2 bg-tertiary-700 border-0 dark:bg-tertiary-100">
-							<LinkButton secondary href="/login"
+							<LinkButton secondary href={`${APP_URL}/login`}
 										class="my-2">
                                 Login
 							</LinkButton>
