@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
-import { useAuthStore } from '@/stores';
+import { inject, ref } from 'vue'
+import type { Ref } from 'vue'
+import LoginService from '@/authentication/LoginService'
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
 
 const emailOrUsername: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 const rememberMe: Ref<boolean> = ref(false);
+
+const loginService = inject<LoginService>('loginService');
 
 const rules = {
   emailOrUsername: {
@@ -19,8 +22,6 @@ const rules = {
   },
 };
 
-const authStore = useAuthStore();
-
 const v$ = useVuelidate(rules, { emailOrUsername, password });
 
 const onSubmit = () => {
@@ -28,7 +29,7 @@ const onSubmit = () => {
   if (v$.value.$error) {
     return;
   }
-  authStore.login(
+  loginService.login(
     emailOrUsername.value,
     password.value,
     rememberMe.value

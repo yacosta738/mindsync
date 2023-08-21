@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
+// eslint-disable-next-line import/extensions
 import router from '@/router';
-import { FetchWebClient } from '@/utils/webclient';
+import type { AccessToken } from '@/authentication/domain/AccessToken';
+
+export type AuthStore = ReturnType<typeof useAuthStore>;
 
 export interface AccountStateStorable {
   logon: boolean;
@@ -17,69 +20,30 @@ export const defaultAccountState: AccountStateStorable = {
   authenticated: false,
   profilesLoaded: false,
   activeProfiles: '',
-  returnUrl: '/'
+  returnUrl: '/',
 };
-
-interface LoginRequest {
-  username: string;
-  password: string;
-}
-
-interface AccessToken {
-  token: string;
-  expiresIn: number;
-  refreshToken: string;
-  refreshExpiresIn: number;
-  tokenType: string;
-  notBeforePolicy: number;
-  sessionState: string;
-  scope: string;
-}
-
-const webClient = new FetchWebClient<AccessToken, LoginRequest>();
-
-const TOKEN_KEY = 'accessToken';
-
-const storeToken = async (accessToken: AccessToken, rememberMe = true) => {
-    if (rememberMe) {
-        localStorage.setItem(TOKEN_KEY, JSON.stringify(accessToken));
-    } else {
-        sessionStorage.setItem(TOKEN_KEY, JSON.stringify(accessToken));
-    }
-}
 export const useAuthStore = defineStore({
   id: 'auth',
   state: (): AccountStateStorable => ({
-    ...defaultAccountState
+    ...defaultAccountState,
   }),
   getters: {
     accessToken: (state) => state.token,
   },
   actions: {
-    async login(username: string, password: string, rememberMe: boolean) {
+    async setAccessToken(accessToken: AccessToken) {
       try {
-        const accessToken = await webClient.post(`api/login`, {
-          username,
-          password,
-        });
-
         // update pinia state
         this.token = accessToken;
-
-        await storeToken(accessToken, rememberMe);
 
         // redirect to previous url or default to home page
         await router.push(this.returnUrl || '/');
       } catch (error) {
+        // TODO: use alert store
         // const alertStore = useAlertStore();
         // alertStore.error(error);
         console.error(error);
       }
-    },
-    logout() {
-      this.token = null;
-      localStorage.removeItem(TOKEN_KEY);
-      router.push('/login').then(r => console.log(r));
     },
   },
 });
