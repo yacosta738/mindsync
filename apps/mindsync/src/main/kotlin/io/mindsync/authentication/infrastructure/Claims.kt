@@ -12,7 +12,7 @@ import java.util.stream.Collectors
  *
  * @since 1.0.0
  */
-internal object Claims {
+object Claims {
     const val CLAIMS_NAMESPACE = "https://www.mindsync.io/"
 
     /**

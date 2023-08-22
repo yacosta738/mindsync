@@ -6,20 +6,12 @@ import type { AccessToken } from '@/authentication/domain/AccessToken';
 export type AuthStore = ReturnType<typeof useAuthStore>;
 
 export interface AccountStateStorable {
-  logon: boolean;
-  token: null | AccessToken;
-  authenticated: boolean;
-  profilesLoaded: boolean;
-  activeProfiles: string;
+  token?: AccessToken;
   returnUrl?: string;
 }
 
 export const defaultAccountState: AccountStateStorable = {
-  logon: false,
   token: null,
-  authenticated: false,
-  profilesLoaded: false,
-  activeProfiles: '',
   returnUrl: '/',
 };
 export const useAuthStore = defineStore({
@@ -29,6 +21,8 @@ export const useAuthStore = defineStore({
   }),
   getters: {
     accessToken: (state) => state.token,
+    returnUrl: (state) => state.returnUrl,
+    isAuthenticated: (state) => !!state.token,
   },
   actions: {
     async setAccessToken(accessToken: AccessToken) {
@@ -42,6 +36,14 @@ export const useAuthStore = defineStore({
         // TODO: use alert store
         // const alertStore = useAlertStore();
         // alertStore.error(error);
+        console.error(error);
+      }
+    },
+    async authenticate(returnUrl?: string) {
+      try {
+        this.returnUrl = returnUrl;
+        await router.push('/login');
+      } catch (error) {
         console.error(error);
       }
     },

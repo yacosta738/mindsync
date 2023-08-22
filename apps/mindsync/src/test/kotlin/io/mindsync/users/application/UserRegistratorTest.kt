@@ -3,6 +3,7 @@ package io.mindsync.users.application
 import io.kotest.common.runBlocking
 import io.mindsync.UnitTest
 import io.mindsync.users.application.command.RegisterUserCommand
+import io.mindsync.users.application.response.UserResponse
 import io.mindsync.users.domain.ApiDataResponse
 import io.mindsync.users.domain.ApiResponseStatus
 import io.mindsync.users.domain.Credential

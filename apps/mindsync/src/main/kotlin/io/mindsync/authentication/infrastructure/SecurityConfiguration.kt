@@ -2,7 +2,6 @@ package io.mindsync.authentication.infrastructure
 
 import io.mindsync.authentication.domain.Role
 import io.mindsync.authentication.infrastructure.filter.CookieCsrfFilter
-import io.mindsync.authentication.infrastructure.filter.SpaWebFilter
 import io.mindsync.common.domain.Generated
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -135,7 +134,7 @@ class SecurityConfiguration(
                 cors.configurationSource(corsConfigurationSource())
             }
             .addFilterAt(CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
-            .addFilterAfter(SpaWebFilter(), SecurityWebFiltersOrder.HTTPS_REDIRECT)
+//            .addFilterAfter(SpaWebFilter(), SecurityWebFiltersOrder.HTTPS_REDIRECT)
             .headers {
                     headers ->
                 headers.contentSecurityPolicy { applicationSecurityProperties.contentSecurityPolicy }

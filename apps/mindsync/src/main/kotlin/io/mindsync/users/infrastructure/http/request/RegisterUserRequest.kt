@@ -1,4 +1,4 @@
-package io.mindsync.users.infrastructure.dto
+package io.mindsync.users.infrastructure.http.request
 
 import io.mindsync.users.application.command.RegisterUserCommand
 import jakarta.validation.constraints.Email

@@ -1,4 +1,6 @@
-package io.mindsync.users.application
+package io.mindsync.users.application.response
+
+import java.io.Serializable
 
 /**
  * Represents a response containing user information.
@@ -15,5 +17,10 @@ data class UserResponse(
     val username: String,
     val email: String,
     val firstname: String?,
-    val lastname: String?
-)
+    val lastname: String?,
+    val authorities: Set<String> = emptySet()
+) : Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+}

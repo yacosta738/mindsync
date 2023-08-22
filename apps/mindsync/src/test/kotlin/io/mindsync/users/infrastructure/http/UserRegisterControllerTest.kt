@@ -2,11 +2,11 @@ package io.mindsync.users.infrastructure.http
 
 import io.mindsync.UnitTest
 import io.mindsync.users.application.UserRegistrator
-import io.mindsync.users.application.UserResponse
+import io.mindsync.users.application.response.UserResponse
 import io.mindsync.users.domain.ApiDataResponse
 import io.mindsync.users.domain.ApiResponseStatus
 import io.mindsync.users.domain.exceptions.UserStoreException
-import io.mindsync.users.infrastructure.dto.RegisterUserRequest
+import io.mindsync.users.infrastructure.http.request.RegisterUserRequest
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
