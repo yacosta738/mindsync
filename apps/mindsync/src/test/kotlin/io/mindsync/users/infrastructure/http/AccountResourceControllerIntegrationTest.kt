@@ -1,5 +1,6 @@
 package io.mindsync.users.infrastructure.http
 
+import io.mindsync.authentication.domain.AuthoritiesConstants
 import io.mindsync.testcontainers.InfrastructureTestContainers
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,13 +32,13 @@ class AccountResourceControllerIntegrationTest : InfrastructureTestContainers() 
             .jsonPath("$.firstname").isEqualTo("Test")
             .jsonPath("$.lastname").isEqualTo("User")
             .jsonPath("$.authorities").isArray.jsonPath("$.authorities[0]")
-            .isEqualTo("ROLE_USER")
+            .isEqualTo(AuthoritiesConstants.USER)
     }
 
     @Test
     fun `should get account information successfully with multiple roles`() {
         webTestClient.mutateWith(
-            oAuth2LoginMutator(roles = listOf("ROLE_USER", "ROLE_ADMIN"))
+            oAuth2LoginMutator(roles = listOf(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN))
         )
             .get().uri(ENDPOINT)
             .exchange()
@@ -48,9 +49,9 @@ class AccountResourceControllerIntegrationTest : InfrastructureTestContainers() 
             .jsonPath("$.firstname").isEqualTo("Test")
             .jsonPath("$.lastname").isEqualTo("User")
             .jsonPath("$.authorities").isArray.jsonPath("$.authorities[0]")
-            .isEqualTo("ROLE_USER")
+            .isEqualTo(AuthoritiesConstants.USER)
             .jsonPath("$.authorities[1]")
-            .isEqualTo("ROLE_ADMIN")
+            .isEqualTo(AuthoritiesConstants.ADMIN)
     }
 
     private fun oAuth2LoginMutator(
@@ -58,7 +59,7 @@ class AccountResourceControllerIntegrationTest : InfrastructureTestContainers() 
         email: String = "test@localhost",
         firstname: String = "Test",
         lastname: String = "User",
-        roles: List<String> = listOf("ROLE_USER")
+        roles: List<String> = listOf(AuthoritiesConstants.USER)
     ): SecurityMockServerConfigurers.OAuth2LoginMutator =
         mockOAuth2Login().authorities(SimpleGrantedAuthority(roles.joinToString(separator = ",") { it })).attributes {
             it["preferred_username"] = username
