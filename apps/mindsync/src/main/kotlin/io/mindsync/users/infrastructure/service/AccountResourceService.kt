@@ -10,12 +10,19 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 /**
- *
+ * The [AccountResourceService] class is responsible for retrieving user account information.
  * @created 21/8/23
  */
 @Service
 class AccountResourceService {
-
+    /**
+     * Retrieves the user account information based on the provided authentication token.
+     *
+     * @param authToken The authentication token. Must be an instance of AbstractAuthenticationToken.
+     * @return A Mono containing the user account information as a UserResponse object.
+     *         The UserResponse object contains the username, email, firstname, lastname, and authorities of the user.
+     * @throws IllegalArgumentException if the authentication token is not an instance of OAuth2AuthenticationToken or JwtAuthenticationToken.
+     */
     fun getAccount(authToken: AbstractAuthenticationToken): Mono<UserResponse> {
         log.debug("Getting user account information")
         val attributes: Map<String, Any> = when (authToken) {
