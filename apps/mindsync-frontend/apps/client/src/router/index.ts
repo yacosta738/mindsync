@@ -25,19 +25,19 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
-      meta: { layout: 'SimpleLayout' },
+      meta: { layout: 'SimpleLayout', isPublic: true },
     },
     {
       path: '/forbidden',
       name: 'Forbidden',
       component: Error,
-      meta: { error403: true, layout: 'SimpleLayout' },
+      meta: { error403: true, layout: 'SimpleLayout', isPublic: true },
     },
     {
       path: '/not-found',
       name: 'NotFound',
       component: Error,
-      meta: { error404: true, layout: 'SimpleLayout' },
+      meta: { error404: true, layout: 'SimpleLayout', isPublic: true },
     },
   ],
 });

@@ -21,8 +21,10 @@ private const val USER = "user"
 @UnitTest
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthenticateUserQueryHandlerTest {
-    private val inMemoryUserAuthenticator = InMemoryUserAuthenticator()
-    private val userAuthenticatorService: UserAuthenticatorService = UserAuthenticatorService(inMemoryUserAuthenticator)
+    private val inMemoryUserAuthenticatorManager = InMemoryUserAuthenticatorManager()
+    private val userAuthenticatorService: UserAuthenticatorService = UserAuthenticatorService(
+        inMemoryUserAuthenticatorManager
+    )
     private val authenticateUserQueryHandler: AuthenticateUserQueryHandler = AuthenticateUserQueryHandler(
         userAuthenticatorService
     )
@@ -30,13 +32,13 @@ class AuthenticateUserQueryHandlerTest {
     @BeforeEach
     fun setUp() {
         SecurityContextHolder.clearContext()
-        inMemoryUserAuthenticator.addUser(USER, PASSWORD)
+        inMemoryUserAuthenticatorManager.addUser(USER, PASSWORD)
     }
 
     @AfterEach
     fun tearDown() {
         SecurityContextHolder.clearContext()
-        inMemoryUserAuthenticator.clear()
+        inMemoryUserAuthenticatorManager.clear()
     }
 
     @Test

@@ -4,13 +4,13 @@ import io.mindsync.authentication.domain.AccessToken
 import io.mindsync.authentication.domain.UserAuthenticator
 import io.mindsync.authentication.domain.Username
 import io.mindsync.authentication.infrastructure.ApplicationSecurityProperties
+import io.mindsync.authentication.infrastructure.mapper.AccessTokenResponseMapper.toAccessToken
 import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
 import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.ClientErrorException
 import jakarta.ws.rs.NotAuthorizedException
 import org.keycloak.admin.client.KeycloakBuilder
-import org.keycloak.representations.AccessTokenResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 
@@ -36,14 +36,18 @@ class KeycloakAuthenticatorRepository(
      * @param password The password for authentication.
      * @return The [KeycloakBuilder] instance configured with the provided username and password.
      */
-    private fun newKeycloakBuilderWithPasswordCredentials(username: String, password: String): KeycloakBuilder =
-        KeycloakBuilder.builder()
-            .realm(applicationSecurityProperties.oauth2.realm)
-            .serverUrl(applicationSecurityProperties.oauth2.serverUrl)
-            .clientId(applicationSecurityProperties.oauth2.clientId)
-            .clientSecret(applicationSecurityProperties.oauth2.clientSecret)
-            .username(username)
-            .password(password)
+    private fun newKeycloakBuilderWithPasswordCredentials(
+        username: String,
+        password: String,
+        grantType: String = "password"
+    ): KeycloakBuilder = KeycloakBuilder.builder()
+        .realm(applicationSecurityProperties.oauth2.realm)
+        .serverUrl(applicationSecurityProperties.oauth2.serverUrl)
+        .clientId(applicationSecurityProperties.oauth2.clientId)
+        .clientSecret(applicationSecurityProperties.oauth2.clientSecret)
+        .grantType(grantType)
+        .username(username)
+        .password(password)
 
     /**
      * Login a user with the given username and password.
@@ -56,7 +60,7 @@ class KeycloakAuthenticatorRepository(
         log.info("Authenticating user with username: {}", username)
         return try {
             val keycloak = newKeycloakBuilderWithPasswordCredentials(username.value, password.value).build()
-            val accessTokenResponse = keycloak.tokenManager().getAccessToken()
+            val accessTokenResponse = keycloak.tokenManager().accessToken
             accessTokenResponse.toAccessToken()
         } catch (ex: ClientErrorException) {
             var message: String = ex.message ?: ""
@@ -72,22 +76,6 @@ class KeycloakAuthenticatorRepository(
             throw UserAuthenticationException(message, ex)
         }
     }
-
-    /**
-     * Converts an [AccessTokenResponse] object to an AccessToken object.
-     *
-     * @return The converted [AccessToken] object.
-     */
-    private fun AccessTokenResponse.toAccessToken(): AccessToken = AccessToken(
-        token = this.token,
-        expiresIn = this.expiresIn,
-        refreshToken = this.refreshToken,
-        refreshExpiresIn = this.refreshExpiresIn,
-        tokenType = this.tokenType,
-        notBeforePolicy = this.notBeforePolicy,
-        sessionState = this.sessionState,
-        scope = this.scope
-    )
 
     companion object {
         private val log = LoggerFactory.getLogger(KeycloakAuthenticatorRepository::class.java)

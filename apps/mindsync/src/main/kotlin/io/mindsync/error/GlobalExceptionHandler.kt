@@ -2,6 +2,7 @@ package io.mindsync.error
 
 import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
+import io.mindsync.users.domain.exceptions.UserRefreshTokenException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -39,7 +40,11 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException::class, BusinessRuleValidationException::class)
+    @ExceptionHandler(
+        IllegalArgumentException::class,
+        BusinessRuleValidationException::class,
+        UserRefreshTokenException::class
+    )
     fun handleIllegalArgumentException(e: Exception): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message ?: "Bad request")
         problemDetail.title = "Bad request"

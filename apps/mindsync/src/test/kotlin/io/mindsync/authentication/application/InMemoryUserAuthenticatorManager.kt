@@ -2,6 +2,8 @@ package io.mindsync.authentication.application
 
 import io.kotest.common.concurrentHashMap
 import io.mindsync.authentication.domain.AccessToken
+import io.mindsync.authentication.domain.RefreshToken
+import io.mindsync.authentication.domain.RefreshTokenManager
 import io.mindsync.authentication.domain.UserAuthenticator
 import io.mindsync.authentication.domain.Username
 import io.mindsync.users.domain.Credential
@@ -12,9 +14,9 @@ import io.mindsync.users.domain.exceptions.UserAuthenticationException
  * It provides the functionality to authenticate a user with a given username and password.
  * @created 2/8/23
  */
-class InMemoryUserAuthenticator(
+class InMemoryUserAuthenticatorManager(
     private val database: MutableMap<String, String> = concurrentHashMap()
-) : UserAuthenticator {
+) : UserAuthenticator, RefreshTokenManager {
     /**
      * Login a user with the given username and password.
      *
@@ -24,16 +26,7 @@ class InMemoryUserAuthenticator(
      */
     override suspend fun authenticate(username: Username, password: Credential): AccessToken {
         return if (database[username.value] == password.value) {
-            AccessToken(
-                "token",
-                1,
-                "refreshToken",
-                1,
-                "type",
-                1,
-                "81945a53-7bfa-4347-9321-b46c2a2a736d",
-                "email profile"
-            )
+            accessToken()
         } else {
             throw UserAuthenticationException("Invalid account. User probably hasn't verified email.")
         }
@@ -51,4 +44,25 @@ class InMemoryUserAuthenticator(
      * Clears the database.
      */
     fun clear() = database.clear()
+
+    /**
+     * Refreshes the access token of the user.
+     *
+     * @param refreshToken the refresh token of the user
+     * @return the access token of the user
+     */
+    override suspend fun refresh(refreshToken: RefreshToken): AccessToken {
+        return accessToken()
+    }
+
+    private fun accessToken() = AccessToken(
+        "token",
+        1,
+        "refreshToken",
+        1,
+        "type",
+        1,
+        "81945a53-7bfa-4347-9321-b46c2a2a736d",
+        "email profile"
+    )
 }

@@ -1,16 +1,34 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue'
-import type { Ref } from 'vue'
-import LoginService from '@/authentication/LoginService'
+import { inject, onMounted, ref } from 'vue';
+import type { Ref } from 'vue';
+import LoginService from '@/authentication/LoginService';
+import type AccountService from '@/authentication/AccountService';
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
+import router from '@/router';
+import { type AuthStore, useAuthStore } from '@/stores';
 
+const authStore: AuthStore = useAuthStore();
 const emailOrUsername: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 const rememberMe: Ref<boolean> = ref(false);
 
 const loginService = inject<LoginService>('loginService');
-
+const accountService = inject<AccountService>('accountService');
+onMounted(async () => {
+  if (await loginService?.isAuthenticated()) {
+    console.log(
+      `User is already authenticated, redirecting to home page ${loginService?.isAuthenticated()}`
+    );
+    accountService?.getAccount().then((account) => {
+      if (account) {
+        router.push(authStore.url || '/');
+      } else {
+        loginService?.logout();
+      }
+    });
+  }
+});
 const rules = {
   emailOrUsername: {
     required,
@@ -29,11 +47,7 @@ const onSubmit = () => {
   if (v$.value.$error) {
     return;
   }
-  loginService.login(
-    emailOrUsername.value,
-    password.value,
-    rememberMe.value
-  );
+  loginService?.login(emailOrUsername.value, password.value, rememberMe.value);
 };
 </script>
 <template>
@@ -75,10 +89,10 @@ const onSubmit = () => {
                 name="email"
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 placeholder="name@company.com"
-                required=""
+                required
               />
             </div>
-            <div :class="{error: v$.password.$errors.length}">
+            <div :class="{ error: v$.password.$errors.length }">
               <label
                 for="password"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -91,7 +105,7 @@ const onSubmit = () => {
                 name="password"
                 placeholder="••••••••"
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-                required=""
+                required
               />
             </div>
             <div class="flex items-center justify-between">

@@ -95,19 +95,7 @@ class SecurityConfiguration(
         configuration.maxAge = applicationSecurityProperties.cors.maxAge
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
-        return source.also {
-            println(
-                """
-            CorsConfigurationSource:
-            allowedOrigins: ${applicationSecurityProperties.cors.allowedOrigins}
-            allowedMethods: ${applicationSecurityProperties.cors.allowedMethods}
-            allowedHeaders: ${applicationSecurityProperties.cors.allowedHeaders}
-            exposedHeaders: ${applicationSecurityProperties.cors.exposedHeaders}
-            allowCredentials: ${applicationSecurityProperties.cors.allowCredentials}
-            maxAge: ${applicationSecurityProperties.cors.maxAge}
-                """.trimIndent()
-            )
-        }
+        return source
     }
 
     /**
@@ -170,6 +158,7 @@ class SecurityConfiguration(
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/health-check").permitAll()
             .pathMatchers("/api/register").permitAll()
+            .pathMatchers("/api/refresh-token").permitAll()
             .pathMatchers("/api/login").permitAll()
             .pathMatchers("/api/logout").permitAll()
             .pathMatchers("/swagger-ui/**").permitAll()

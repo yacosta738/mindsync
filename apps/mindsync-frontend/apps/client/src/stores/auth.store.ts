@@ -2,16 +2,45 @@ import { defineStore } from 'pinia';
 // eslint-disable-next-line import/extensions
 import router from '@/router';
 import type { AccessToken } from '@/authentication/domain/AccessToken';
+import type { SecureTokenRepository } from '@/utils/AuthTokenStorage';
+import { OAuthTokenManager } from '@/utils/AuthTokenStorage';
+import type User from '@/authentication/domain/User';
 
 export type AuthStore = ReturnType<typeof useAuthStore>;
 
+const localStorageTokenManager: SecureTokenRepository = new OAuthTokenManager(
+  localStorage
+);
+
+const sessionStorageTokenManager: SecureTokenRepository = new OAuthTokenManager(
+  sessionStorage
+);
+
+const storeToken = async (accessToken: AccessToken, rememberMe = true) => {
+  if (rememberMe) {
+    localStorageTokenManager.set(JSON.stringify(accessToken));
+  } else {
+    sessionStorageTokenManager.set(JSON.stringify(accessToken));
+  }
+};
+
+const getStoredToken = async (): Promise<AccessToken | null> => {
+  const token =
+    localStorageTokenManager.get() || sessionStorageTokenManager.get();
+  if (token) {
+    return JSON.parse(token);
+  }
+  return null;
+};
 export interface AccountStateStorable {
-  token?: AccessToken;
+  token?: AccessToken | null;
+  userIdentity?: User | null;
   returnUrl?: string;
 }
 
 export const defaultAccountState: AccountStateStorable = {
-  token: null,
+  token: await getStoredToken(),
+  userIdentity: null,
   returnUrl: '/',
 };
 export const useAuthStore = defineStore({
@@ -21,14 +50,16 @@ export const useAuthStore = defineStore({
   }),
   getters: {
     accessToken: (state) => state.token,
-    returnUrl: (state) => state.returnUrl,
+    url: (state) => state.returnUrl,
     isAuthenticated: (state) => !!state.token,
   },
   actions: {
-    async setAccessToken(accessToken: AccessToken) {
+    async setAccessToken(accessToken: AccessToken, rememberMe = true) {
       try {
         // update pinia state
         this.token = accessToken;
+        // store token in local storage
+        await storeToken(accessToken, rememberMe);
 
         // redirect to previous url or default to home page
         await router.push(this.returnUrl || '/');
@@ -39,10 +70,19 @@ export const useAuthStore = defineStore({
         console.error(error);
       }
     },
+    async setIdentity(user: User) {
+      try {
+        console.log('setIdentity called in AuthStore');
+        this.userIdentity = user;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async authenticate(returnUrl?: string) {
       try {
-        this.returnUrl = returnUrl;
-        await router.push('/login');
+        console.log(`Authenticating user... and redirecting to ${returnUrl}`);
+        this.returnUrl = returnUrl || '/';
+        await router.push({ name: 'login' });
       } catch (error) {
         console.error(error);
       }

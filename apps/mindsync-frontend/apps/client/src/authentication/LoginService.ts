@@ -1,34 +1,34 @@
-import type { WebClient } from '@/utils/webclient';
-import { FetchWebClient } from '@/utils/webclient';
+import type { WebClient } from '@/utils/WebClient';
+import FetchWebClient from '@/utils/WebClient';
 import type { AuthStore } from '@/stores';
 import type { LoginRequest } from '@/authentication/domain/LoginRequest';
 import type { AccessToken } from '@/authentication/domain/AccessToken';
 
-const TOKEN_KEY: string = 'accessToken';
-
 export default class LoginService {
-  private webClient: WebClient<AccessToken, LoginRequest>;
+  private webClient: WebClient;
 
   constructor(private authStore: AuthStore) {
-    this.webClient = new FetchWebClient<AccessToken, LoginRequest>();
+    this.webClient = new FetchWebClient('');
   }
 
   private url = `api/login`;
 
   async login(username: string, password: string, rememberMe: boolean) {
-    const accessToken = await this.webClient.post(this.url, {
-      username,
-      password,
-    });
-    await this.storeToken(accessToken, rememberMe);
-    await this.authStore.setAccessToken(accessToken);
+    const accessToken = await this.webClient.post<LoginRequest, AccessToken>(
+      this.url,
+      {
+        username,
+        password,
+      }
+    );
+    await this.authStore.setAccessToken(accessToken, rememberMe);
   }
 
-  private async storeToken(accessToken: AccessToken, rememberMe = true) {
-    if (rememberMe) {
-      localStorage.setItem(TOKEN_KEY, JSON.stringify(accessToken));
-    } else {
-      sessionStorage.setItem(TOKEN_KEY, JSON.stringify(accessToken));
-    }
+  async isAuthenticated(): Promise<boolean> {
+    return this.authStore.isAuthenticated;
+  }
+
+  async logout() {
+    this.authStore.token = undefined;
   }
 }
