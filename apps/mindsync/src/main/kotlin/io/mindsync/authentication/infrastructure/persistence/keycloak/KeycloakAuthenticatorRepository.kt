@@ -61,7 +61,7 @@ class KeycloakAuthenticatorRepository(
         return try {
             val keycloak = newKeycloakBuilderWithPasswordCredentials(username.value, password.value).build()
             val accessTokenResponse = keycloak.tokenManager().accessToken
-            accessTokenResponse.toAccessToken()
+            accessTokenResponse.toAccessToken().also { log.info("User authenticated successfully") }
         } catch (ex: ClientErrorException) {
             var message: String = ex.message ?: ""
             when (ex) {

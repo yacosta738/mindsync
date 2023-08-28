@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 @IntegrationTest
-class KeycloakAuthenticationIntegrationTest : InfrastructureTestContainers() {
+class KeycloakAuthenticatorRepositoryIntegrationTest : InfrastructureTestContainers() {
     // this user is created by default in Keycloak container (see demo-realm-test.json)
     private val email = "john.doe@mindsync.com"
     private val username = "john.doe"

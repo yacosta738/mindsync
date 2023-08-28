@@ -2,9 +2,11 @@ package io.mindsync.testcontainers
 
 import dasniko.testcontainers.keycloak.KeycloakContainer
 import io.mindsync.IntegrationTest
+import io.mindsync.authentication.domain.AccessToken
+import io.mindsync.authentication.infrastructure.mapper.AccessTokenResponseMapper.toAccessToken
 import org.junit.jupiter.api.BeforeAll
+import org.keycloak.representations.AccessTokenResponse
 import org.slf4j.LoggerFactory
-import org.springframework.boot.json.JacksonJsonParser
 import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -31,7 +33,10 @@ abstract class InfrastructureTestContainers {
         startInfrastructure()
     }
 
-    protected fun getAdminBearer(): String? {
+    protected fun getAdminAccessToken(
+        username: String = "john.doe@mindsync.com",
+        password: String = "S3cr3tP@ssw0rd*123"
+    ): AccessToken? =
         try {
             val authServerUrl = removeLastSlash(keycloakContainer.authServerUrl)
             val openIdConnectToken = "protocol/openid-connect/token"
@@ -40,8 +45,7 @@ abstract class InfrastructureTestContainers {
             val formData: MultiValueMap<String, String> = LinkedMultiValueMap()
             formData.add("grant_type", "password")
             formData.add("client_id", CLIENT_ID)
-            formData.add("username", "john.doe@mindsync.com")
-            val password = "S3cr3tP@ssw0rd*123"
+            formData.add("username", username)
             formData.add("password", password)
 
             val result = webclient.post()
@@ -49,19 +53,15 @@ abstract class InfrastructureTestContainers {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
-                .bodyToMono(String::class.java)
+                .bodyToMono(AccessTokenResponse::class.java)
                 .block()
 
-            val jsonParser = JacksonJsonParser()
-
-            return "Bearer " + jsonParser.parseMap(result)["access_token"]
-                .toString()
+            result?.toAccessToken()
         } catch (e: URISyntaxException) {
             log.error("Can't obtain an access token from Keycloak!", e)
+            null
         }
 
-        return null
-    }
 
     companion object {
         private val log = LoggerFactory.getLogger(InfrastructureTestContainers::class.java)

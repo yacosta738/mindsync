@@ -26,8 +26,13 @@ class KeycloakRefreshTokenManagerRepository(
 ) : RefreshTokenManager {
     private val webClient: WebClient = WebClient.builder().build()
     private val authorizationURI = URI(
-        "${applicationSecurityProperties.oauth2.serverUrl}/realms/${applicationSecurityProperties.oauth2.realm}/$OPENID_CONNECT_TOKEN"
+        constructOpenIdConnectTokenUrl()
     )
+
+    private fun constructOpenIdConnectTokenUrl(
+        realm: String = applicationSecurityProperties.oauth2.realm,
+        serverUrl: String = applicationSecurityProperties.oauth2.serverUrl
+    ) = "$serverUrl/realms/$realm/$OPENID_CONNECT_TOKEN"
 
     /**
      * Refreshes the access token of the user.
@@ -36,7 +41,7 @@ class KeycloakRefreshTokenManagerRepository(
      * @return the access token of the user
      */
     override suspend fun refresh(refreshToken: RefreshToken): AccessToken {
-        log.info("Refreshing access token for user with refresh token: {}", refreshToken)
+        log.info("Refreshing access token for user with refresh token")
         val formData: MultiValueMap<String, String> = LinkedMultiValueMap()
         formData.add("grant_type", "refresh_token")
         formData.add("client_id", applicationSecurityProperties.oauth2.clientId)
