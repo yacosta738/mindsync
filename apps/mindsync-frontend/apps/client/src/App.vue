@@ -9,7 +9,8 @@ import router from '@/router';
 
 const authStore = useAuthStore();
 provide('loginService', new LoginService(authStore));
-provide('accountService', new AccountService(authStore));
+const accountService = new AccountService(authStore);
+provide('accountService', accountService);
 
 const layout: Component | string = shallowRef('div');
 router.afterEach((to) => {
@@ -23,19 +24,21 @@ provide('app:layout', layout);
 //   authStore.authenticate();
 // });
 router.beforeResolve(async (to, from, next) => {
+  console.log('Navigating to route', to);
   const isPublicRoute = to.matched.some((record) => record.meta.isPublic);
   if (isPublicRoute) {
     next();
     return;
   }
   if (!authStore.isAuthenticated) {
+    console.log('User is not authenticated, redirecting to login page');
     await authStore.authenticate(to.fullPath);
   }
   if (to.meta?.authorities && to.meta.authorities.length > 0) {
-    // TODO: implement logic for checking if user has access to the route
-    // if (!authStore.hasAnyAuthority(to.meta.authorities)) {
-    //   router.push({ name: 'accessdenied' });
-    // }
+    console.log('Checking authorities', to.meta.authorities);
+    if (!(await authStore.hasAnyAuthority(to.meta.authorities))) {
+      await router.push({ name: 'forbidden' });
+    }
   }
   next();
 });

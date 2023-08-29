@@ -52,6 +52,12 @@ export const useAuthStore = defineStore({
     accessToken: (state) => state.token,
     url: (state) => state.returnUrl,
     isAuthenticated: (state) => !!state.token,
+    publicApiRoutes: () =>
+      router
+        .getRoutes()
+        .filter((route) => route.meta.isPublic)
+        .map((route) => route.path),
+    authorities: (state) => state.userIdentity?.authorities,
   },
   actions: {
     async setAccessToken(accessToken: AccessToken, rememberMe = true) {
@@ -74,6 +80,17 @@ export const useAuthStore = defineStore({
       try {
         console.log('setIdentity called in AuthStore');
         this.userIdentity = user;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async hasAnyAuthority(authorities: string[]) {
+      try {
+        console.log('hasAnyAuthority called in AuthStore: ', authorities);
+        console.log('userIdentity: ', this.userIdentity);
+        return this.userIdentity?.authorities.some((authority) =>
+          authorities.includes(authority)
+        );
       } catch (error) {
         console.error(error);
       }

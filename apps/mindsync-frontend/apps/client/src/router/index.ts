@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores';
 import HomeView from '../views/HomeView.vue';
+import { Authority } from '@/authentication/domain/Authority';
 
 const About = () => import('../views/AboutView.vue');
 const Login = () => import('../views/LoginView.vue');
@@ -13,7 +14,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { layout: 'LayoutStacked' },
+      meta: { layout: 'LayoutStacked', authorities: [Authority.USER] },
     },
     {
       path: '/about',
@@ -29,13 +30,13 @@ const router = createRouter({
     },
     {
       path: '/forbidden',
-      name: 'Forbidden',
+      name: 'forbidden',
       component: Error,
       meta: { error403: true, layout: 'SimpleLayout', isPublic: true },
     },
     {
       path: '/not-found',
-      name: 'NotFound',
+      name: 'notFound',
       component: Error,
       meta: { error404: true, layout: 'SimpleLayout', isPublic: true },
     },

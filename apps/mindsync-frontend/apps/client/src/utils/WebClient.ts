@@ -36,10 +36,11 @@ export default class FetchWebClient implements WebClient {
   }
 
   private async interceptRequest(options: RequestInit): Promise<RequestInit> {
-    const authToken = await this.getAuthToken();
+    const authToken: AccessToken | null | undefined =
+      this.authStore.accessToken;
     options.headers = {
       ...options.headers,
-      Authorization: `Bearer ${authToken.token}`,
+      Authorization: `Bearer ${authToken?.token}`,
     };
     return options;
   }
@@ -53,23 +54,13 @@ export default class FetchWebClient implements WebClient {
     return response;
   }
 
-  private async getAuthToken(): Promise<AccessToken> {
-    const token = this.authStore.accessToken;
-    if (!token) {
-      throw new Error('No access token found');
-    }
-    return token;
-  }
-
   private async refreshAuthToken(): Promise<void> {
-    // Lógica para refrescar el token de autenticación
-
-    const token = await this.getAuthToken();
-    const refreshToken = token.refreshToken;
+    const token: AccessToken | null | undefined = this.authStore.accessToken; // TODO: if token is undefined, throw error and redirect to login page
+    const refreshToken = token?.refreshToken;
     if (!refreshToken) {
       throw new Error('No refresh token found');
     }
-    const url = `${this.baseUrl}/api/auth/refresh`;
+    const url = `${this.baseUrl}/api/refresh-token`;
     const headers = this.buildHeaders();
     const options: RequestInit = {
       method: 'POST',
@@ -116,8 +107,9 @@ export default class FetchWebClient implements WebClient {
       options.body = JSON.stringify(data);
     }
 
-    options = await this.interceptRequest(options);
-
+    if (this.authStore.publicApiRoutes.includes(path)) {
+      options = await this.interceptRequest(options);
+    }
     const response = await fetch(url, options);
 
     const interceptedResponse = await this.interceptResponse(response);
