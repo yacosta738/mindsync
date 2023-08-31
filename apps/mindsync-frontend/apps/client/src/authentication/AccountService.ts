@@ -23,6 +23,7 @@ export default class AccountService {
       })
       .catch((error) => {
         console.log(error);
+        this.authStore.logout();
         return error;
       });
   }

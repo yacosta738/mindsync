@@ -1,4 +1,3 @@
-import image from '@astrojs/image';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
@@ -18,12 +17,5 @@ export default defineConfig({
     port: DEV_PORT,
   },
   output: 'static',
-  integrations: [
-    sitemap(),
-    tailwind(),
-    astroI18next(),
-    image({
-      serviceEntryPoint: '@astrojs/image/sharp',
-    }),
-  ],
+  integrations: [sitemap(), tailwind(), astroI18next()],
 });

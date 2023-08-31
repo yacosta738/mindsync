@@ -104,5 +104,18 @@ export const useAuthStore = defineStore({
         console.error(error);
       }
     },
+    async logout() {
+      try {
+        console.log('Logging out user...');
+        this.token = null;
+        this.userIdentity = null;
+        this.returnUrl = '/';
+        localStorageTokenManager.clear();
+        sessionStorageTokenManager.clear();
+        await router.push({ name: 'login' });
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 });

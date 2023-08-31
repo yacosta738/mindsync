@@ -35,26 +35,25 @@
     "test:e2e": "echo 🧪 E2E Tests && playwright test"
   },
   "dependencies": {
-    "@astrojs/image": "0.17.3",
-    "@astrojs/rss": "2.4.4",
-    "@astrojs/sitemap": "2.0.2",
+    "@astrojs/rss": "3.0.0",
+    "@astrojs/sitemap": "3.0.0",
     "@faker-js/faker": "^8.0.2",
     "@fontsource-variable/space-grotesk": "^5.0.8",
-    "apexcharts": "^3.41.1",
-    "astro": "^2.10.9",
+    "apexcharts": "^3.42.0",
+    "astro": "^3.0.3",
     "astro-i18next": "1.0.0-beta.21",
     "astro-icon": "^0.8.1",
-    "astro-seo": "0.7.5",
+    "astro-seo": "0.8.0",
     "sharp": "^0.32.5",
-    "i18next": "^22.5.1",
+    "i18next": "^23.4.6",
     "shiki": "^0.14.3"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "^4.0.0",
+    "@astrojs/tailwind": "^5.0.0",
     "@mindsync/tailwind-config": "workspace:*",
     "flowbite": "^1.8.1",
     "flowbite-typography": "^1.0.3",
-    "@playwright/test": "^1.37.0",
+    "@playwright/test": "^1.37.1",
     "i18next-fs-backend": "2.1.5"
   },
   "packageManager": "pnpm@8.6.12"

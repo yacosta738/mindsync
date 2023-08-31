@@ -24,7 +24,6 @@ provide('app:layout', layout);
 //   authStore.authenticate();
 // });
 router.beforeResolve(async (to, from, next) => {
-  console.log('Navigating to route', to);
   const isPublicRoute = to.matched.some((record) => record.meta.isPublic);
   if (isPublicRoute) {
     next();

@@ -21,6 +21,7 @@ export default class LoginService {
         password,
       }
     );
+    // TODO: if token is undefined, throw error and log out user
     await this.authStore.setAccessToken(accessToken, rememberMe);
   }
 
@@ -29,6 +30,6 @@ export default class LoginService {
   }
 
   async logout() {
-    this.authStore.token = undefined;
+    await this.authStore.logout();
   }
 }

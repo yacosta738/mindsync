@@ -20,13 +20,18 @@ onMounted(async () => {
     console.log(
       `User is already authenticated, redirecting to home page ${loginService?.isAuthenticated()}`
     );
-    accountService?.getAccount().then((account) => {
-      if (account) {
-        router.push(authStore.url || '/');
-      } else {
+    accountService
+      ?.getAccount()
+      .then((account) => {
+        if (account) {
+          router.push(authStore.url || '/');
+        } else {
+          loginService?.logout();
+        }
+      })
+      .catch((error) => {
         loginService?.logout();
-      }
-    });
+      });
   }
 });
 const rules = {
