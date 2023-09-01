@@ -15,23 +15,30 @@ const rememberMe: Ref<boolean> = ref(false);
 
 const loginService = inject<LoginService>('loginService');
 const accountService = inject<AccountService>('accountService');
+
+const updateUserIdentity = () => {
+  console.log('Updating user identity');
+  accountService
+    ?.retrieveAccountFromServer()
+    .then((account) => {
+      if (account) {
+        router.push(authStore.url || '/');
+      } else {
+        loginService?.logout();
+      }
+    })
+    .catch((error) => {
+      loginService?.logout();
+    });
+};
+
 onMounted(async () => {
+  console.log('Checking if user is authenticated');
   if (await loginService?.isAuthenticated()) {
     console.log(
       `User is already authenticated, redirecting to home page ${loginService?.isAuthenticated()}`
     );
-    accountService
-      ?.getAccount()
-      .then((account) => {
-        if (account) {
-          router.push(authStore.url || '/');
-        } else {
-          loginService?.logout();
-        }
-      })
-      .catch((error) => {
-        loginService?.logout();
-      });
+    updateUserIdentity();
   }
 });
 const rules = {
@@ -52,7 +59,12 @@ const onSubmit = () => {
   if (v$.value.$error) {
     return;
   }
-  loginService?.login(emailOrUsername.value, password.value, rememberMe.value);
+  loginService
+    ?.login(emailOrUsername.value, password.value, rememberMe.value)
+    .then(() => updateUserIdentity())
+    .catch((error) => {
+      console.log('Error logging in', error);
+    });
 };
 </script>
 <template>

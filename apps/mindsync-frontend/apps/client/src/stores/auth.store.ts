@@ -61,6 +61,7 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async setAccessToken(accessToken: AccessToken, rememberMe = true) {
+      console.log('setAccessToken called in AuthStore: ', accessToken);
       try {
         // update pinia state
         this.token = accessToken;
@@ -78,7 +79,7 @@ export const useAuthStore = defineStore({
     },
     async setIdentity(user: User) {
       try {
-        console.log('setIdentity called in AuthStore');
+        console.log(`setIdentity called in AuthStore: ${user}`);
         this.userIdentity = user;
       } catch (error) {
         console.error(error);

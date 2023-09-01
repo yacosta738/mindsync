@@ -1,27 +1,26 @@
-import type { WebClient } from '@/utils/WebClient';
-import FetchWebClient from '@/utils/WebClient';
 import type { AuthStore } from '@/stores';
 import type { LoginRequest } from '@/authentication/domain/LoginRequest';
 import type { AccessToken } from '@/authentication/domain/AccessToken';
+import Cookies from 'js-cookie';
 
+const CONTENT_TYPE: string = 'Content-Type';
 export default class LoginService {
-  private webClient: WebClient;
-
-  constructor(private authStore: AuthStore) {
-    this.webClient = new FetchWebClient('');
-  }
+  constructor(private authStore: AuthStore) {}
 
   private url = `api/login`;
 
   async login(username: string, password: string, rememberMe: boolean) {
-    const accessToken = await this.webClient.post<LoginRequest, AccessToken>(
-      this.url,
-      {
-        username,
-        password,
-      }
-    );
-    // TODO: if token is undefined, throw error and log out user
+    const loginRequest: LoginRequest = { username, password };
+    const headers = this.buildHeaders();
+    const options: RequestInit = {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(loginRequest),
+    };
+    const response = await fetch(this.url, options);
+    console.log('response', response);
+    const accessToken: AccessToken = await response.json();
+    console.log('accessToken', accessToken);
     await this.authStore.setAccessToken(accessToken, rememberMe);
   }
 
@@ -31,5 +30,17 @@ export default class LoginService {
 
   async logout() {
     await this.authStore.logout();
+  }
+
+  private buildHeaders(
+    xrsfToken: string | undefined = Cookies.get('XSRF-TOKEN'),
+    contentType: string = 'application/json'
+  ): Headers {
+    const headers = new Headers();
+    if (xrsfToken) {
+      headers.append('X-XSRF-TOKEN', xrsfToken);
+    }
+    headers.append(CONTENT_TYPE, contentType);
+    return headers;
   }
 }
