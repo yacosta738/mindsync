@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.jwt.MappedJwtClaimSetConverter
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import kotlin.math.log
 
 /**
  * CustomClaimConverter is a class that implements the [Converter] interface to convert a map of claims
@@ -50,9 +51,17 @@ class CustomClaimConverter(
      * @return The converted claims map with additional custom claims.
      */
     override fun convert(claims: Map<String, Any>): Map<String, Any> {
+        log.debug("Starting claim conversion")
         val convertedClaims = delegate.convert(claims)?.toMutableMap() ?: mutableMapOf()
-        val user = getUser(claims).block()
-        return user?.let { appendCustomClaim(convertedClaims, it) } ?: convertedClaims
+        val userMono = getUser(claims)
+        userMono
+            .subscribe(
+                { user ->
+                    Mono.justOrEmpty(appendCustomClaim(convertedClaims, user)).defaultIfEmpty(convertedClaims)
+                },
+                { error -> log.error("Error getting user information: {}", error) }
+            )
+        return convertedClaims
     }
 
     /**
@@ -75,7 +84,6 @@ class CustomClaimConverter(
      */
     private fun loadUser(): Mono<ObjectNode> {
         return getToken().flatMap { token ->
-
             webClient.get()
                 .uri(registration.providerDetails.userInfoEndpoint.uri)
                 .headers { it.setBearerAuth(token) }
@@ -98,4 +106,8 @@ class CustomClaimConverter(
      * @property sub The sub attribute.
      */
     private data class SubAttributes(val sub: String)
+
+    companion object {
+        private val log = org.slf4j.LoggerFactory.getLogger(CustomClaimConverter::class.java)
+    }
 }

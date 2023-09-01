@@ -28,8 +28,10 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.jwt.JwtValidators
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtGrantedAuthoritiesConverterAdapter
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler
@@ -200,9 +202,13 @@ class SecurityConfiguration(
      * @return Converter<Jwt, Mono<AbstractAuthenticationToken>> the authentication converter.
      */
     fun authenticationConverter(): Converter<Jwt, Mono<AbstractAuthenticationToken>> {
-        val jwtAuthenticationConverter = JwtAuthenticationConverter()
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(JwtGrantedAuthorityConverter())
-        return ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter)
+        val jwtGrantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
+        val jwtAuthenticationConverter = ReactiveJwtAuthenticationConverter()
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(
+            ReactiveJwtGrantedAuthoritiesConverterAdapter(jwtGrantedAuthoritiesConverter)
+        )
+
+        return jwtAuthenticationConverter
     }
 
     /**

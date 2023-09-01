@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.mindsync.UnitTest
 import io.mindsync.authentication.domain.Role
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -54,9 +53,8 @@ internal class CustomClaimConverterTest {
     @Test
     fun shouldNotGetClaimFromInputClaimWithTimeoutRequest() {
         mockRestTimeout()
-        val thrown: Throwable = catchThrowable { converter.convert(simpleClaim()) }
-        assertThat(thrown).isInstanceOf(ResourceAccessException::class.java)
-            .hasCauseInstanceOf(SocketTimeoutException::class.java)
+        val convertedClaims = converter.convert(simpleClaim())
+        assertThat(convertedClaims).containsExactly(entry("sub", "123"))
     }
 
     @Test
