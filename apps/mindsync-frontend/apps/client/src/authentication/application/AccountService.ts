@@ -1,7 +1,7 @@
-import type User from '@/authentication/domain/User';
-import type { AuthStore } from '@/stores';
 import Cookies from 'js-cookie';
-import type RefreshTokenService from '@/authentication/RefreshTokenService';
+import type { AuthStore } from '@/stores';
+import type RefreshTokenService from '@/authentication/application/RefreshTokenService';
+import type User from '@/authentication/domain/User';
 
 const CONTENT_TYPE: string = 'Content-Type';
 export default class AccountService {
@@ -13,6 +13,7 @@ export default class AccountService {
   private url = `api/account`;
 
   async retrieveAccountFromServer(): Promise<User> {
+    console.log('retrieveAccountFromServer');
     const headers = this.buildHeaders();
     const response = await fetch(this.url, { headers });
     if (response.status === 401) {
@@ -34,7 +35,6 @@ export default class AccountService {
     }
     headers.append(CONTENT_TYPE, contentType);
     const accessToken = this.authStore.accessToken?.token;
-    console.log('accessToken in buildHeaders', accessToken);
     if (accessToken) {
       headers.append('Authorization', `Bearer ${accessToken}`);
     }

@@ -1,8 +1,7 @@
+import Cookies from 'js-cookie';
 import type { AuthStore } from '@/stores';
 import type { LoginRequest } from '@/authentication/domain/LoginRequest';
 import type { AccessToken } from '@/authentication/domain/AccessToken';
-import Cookies from 'js-cookie';
-
 const CONTENT_TYPE: string = 'Content-Type';
 export default class LoginService {
   constructor(private authStore: AuthStore) {}
@@ -18,9 +17,7 @@ export default class LoginService {
       body: JSON.stringify(loginRequest),
     };
     const response = await fetch(this.url, options);
-    console.log('response', response);
     const accessToken: AccessToken = await response.json();
-    console.log('accessToken', accessToken);
     await this.authStore.setAccessToken(accessToken, rememberMe);
   }
 

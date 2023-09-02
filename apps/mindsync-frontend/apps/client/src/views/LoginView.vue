@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
-import LoginService from '@/authentication/LoginService';
-import type AccountService from '@/authentication/AccountService';
+import LoginService from '@/authentication/application/LoginService';
+import type AccountService from '@/authentication/application/AccountService';
 import { useVuelidate } from '@vuelidate/core';
 import { email, minLength, required } from '@vuelidate/validators';
 import router from '@/router';
@@ -17,7 +17,6 @@ const loginService = inject<LoginService>('loginService');
 const accountService = inject<AccountService>('accountService');
 
 const updateUserIdentity = () => {
-  console.log('Updating user identity');
   accountService
     ?.retrieveAccountFromServer()
     .then((account) => {
@@ -33,11 +32,7 @@ const updateUserIdentity = () => {
 };
 
 onMounted(async () => {
-  console.log('Checking if user is authenticated');
   if (await loginService?.isAuthenticated()) {
-    console.log(
-      `User is already authenticated, redirecting to home page ${loginService?.isAuthenticated()}`
-    );
     updateUserIdentity();
   }
 });

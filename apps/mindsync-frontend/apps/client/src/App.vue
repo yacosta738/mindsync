@@ -2,9 +2,9 @@
 import { onMounted, provide, shallowRef, type Component } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useAuthStore } from '@/stores';
-import LoginService from '@/authentication/LoginService';
-import AccountService from '@/authentication/AccountService';
-import RefreshTokenService from '@/authentication/RefreshTokenService';
+import LoginService from '@/authentication/application/LoginService';
+import AccountService from '@/authentication/application/AccountService';
+import RefreshTokenService from '@/authentication/application/RefreshTokenService';
 import Layouts from '@templates/Layouts';
 import router from '@/router';
 
@@ -23,11 +23,7 @@ router.afterEach((to) => {
 provide('app:layout', layout);
 
 onMounted(() => {
-  console.log('Checking if user is authenticated');
   if (authStore.isAuthenticated) {
-    console.log(
-      `User is already authenticated, redirecting to home page ${authStore.isAuthenticated}`
-    );
     accountService.retrieveAccountFromServer().then((account) => {
       if (account) {
         router.push(authStore.url || '/');
@@ -44,22 +40,17 @@ router.beforeResolve(async (to, from, next) => {
     return;
   }
   if (!authStore.isAuthenticated) {
-    console.log('User is not authenticated, redirecting to login page');
     await authStore.authenticate(to.fullPath);
   } else {
-    console.log('User is authenticated, proceeding to requested page');
     accountService.retrieveAccountFromServer().then((account) => {
       if (account) {
-        console.log('User is authenticated, proceeding to requested page');
         next();
       } else {
-        console.log('User is not authenticated, redirecting to login page');
         authStore.authenticate(to.fullPath);
       }
     });
   }
   if (to.meta?.authorities && to.meta.authorities.length > 0) {
-    console.log('Checking authorities', to.meta.authorities);
     if (!(await authStore.hasAnyAuthority(to.meta.authorities))) {
       await router.push({ name: 'forbidden' });
     }

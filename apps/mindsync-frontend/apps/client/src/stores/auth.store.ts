@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
-// eslint-disable-next-line import/extensions
 import router from '@/router';
 import type { AccessToken } from '@/authentication/domain/AccessToken';
-import type { SecureTokenRepository } from '@/utils/AuthTokenStorage';
-import { OAuthTokenManager } from '@/utils/AuthTokenStorage';
+import type { SecureTokenRepository } from '@/authentication/infrastructure/AuthTokenStorage';
+import { OAuthTokenManager } from '@/authentication/infrastructure/AuthTokenStorage';
 import type User from '@/authentication/domain/User';
 
 export type AuthStore = ReturnType<typeof useAuthStore>;
@@ -61,7 +60,6 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async setAccessToken(accessToken: AccessToken, rememberMe = true) {
-      console.log('setAccessToken called in AuthStore: ', accessToken);
       try {
         // update pinia state
         this.token = accessToken;
@@ -79,7 +77,6 @@ export const useAuthStore = defineStore({
     },
     async setIdentity(user: User) {
       try {
-        console.log(`setIdentity called in AuthStore: ${user}`);
         this.userIdentity = user;
       } catch (error) {
         console.error(error);
@@ -87,8 +84,6 @@ export const useAuthStore = defineStore({
     },
     async hasAnyAuthority(authorities: string[]) {
       try {
-        console.log('hasAnyAuthority called in AuthStore: ', authorities);
-        console.log('userIdentity: ', this.userIdentity);
         return this.userIdentity?.authorities.some((authority) =>
           authorities.includes(authority)
         );
@@ -98,7 +93,6 @@ export const useAuthStore = defineStore({
     },
     async authenticate(returnUrl?: string) {
       try {
-        console.log(`Authenticating user... and redirecting to ${returnUrl}`);
         this.returnUrl = returnUrl || '/';
         await router.push({ name: 'login' });
       } catch (error) {
@@ -107,7 +101,6 @@ export const useAuthStore = defineStore({
     },
     async logout() {
       try {
-        console.log('Logging out user...');
         this.token = null;
         this.userIdentity = null;
         this.returnUrl = '/';
