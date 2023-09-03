@@ -31,14 +31,17 @@ const getStoredToken = async (): Promise<AccessToken | null> => {
   }
   return null;
 };
+
 export interface AccountStateStorable {
   token?: AccessToken | null;
+  rememberMe?: boolean;
   userIdentity?: User | null;
   returnUrl?: string;
 }
 
 export const defaultAccountState: AccountStateStorable = {
   token: await getStoredToken(),
+  rememberMe: false,
   userIdentity: null,
   returnUrl: '/',
 };
@@ -57,12 +60,17 @@ export const useAuthStore = defineStore({
         .filter((route) => route.meta.isPublic)
         .map((route) => route.path),
     authorities: (state) => state.userIdentity?.authorities,
+    sessionActive: (state) => state.rememberMe,
   },
   actions: {
-    async setAccessToken(accessToken: AccessToken, rememberMe = true) {
+    async setAccessToken(
+      accessToken: AccessToken,
+      rememberMe = this.sessionActive
+    ) {
       try {
         // update pinia state
         this.token = accessToken;
+        this.rememberMe = rememberMe;
         // store token in local storage
         await storeToken(accessToken, rememberMe);
 
@@ -98,6 +106,9 @@ export const useAuthStore = defineStore({
       } catch (error) {
         console.error(error);
       }
+    },
+    async setSessionActive(sessionActive: boolean) {
+      this.rememberMe = sessionActive;
     },
     async logout() {
       try {

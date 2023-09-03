@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const CONTENT_TYPE: string = 'Content-Type';
 export default class RefreshTokenService {
-  private url = `api/login`;
+  private url = `api/refresh-token`;
 
   constructor(private authStore: AuthStore) {}
 
@@ -23,7 +23,7 @@ export default class RefreshTokenService {
         return;
       }
       const accessToken = await response.json();
-      await this.authStore.setAccessToken(accessToken, true);
+      await this.authStore.setAccessToken(accessToken);
     }
   }
 

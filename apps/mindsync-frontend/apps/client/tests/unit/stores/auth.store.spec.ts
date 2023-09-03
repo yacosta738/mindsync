@@ -89,6 +89,12 @@ describe('auth store', () => {
     expect(authStore.isAuthenticated).toBe(true);
   });
 
+  it('should set session active', async () => {
+    const authStore = useAuthStore();
+    await authStore.setAccessToken(accessToken, true);
+    expect(authStore.sessionActive).toBe(true);
+  });
+
   it('should logout user', async () => {
     const authStore = useAuthStore();
     await authStore.logout();
