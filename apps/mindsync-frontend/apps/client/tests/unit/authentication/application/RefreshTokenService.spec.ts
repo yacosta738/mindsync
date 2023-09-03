@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../../../../src/stores';
 import RefreshTokenService from '../../../../src/authentication/application/RefreshTokenService';
 import { AccessToken } from '../../../../src/authentication/domain/AccessToken';
+import { createAFetchMockResponse } from '../../MockResponse';
 
 const mockAccessToken: AccessToken = {
   token: 'test',
@@ -21,14 +22,19 @@ const mockedRefreshAccessToken = {
 const mockedFetch = vi.fn();
 const headers = new Headers();
 headers.append('Content-Type', 'application/json');
-const createAFetchMockResponse = (status: number, json: AccessToken) => {
-  return {
-    status: status, // Puedes ajustar esto según tus necesidades
-    json: async () => json, // El objeto que devuelve el backend
-  };
-};
 
 const refreshTokenRequest = { refreshToken: mockAccessToken.refreshToken };
+const validateAccessTokenAttributes = (accessToken) => {
+  expect(accessToken).toBeDefined();
+  expect(accessToken?.token).toBe('test');
+  expect(accessToken?.expiresIn).toBe(3600);
+  expect(accessToken?.refreshToken).toBe('token test refresh');
+  expect(accessToken?.refreshExpiresIn).toBe(3600);
+  expect(accessToken?.tokenType).toBe('test');
+  expect(accessToken?.notBeforePolicy).toBe(3600);
+  expect(accessToken?.sessionState).toBe('test');
+  expect(accessToken?.scope).toBe('test');
+};
 
 describe('refresh token service', () => {
   beforeEach(() => {
@@ -40,6 +46,7 @@ describe('refresh token service', () => {
     mockedFetch.mockReset();
     delete globalThis.fetch;
   });
+
   it('should refresh token and store in sessionStore', async () => {
     mockedFetch.mockResolvedValue(
       createAFetchMockResponse(200, mockedRefreshAccessToken)
@@ -57,15 +64,7 @@ describe('refresh token service', () => {
       headers: headers,
     });
     const accessToken = authStore.accessToken;
-    expect(accessToken).toBeDefined();
-    expect(accessToken?.token).toBe('test');
-    expect(accessToken?.expiresIn).toBe(3600);
-    expect(accessToken?.refreshToken).toBe('token test refresh');
-    expect(accessToken?.refreshExpiresIn).toBe(3600);
-    expect(accessToken?.tokenType).toBe('test');
-    expect(accessToken?.notBeforePolicy).toBe(3600);
-    expect(accessToken?.sessionState).toBe('test');
-    expect(accessToken?.scope).toBe('test');
+    validateAccessTokenAttributes(accessToken);
   });
 
   it('should refresh token and store in localStore', async () => {
@@ -87,15 +86,7 @@ describe('refresh token service', () => {
       headers: headers,
     });
     const accessToken = authStore.accessToken;
-    expect(accessToken).toBeDefined();
-    expect(accessToken?.token).toBe('test');
-    expect(accessToken?.expiresIn).toBe(3600);
-    expect(accessToken?.refreshToken).toBe('token test refresh');
-    expect(accessToken?.refreshExpiresIn).toBe(3600);
-    expect(accessToken?.tokenType).toBe('test');
-    expect(accessToken?.notBeforePolicy).toBe(3600);
-    expect(accessToken?.sessionState).toBe('test');
-    expect(accessToken?.scope).toBe('test');
+    validateAccessTokenAttributes(accessToken);
   });
 
   it('should not refresh token if refreshToken is not defined', async () => {

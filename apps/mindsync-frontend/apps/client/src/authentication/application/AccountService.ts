@@ -13,7 +13,6 @@ export default class AccountService {
   private url = `api/account`;
 
   async retrieveAccountFromServer(): Promise<User> {
-    console.log('retrieveAccountFromServer');
     const headers = this.buildHeaders();
     const response = await fetch(this.url, { headers });
     if (response.status === 401) {
