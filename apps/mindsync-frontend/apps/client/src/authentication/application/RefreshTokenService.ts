@@ -18,7 +18,11 @@ export default class RefreshTokenService {
         body: JSON.stringify({ refreshToken }),
       };
       const response = await fetch(this.url, options);
-      if (response.status === 401) {
+      if (
+        response.status === 400 ||
+        response.status === 401 ||
+        response.status === 403
+      ) {
         await this.authStore.logout();
         return;
       }

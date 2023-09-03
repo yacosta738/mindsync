@@ -15,11 +15,16 @@ export default class AccountService {
   async retrieveAccountFromServer(): Promise<User> {
     const headers = this.buildHeaders();
     const response = await fetch(this.url, { headers });
-    if (response.status === 401) {
+    if (response?.status === 401) {
       await this.refreshTokenService.refreshToken();
       return this.retrieveAccountFromServer();
     }
-    const user = await response.json();
+    if (response?.status === 400) {
+      this.authStore.logout().finally(() => {
+        Promise.reject('Invalid refresh token');
+      });
+    }
+    const user = await response?.json();
     await this.authStore.setIdentity(user);
     return user;
   }

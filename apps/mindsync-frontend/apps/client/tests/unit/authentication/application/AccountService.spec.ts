@@ -100,4 +100,38 @@ describe('account service', () => {
     validateUserAttributes(user);
     validateUserAttributes(userIdentity);
   });
+
+  it('should retrieve account from server with refresh token and logout', async () => {
+    mockedFetch
+      .mockResolvedValueOnce(createAFetchMockResponse(401, null))
+      .mockResolvedValueOnce(
+        createAFetchMockResponse(400, {
+          type: 'https://mindsync.io/errors/bad-request',
+          title: 'Bad request',
+          status: 400,
+          detail: 'Could not refresh access token',
+          instance: '/api/refresh-token',
+          errorCategory: 'BAD_REQUEST',
+          timestamp: 1693774321,
+        })
+      );
+
+    const authStore = useAuthStore();
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    const loginService: AccountService = new AccountService(
+      authStore,
+      refreshTokenService
+    );
+    await authStore.setAccessToken(mockAccessToken);
+    await loginService.retrieveAccountFromServer();
+    expect(mockedFetch).toHaveBeenCalledWith('api/refresh-token', {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken: mockAccessToken.refreshToken }),
+      headers: headers,
+    });
+    const userIdentity = authStore.userIdentity;
+    expect(userIdentity).toBeUndefined();
+  });
 });

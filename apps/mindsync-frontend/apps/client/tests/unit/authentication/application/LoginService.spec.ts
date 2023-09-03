@@ -23,7 +23,7 @@ headers.append('Content-Type', 'application/json');
 
 const loginRequest: LoginRequest = { username: 'test', password: 'test' };
 
-const validateAccessTokenAttributes = (accessToken) => {
+const validateAccessTokenAttributes = (accessToken: AccessToken) => {
   expect(accessToken).toBeDefined();
   expect(accessToken?.token).toBe('test');
   expect(accessToken?.expiresIn).toBe(3600);

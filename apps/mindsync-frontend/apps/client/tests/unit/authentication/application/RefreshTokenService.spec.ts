@@ -24,7 +24,7 @@ const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 
 const refreshTokenRequest = { refreshToken: mockAccessToken.refreshToken };
-const validateAccessTokenAttributes = (accessToken) => {
+const validateAccessTokenAttributes = (accessToken: AccessToken) => {
   expect(accessToken).toBeDefined();
   expect(accessToken?.token).toBe('test');
   expect(accessToken?.expiresIn).toBe(3600);
@@ -119,11 +119,67 @@ describe('refresh token service', () => {
     expect(accessToken).toBeNull();
   });
 
-  it('should logout if refresh token fails and session is active', async () => {
+  it('should logout if refresh token fails (401) and session is active', async () => {
     mockedFetch.mockResolvedValue(createAFetchMockResponse(401, null));
 
     const authStore = useAuthStore();
     await authStore.setSessionActive(true);
+    await authStore.setAccessToken(mockAccessToken);
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    await refreshTokenService.refreshToken();
+    expect(mockedFetch).toHaveBeenCalledWith('api/refresh-token', {
+      method: 'POST',
+      body: JSON.stringify(refreshTokenRequest),
+      headers: headers,
+    });
+    const accessToken = authStore.accessToken;
+    expect(accessToken).toBeNull();
+  });
+
+  it('should logout if refresh token fails (400)', async () => {
+    mockedFetch.mockResolvedValue(
+      createAFetchMockResponse(400, {
+        type: 'https://mindsync.io/errors/bad-request',
+        title: 'Bad request',
+        status: 400,
+        detail: 'Could not refresh access token',
+        instance: '/api/refresh-token',
+        errorCategory: 'BAD_REQUEST',
+        timestamp: 1693774321,
+      })
+    );
+
+    const authStore = useAuthStore();
+    await authStore.setAccessToken(mockAccessToken);
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    await refreshTokenService.refreshToken();
+    expect(mockedFetch).toHaveBeenCalledWith('api/refresh-token', {
+      method: 'POST',
+      body: JSON.stringify(refreshTokenRequest),
+      headers: headers,
+    });
+    const accessToken = authStore.accessToken;
+    expect(accessToken).toBeNull();
+  });
+
+  it('should logout if refresh token fails (403)', async () => {
+    mockedFetch.mockResolvedValue(
+      createAFetchMockResponse(403, {
+        type: 'https://mindsync.io/errors/forbidden',
+        title: 'Forbidden',
+        status: 403,
+        detail: 'Could not refresh access token',
+        instance: '/api/refresh-token',
+        errorCategory: 'FORBIDDEN',
+        timestamp: 1693774321,
+      })
+    );
+
+    const authStore = useAuthStore();
     await authStore.setAccessToken(mockAccessToken);
     const refreshTokenService: RefreshTokenService = new RefreshTokenService(
       authStore
