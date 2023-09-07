@@ -9,14 +9,21 @@ import RefreshTokenService from '../../../src/authentication/application/Refresh
 import { createAFetchMockResponse } from '../ResponseMocks';
 import { AccessToken } from '../../../src/authentication/domain/AccessToken';
 import { LoginRequest } from '../../../src/authentication/domain/LoginRequest';
+import { compareUserAttributes, createMockUser } from '../UserMocks';
+import { createMockAccessToken } from '../AccessTokenMocks';
 
 let loginService: LoginService;
 let accountService: AccountService;
 const mockedFetch = vi.fn();
+const mockAccessToken: AccessToken = createMockAccessToken();
+const user = createMockUser();
+let headers: Headers;
 
 describe('LoginView', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    headers = new Headers();
+    headers.append('Content-Type', 'application/json');
     global.fetch = mockedFetch;
     mockedFetch.mockReset();
   });
@@ -98,18 +105,6 @@ describe('LoginView', () => {
     });
   });
   it('should call the login service when the form is submitted', () => {
-    const mockAccessToken: AccessToken = {
-      token: 'test',
-      expiresIn: 3600,
-      refreshToken: 'test',
-      refreshExpiresIn: 3600,
-      tokenType: 'test',
-      notBeforePolicy: 3600,
-      sessionState: 'test',
-      scope: 'test',
-    };
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
     mockedFetch.mockResolvedValue(
       createAFetchMockResponse(200, mockAccessToken)
     );
@@ -131,7 +126,7 @@ describe('LoginView', () => {
     wrapper.vm.$nextTick(() => {
       const loginServiceSpy = vi.spyOn(loginService, 'login');
       const loginRequest: LoginRequest = {
-        username: 'test@supercompany.com',
+        username: user.email,
         password: '123456',
       };
       wrapper.find('#email').setValue(loginRequest.username);
@@ -141,6 +136,39 @@ describe('LoginView', () => {
       expect(mockedFetch).toHaveBeenCalledWith('api/login', {
         method: 'POST',
         body: JSON.stringify(loginRequest),
+        headers: headers,
+      });
+    });
+  });
+
+  it('should login and retrieve the account if the user is authenticated', async () => {
+    mockedFetch.mockResolvedValue(createAFetchMockResponse(200, user));
+    const authStore = useAuthStore();
+    await authStore.setAccessToken(mockAccessToken);
+    loginService = new LoginService(authStore);
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    accountService = new AccountService(authStore, refreshTokenService);
+    const wrapper = mount(LoginView, {
+      global: {
+        provide: {
+          authStore: authStore,
+          loginService: loginService,
+          accountService: accountService,
+        },
+      },
+    });
+    await wrapper.vm.$nextTick(() => {
+      const authenticated = authStore.isAuthenticated;
+      expect(authenticated).toBeTruthy();
+      // wait for the account to be retrieved from the server (after login component is mounted)
+      setTimeout(() => {
+        const userIdentity = authStore.userIdentity;
+        compareUserAttributes(userIdentity, user);
+      }, 1000);
+      headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
+      expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {
         headers: headers,
       });
     });

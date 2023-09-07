@@ -7,7 +7,7 @@ import { createAFetchMockResponse } from '../../ResponseMocks';
 import RefreshTokenService from '../../../../src/authentication/application/RefreshTokenService';
 import User from '../../../../src/authentication/domain/User';
 import { createMockAccessToken } from '../../AccessTokenMocks';
-import { createMockUser, validateUserAttributes } from '../../UserMocks';
+import { createMockUser, compareUserAttributes } from '../../UserMocks';
 
 const mockAccessToken: AccessToken = createMockAccessToken();
 
@@ -44,8 +44,8 @@ describe('account service', () => {
       headers: headers,
     });
     const userIdentity = authStore.userIdentity;
-    validateUserAttributes(user);
-    validateUserAttributes(userIdentity);
+    compareUserAttributes(user);
+    compareUserAttributes(userIdentity);
   });
 
   it('should retrieve account from server with refresh token', async () => {
@@ -70,8 +70,8 @@ describe('account service', () => {
       headers: headers,
     });
     const userIdentity = authStore.userIdentity;
-    validateUserAttributes(user);
-    validateUserAttributes(userIdentity);
+    compareUserAttributes(user);
+    compareUserAttributes(userIdentity);
   });
 
   it('should retrieve account from server with refresh token and logout', async () => {

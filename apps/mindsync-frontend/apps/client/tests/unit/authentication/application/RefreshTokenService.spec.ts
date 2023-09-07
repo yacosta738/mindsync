@@ -48,7 +48,7 @@ describe('refresh token service', () => {
       headers: headers,
     });
     const accessToken = authStore.accessToken;
-    validateAccessTokenAttributes(accessToken);
+    validateAccessTokenAttributes(accessToken, mockedRefreshAccessToken);
   });
 
   it('should refresh token and store in localStore', async () => {
@@ -70,7 +70,7 @@ describe('refresh token service', () => {
       headers: headers,
     });
     const accessToken = authStore.accessToken;
-    validateAccessTokenAttributes(accessToken);
+    validateAccessTokenAttributes(accessToken, mockedRefreshAccessToken);
   });
 
   it('should not refresh token if refreshToken is not defined', async () => {

@@ -1,16 +1,36 @@
 import { expect } from 'vitest';
 import { AccessToken } from '../../src/authentication/domain/AccessToken';
 
-export const validateAccessTokenAttributes = (accessToken: AccessToken) => {
+export const validateAccessTokenAttributes = (
+  accessToken: AccessToken,
+  expectedAccessTokenValues: AccessToken = {
+    token: 'test',
+    expiresIn: 3600,
+    refreshToken: 'test',
+    refreshExpiresIn: 3600,
+    tokenType: 'test',
+    notBeforePolicy: 3600,
+    sessionState: 'test',
+    scope: 'test',
+  }
+) => {
   expect(accessToken).toBeDefined();
-  expect(accessToken?.token).toBe('test');
-  expect(accessToken?.expiresIn).toBe(3600);
-  expect(accessToken?.refreshToken).toBe('test');
-  expect(accessToken?.refreshExpiresIn).toBe(3600);
-  expect(accessToken?.tokenType).toBe('test');
-  expect(accessToken?.notBeforePolicy).toBe(3600);
-  expect(accessToken?.sessionState).toBe('test');
-  expect(accessToken?.scope).toBe('test');
+  expect(accessToken?.token).toBe(expectedAccessTokenValues?.token);
+  expect(accessToken?.expiresIn).toBe(expectedAccessTokenValues?.expiresIn);
+  expect(accessToken?.refreshToken).toBe(
+    expectedAccessTokenValues?.refreshToken
+  );
+  expect(accessToken?.refreshExpiresIn).toBe(
+    expectedAccessTokenValues?.refreshExpiresIn
+  );
+  expect(accessToken?.tokenType).toBe(expectedAccessTokenValues?.tokenType);
+  expect(accessToken?.notBeforePolicy).toBe(
+    expectedAccessTokenValues?.notBeforePolicy
+  );
+  expect(accessToken?.sessionState).toBe(
+    expectedAccessTokenValues?.sessionState
+  );
+  expect(accessToken?.scope).toBe(expectedAccessTokenValues?.scope);
 };
 
 export const createMockAccessToken = (

@@ -2,16 +2,30 @@ import { expect } from 'vitest';
 import User from '../../src/authentication/domain/User';
 import { Authority } from '../../src/authentication/domain/Authority';
 
-export const validateUserAttributes = (user: User) => {
-  expect(user).toBeDefined();
-  expect(user.id).toBe('test');
-  expect(user.username).toBe('test');
-  expect(user.email).toBe('test@gmail.com');
-  expect(user.firstName).toBe('test');
-  expect(user.lastName).toBe('test');
-  expect(user.authorities).toBeDefined();
-  expect(user.authorities.length).toBe(1);
-  expect(user.authorities[0]).toBe(Authority.USER);
+export const compareUserAttributes = (
+  primaryUser: User,
+  comparisonUser: User = {
+    id: 'test',
+    username: 'test',
+    email: 'test@gmail.com',
+    firstName: 'test',
+    lastName: 'test',
+    authorities: [Authority.USER],
+  }
+) => {
+  expect(primaryUser).toBeDefined();
+  expect(primaryUser.id).toBe(comparisonUser.id);
+  expect(primaryUser.username).toBe(comparisonUser.username);
+  expect(primaryUser.email).toBe(comparisonUser.email);
+  expect(primaryUser.firstName).toBe(comparisonUser.firstName);
+  expect(primaryUser.lastName).toBe(comparisonUser.lastName);
+  expect(primaryUser.authorities).toBeDefined();
+  expect(primaryUser.authorities.length).toBe(
+    comparisonUser.authorities.length
+  );
+  primaryUser.authorities.forEach((authority, index) => {
+    expect(authority).toBe(comparisonUser.authorities[index]);
+  });
 };
 
 export const createMockUser = (
