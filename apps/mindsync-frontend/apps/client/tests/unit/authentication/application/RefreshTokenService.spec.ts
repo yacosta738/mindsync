@@ -3,18 +3,13 @@ import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../../../../src/stores';
 import RefreshTokenService from '../../../../src/authentication/application/RefreshTokenService';
 import { AccessToken } from '../../../../src/authentication/domain/AccessToken';
-import { createAFetchMockResponse } from '../../MockResponse';
+import { createAFetchMockResponse } from '../../ResponseMocks';
+import {
+  createMockAccessToken,
+  validateAccessTokenAttributes,
+} from '../../AccessTokenMocks';
 
-const mockAccessToken: AccessToken = {
-  token: 'test',
-  expiresIn: 3600,
-  refreshToken: 'test',
-  refreshExpiresIn: 3600,
-  tokenType: 'test',
-  notBeforePolicy: 3600,
-  sessionState: 'test',
-  scope: 'test',
-};
+const mockAccessToken: AccessToken = createMockAccessToken();
 const mockedRefreshAccessToken = {
   ...mockAccessToken,
   refreshToken: 'token test refresh',
@@ -24,17 +19,6 @@ const headers = new Headers();
 headers.append('Content-Type', 'application/json');
 
 const refreshTokenRequest = { refreshToken: mockAccessToken.refreshToken };
-const validateAccessTokenAttributes = (accessToken: AccessToken) => {
-  expect(accessToken).toBeDefined();
-  expect(accessToken?.token).toBe('test');
-  expect(accessToken?.expiresIn).toBe(3600);
-  expect(accessToken?.refreshToken).toBe('token test refresh');
-  expect(accessToken?.refreshExpiresIn).toBe(3600);
-  expect(accessToken?.tokenType).toBe('test');
-  expect(accessToken?.notBeforePolicy).toBe(3600);
-  expect(accessToken?.sessionState).toBe('test');
-  expect(accessToken?.scope).toBe('test');
-};
 
 describe('refresh token service', () => {
   beforeEach(() => {

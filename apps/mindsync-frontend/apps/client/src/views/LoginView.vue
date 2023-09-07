@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref, computed } from 'vue';
 import type { Ref } from 'vue';
 import LoginService from '@/authentication/application/LoginService';
 import type AccountService from '@/authentication/application/AccountService';
-import { useVuelidate } from '@vuelidate/core';
-import { email, minLength, required } from '@vuelidate/validators';
 import router from '@/router';
 import { type AuthStore, useAuthStore } from '@/stores';
 
 const authStore: AuthStore = useAuthStore();
-const emailOrUsername: Ref<string> = ref('');
+const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 const rememberMe: Ref<boolean> = ref(false);
 
@@ -36,26 +34,24 @@ onMounted(async () => {
     updateUserIdentity();
   }
 });
-const rules = {
-  emailOrUsername: {
-    required,
-    email,
-  },
-  password: {
-    required,
-    minLength: minLength(8),
-  },
-};
 
-const v$ = useVuelidate(rules, { emailOrUsername, password });
+const emailRegex =
+  /^(?:[A-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]{2,}(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
+
+const isEmailValid = computed(() => {
+  return emailRegex.test(email.value);
+});
+
+const isPasswordValid = computed(() => {
+  return password.value.length > 0;
+});
 
 const onSubmit = () => {
-  v$.value.$touch();
-  if (v$.value.$error) {
+  if (!isEmailValid.value || !isPasswordValid.value) {
     return;
   }
   loginService
-    ?.login(emailOrUsername.value, password.value, rememberMe.value)
+    ?.login(email.value, password.value, rememberMe.value)
     .then(() => updateUserIdentity())
     .catch((error) => {
       console.log('Error logging in', error);
@@ -88,7 +84,7 @@ const onSubmit = () => {
             Sign in to your account
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="onSubmit">
-            <div :class="{ error: v$.emailOrUsername.$errors.length }">
+            <div id="email-box" :class="{ error: !isEmailValid }">
               <label
                 for="email"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -96,15 +92,22 @@ const onSubmit = () => {
               >
               <input
                 id="email"
-                v-model="emailOrUsername"
+                v-model="email"
                 type="email"
                 name="email"
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 placeholder="name@company.com"
                 required
               />
+              <p
+                v-if="!isEmailValid"
+                id="email-error"
+                class="mt-2 text-xs text-red-600 dark:text-red-400"
+              >
+                The email field must be a valid email
+              </p>
             </div>
-            <div :class="{ error: v$.password.$errors.length }">
+            <div id="password-box" :class="{ error: !isPasswordValid }">
               <label
                 for="password"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -119,6 +122,13 @@ const onSubmit = () => {
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 required
               />
+              <p
+                v-if="!isPasswordValid"
+                id="password-error"
+                class="mt-2 text-xs text-red-600 dark:text-red-400"
+              >
+                The password field must be valid
+              </p>
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-start">
@@ -164,4 +174,8 @@ const onSubmit = () => {
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.error input {
+  border-color: #e53e3e;
+}
+</style>
