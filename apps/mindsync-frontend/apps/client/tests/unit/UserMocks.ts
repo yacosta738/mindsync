@@ -14,13 +14,13 @@ export const compareUserAttributes = (
   }
 ) => {
   expect(primaryUser).toBeDefined();
-  expect(primaryUser.id).toBe(comparisonUser.id);
-  expect(primaryUser.username).toBe(comparisonUser.username);
-  expect(primaryUser.email).toBe(comparisonUser.email);
-  expect(primaryUser.firstName).toBe(comparisonUser.firstName);
-  expect(primaryUser.lastName).toBe(comparisonUser.lastName);
-  expect(primaryUser.authorities).toBeDefined();
-  expect(primaryUser.authorities.length).toBe(
+  expect(primaryUser?.id).toBe(comparisonUser.id);
+  expect(primaryUser?.username).toBe(comparisonUser.username);
+  expect(primaryUser?.email).toBe(comparisonUser.email);
+  expect(primaryUser?.firstName).toBe(comparisonUser.firstName);
+  expect(primaryUser?.lastName).toBe(comparisonUser.lastName);
+  expect(primaryUser?.authorities).toBeDefined();
+  expect(primaryUser?.authorities.length).toBe(
     comparisonUser.authorities.length
   );
   primaryUser.authorities.forEach((authority, index) => {

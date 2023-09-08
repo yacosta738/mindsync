@@ -51,6 +51,7 @@ export const useAuthStore = defineStore({
     ...defaultAccountState,
   }),
   getters: {
+    account: (state) => state.userIdentity,
     accessToken: (state) => state.token,
     url: (state) => state.returnUrl,
     isAuthenticated: (state) => !!state.token,

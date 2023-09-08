@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import LoginView from '@views/LoginView.vue';
@@ -11,6 +11,8 @@ import { AccessToken } from '../../../src/authentication/domain/AccessToken';
 import { LoginRequest } from '../../../src/authentication/domain/LoginRequest';
 import { compareUserAttributes, createMockUser } from '../UserMocks';
 import { createMockAccessToken } from '../AccessTokenMocks';
+import { nextTick } from 'vue';
+import User from '../../../src/authentication/domain/User';
 
 let loginService: LoginService;
 let accountService: AccountService;
@@ -19,7 +21,7 @@ const mockAccessToken: AccessToken = createMockAccessToken();
 const user = createMockUser();
 let headers: Headers;
 
-describe('LoginView', () => {
+describe('Login View Component', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     headers = new Headers();
@@ -159,18 +161,113 @@ describe('LoginView', () => {
         },
       },
     });
-    await wrapper.vm.$nextTick(() => {
-      const authenticated = authStore.isAuthenticated;
-      expect(authenticated).toBeTruthy();
-      // wait for the account to be retrieved from the server (after login component is mounted)
-      setTimeout(() => {
-        const userIdentity = authStore.userIdentity;
-        compareUserAttributes(userIdentity, user);
-      }, 1000);
-      headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
-      expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {
-        headers: headers,
-      });
+    await flushPromises();
+    await nextTick();
+    const authenticated = authStore.isAuthenticated;
+    expect(authenticated).toBeTruthy();
+    const userIdentity: User = authStore.account ?? {
+      id: '',
+      username: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      authorities: [],
+    };
+    compareUserAttributes(userIdentity, user);
+    headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
+    expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {
+      headers: headers,
     });
+    // email and password should be empty after login
+    expect(wrapper.find('#email').text()).toBe('');
+    expect(wrapper.find('#password').text()).toBe('');
+  });
+
+  it('should use the refresh token if the access token is expired', async () => {
+    const expiredAccessToken = createMockAccessToken();
+    expiredAccessToken.expiresIn = 0;
+    mockedFetch
+      .mockResolvedValueOnce(
+        createAFetchMockResponse(401, { message: 'Unauthorized' })
+      )
+      .mockResolvedValueOnce(createAFetchMockResponse(200, expiredAccessToken))
+      .mockResolvedValueOnce(createAFetchMockResponse(200, user));
+    const authStore = useAuthStore();
+    await authStore.setAccessToken(mockAccessToken);
+    loginService = new LoginService(authStore);
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    accountService = new AccountService(authStore, refreshTokenService);
+    const wrapper = mount(LoginView, {
+      global: {
+        provide: {
+          authStore: authStore,
+          loginService: loginService,
+          accountService: accountService,
+        },
+      },
+    });
+
+    await flushPromises();
+    await nextTick();
+    const authenticated = authStore.isAuthenticated;
+    expect(authenticated).toBeTruthy();
+
+    const userIdentity: User = authStore.account ?? {
+      id: '',
+      username: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      authorities: [],
+    };
+    compareUserAttributes(userIdentity, user);
+    headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
+    expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {
+      headers: headers,
+    });
+    // email and password should be empty after login
+    expect(wrapper.find('#email').text()).toBe('');
+    expect(wrapper.find('#password').text()).toBe('');
+  });
+
+  it('should logout if the refresh token is expired', async () => {
+    const expiredAccessToken = createMockAccessToken();
+    expiredAccessToken.expiresIn = 0;
+    mockedFetch
+      .mockResolvedValueOnce(
+        createAFetchMockResponse(401, { message: 'Unauthorized' })
+      )
+      .mockResolvedValueOnce(
+        createAFetchMockResponse(401, { message: 'Unauthorized' })
+      );
+    const authStore = useAuthStore();
+    await authStore.setAccessToken(mockAccessToken);
+    loginService = new LoginService(authStore);
+    const refreshTokenService: RefreshTokenService = new RefreshTokenService(
+      authStore
+    );
+    accountService = new AccountService(authStore, refreshTokenService);
+    const wrapper = mount(LoginView, {
+      global: {
+        provide: {
+          authStore: authStore,
+          loginService: loginService,
+          accountService: accountService,
+        },
+      },
+    });
+
+    await flushPromises();
+    await nextTick();
+    const authenticated = authStore.isAuthenticated;
+    expect(authenticated).toBeFalsy();
+    expect(authStore.accessToken).toBeNull();
+    expect(authStore.account).toBeNull();
+    expect(authStore.rememberMe).toBeFalsy();
+    expect(authStore.returnUrl).toBe('/');
+    expect(wrapper.find('#email').text()).toBe('');
+    expect(wrapper.find('#password').text()).toBe('');
   });
 });
