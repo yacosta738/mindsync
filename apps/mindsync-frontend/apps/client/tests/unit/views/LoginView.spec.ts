@@ -51,7 +51,7 @@ describe('Login View Component', () => {
     });
   });
 
-  it('should validate the email field', () => {
+  it('should validate the email field', async () => {
     const authStore = useAuthStore();
     loginService = new LoginService(authStore);
     const refreshTokenService: RefreshTokenService = new RefreshTokenService(
@@ -67,19 +67,19 @@ describe('Login View Component', () => {
         },
       },
     });
-    wrapper.vm.$nextTick(() => {
-      wrapper.find('#email').setValue('invalid email');
-      wrapper.find('form').trigger('submit');
-      const emailErrorElement = wrapper.find('#email-error');
-      expect(emailErrorElement.exists()).toBeTruthy();
-      expect(emailErrorElement.text()).toBe(
-        'The email field must be a valid email'
-      );
-      expect(wrapper.find('#email-box').classes()).toContain('error');
-    });
+    await nextTick();
+    await wrapper.find('#email').setValue('invalid email');
+    await wrapper.find('#password').setValue('12345678');
+    await wrapper.find('form').trigger('submit');
+    const emailErrorElement = wrapper.find('#email-error');
+    expect(emailErrorElement.exists()).toBeTruthy();
+    expect(emailErrorElement.text()).toBe(
+      'The email field must be a valid email'
+    );
+    expect(wrapper.find('#email-box').classes()).toContain('error');
   });
 
-  it('should validate the password field', () => {
+  it('should validate the password field', async () => {
     const authStore = useAuthStore();
     loginService = new LoginService(authStore);
     const refreshTokenService: RefreshTokenService = new RefreshTokenService(
@@ -95,17 +95,18 @@ describe('Login View Component', () => {
         },
       },
     });
-    wrapper.vm.$nextTick(() => {
-      wrapper.find('#password').setValue('123');
-      wrapper.find('form').trigger('submit');
-      const passwordErrorElement = wrapper.find('#password-error');
-      expect(passwordErrorElement.exists()).toBeTruthy();
-      expect(passwordErrorElement.text()).toBe(
-        'The password field must be valid'
-      );
-      expect(wrapper.find('#password-box').classes()).toContain('error');
-    });
+    await nextTick();
+    await wrapper.find('#email').setValue('test@test.com');
+    await wrapper.find('#password').setValue('123');
+    await wrapper.find('form').trigger('submit');
+    const passwordErrorElement = wrapper.find('#password-error');
+    expect(passwordErrorElement.exists()).toBeTruthy();
+    expect(passwordErrorElement.text()).toBe(
+      'The password field must be valid'
+    );
+    expect(wrapper.find('#password-box').classes()).toContain('error');
   });
+
   it('should call the login service when the form is submitted', () => {
     mockedFetch.mockResolvedValue(
       createAFetchMockResponse(200, mockAccessToken)

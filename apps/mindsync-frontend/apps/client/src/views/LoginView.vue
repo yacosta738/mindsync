@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, computed } from 'vue';
+import { inject, onMounted, ref, computed, watch } from 'vue';
 import type { Ref } from 'vue';
 import LoginService from '@/authentication/application/LoginService';
 import type AccountService from '@/authentication/application/AccountService';
@@ -14,6 +14,7 @@ const rememberMe: Ref<boolean> = ref(false);
 const loginService = inject<LoginService>('loginService');
 const accountService = inject<AccountService>('accountService');
 
+const errors = ref<{ [key: string]: string }>({});
 const updateUserIdentity = () => {
   accountService
     ?.retrieveAccountFromServer()
@@ -38,16 +39,42 @@ onMounted(async () => {
 const emailRegex =
   /^(?:[A-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]{2,}(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
 
-const isEmailValid = computed(() => {
-  return emailRegex.test(email.value);
+const validateEmail = (email: string) => {
+  if (!emailRegex.test(email)) {
+    errors.value.email = 'The email field must be a valid email';
+  } else {
+    delete errors.value.email;
+  }
+};
+
+watch(email, (value, _, onCleanup) => {
+  email.value = value;
+  validateEmail(email.value);
+  onCleanup(() => {
+    delete errors.value.email;
+  });
 });
 
-const isPasswordValid = computed(() => {
-  return password.value.length > 0;
+const MIN_PASSWORD_LENGTH = 8;
+
+const validatePassword = (password: string) => {
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    errors.value.password = 'The password field must be valid';
+  } else {
+    delete errors.value.password;
+  }
+};
+
+watch(password, (value, _, onCleanup) => {
+  password.value = value;
+  validatePassword(password.value);
+  onCleanup(() => {
+    delete errors.value.password;
+  });
 });
 
 const onSubmit = () => {
-  if (!isEmailValid.value || !isPasswordValid.value) {
+  if (Object.keys(errors.value).length > 0) {
     return;
   }
   loginService
@@ -84,7 +111,7 @@ const onSubmit = () => {
             Sign in to your account
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="onSubmit">
-            <div id="email-box" :class="{ error: !isEmailValid }">
+            <div id="email-box" :class="{ error: errors.email }">
               <label
                 for="email"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -93,6 +120,7 @@ const onSubmit = () => {
               <input
                 id="email"
                 v-model="email"
+                @blur="validateEmail(email)"
                 type="email"
                 name="email"
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
@@ -100,14 +128,14 @@ const onSubmit = () => {
                 required
               />
               <p
-                v-if="!isEmailValid"
+                v-if="errors.email"
                 id="email-error"
                 class="mt-2 text-xs text-red-600 dark:text-red-400"
               >
-                The email field must be a valid email
+                {{ errors.email }}
               </p>
             </div>
-            <div id="password-box" :class="{ error: !isPasswordValid }">
+            <div id="password-box" :class="{ error: errors.password }">
               <label
                 for="password"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -123,11 +151,11 @@ const onSubmit = () => {
                 required
               />
               <p
-                v-if="!isPasswordValid"
+                v-if="errors.password"
                 id="password-error"
                 class="mt-2 text-xs text-red-600 dark:text-red-400"
               >
-                The password field must be valid
+                {{ errors.password }}
               </p>
             </div>
             <div class="flex items-center justify-between">
