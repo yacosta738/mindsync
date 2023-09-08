@@ -68,7 +68,10 @@ describe('Login View Component', () => {
       },
     });
     await nextTick();
-    await wrapper.find('#email').setValue('invalid email');
+    const email = wrapper.find('#email');
+    await email.setValue('invalid email');
+    await email.trigger('blur');
+    await email.trigger('focusout');
     await wrapper.find('#password').setValue('12345678');
     await wrapper.find('form').trigger('submit');
     const emailErrorElement = wrapper.find('#email-error');
@@ -97,7 +100,10 @@ describe('Login View Component', () => {
     });
     await nextTick();
     await wrapper.find('#email').setValue('test@test.com');
-    await wrapper.find('#password').setValue('123');
+    const password = wrapper.find('#password');
+    await password.setValue('123');
+    await password.trigger('blur');
+    await password.trigger('focusout');
     await wrapper.find('form').trigger('submit');
     const passwordErrorElement = wrapper.find('#password-error');
     expect(passwordErrorElement.exists()).toBeTruthy();

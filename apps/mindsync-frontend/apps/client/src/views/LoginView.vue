@@ -36,6 +36,18 @@ onMounted(async () => {
   }
 });
 
+const createWatcher = (
+  field: Ref<string>,
+  validator: (value: string) => void
+) => {
+  watch(field, (value, _, onCleanup) => {
+    field.value = value;
+    validator(field.value);
+    onCleanup(() => {
+      delete errors.value[field.value];
+    });
+  });
+};
 const emailRegex =
   /^(?:[A-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]{2,}(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
 
@@ -47,14 +59,6 @@ const validateEmail = (email: string) => {
   }
 };
 
-watch(email, (value, _, onCleanup) => {
-  email.value = value;
-  validateEmail(email.value);
-  onCleanup(() => {
-    delete errors.value.email;
-  });
-});
-
 const MIN_PASSWORD_LENGTH = 8;
 
 const validatePassword = (password: string) => {
@@ -64,14 +68,10 @@ const validatePassword = (password: string) => {
     delete errors.value.password;
   }
 };
-
-watch(password, (value, _, onCleanup) => {
-  password.value = value;
-  validatePassword(password.value);
-  onCleanup(() => {
-    delete errors.value.password;
-  });
-});
+const createValidatorWatcher = () => {
+  createWatcher(email, validateEmail);
+  createWatcher(password, validatePassword);
+};
 
 const onSubmit = () => {
   if (Object.keys(errors.value).length > 0) {
@@ -120,7 +120,8 @@ const onSubmit = () => {
               <input
                 id="email"
                 v-model="email"
-                @blur="validateEmail(email)"
+                @blur="createValidatorWatcher()"
+                @focusout="validateEmail(email)"
                 type="email"
                 name="email"
                 class="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
@@ -144,6 +145,8 @@ const onSubmit = () => {
               <input
                 id="password"
                 v-model="password"
+                @blur="createValidatorWatcher()"
+                @focusout="validatePassword(password)"
                 type="password"
                 name="password"
                 placeholder="••••••••"
