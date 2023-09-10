@@ -16,7 +16,7 @@ class HealthcheckControllerAcceptanceTest {
 
     @Test
     fun `should successfully access healthcheck`() {
-        webTestClient.get().uri("/health-check")
+        webTestClient.get().uri("/api/health-check")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)

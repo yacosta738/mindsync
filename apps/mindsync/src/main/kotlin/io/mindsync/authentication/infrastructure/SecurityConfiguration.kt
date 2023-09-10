@@ -158,7 +158,7 @@ class SecurityConfiguration(
         auth
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
-            .pathMatchers("/health-check").permitAll()
+            .pathMatchers("/api/health-check").permitAll()
             .pathMatchers("/api/register").permitAll()
             .pathMatchers("/api/refresh-token").permitAll()
             .pathMatchers("/api/login").permitAll()

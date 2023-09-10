@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, provide, shallowRef, type Component } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
-import { useAuthStore } from '@/stores';
+import { useAuthStore, useXsrfTokenStore } from '@/stores';
 import LoginService from '@/authentication/application/LoginService';
 import AccountService from '@/authentication/application/AccountService';
 import RefreshTokenService from '@/authentication/application/RefreshTokenService';
@@ -9,6 +9,7 @@ import Layouts from '@templates/Layouts';
 import router from '@/router';
 
 const authStore = useAuthStore();
+const xsrfTokenStore = useXsrfTokenStore();
 provide('loginService', new LoginService(authStore));
 const refreshTokenService = new RefreshTokenService(authStore);
 provide('refreshTokenService', refreshTokenService);
@@ -23,6 +24,7 @@ router.afterEach((to) => {
 provide('app:layout', layout);
 
 onMounted(() => {
+  xsrfTokenStore.init();
   if (authStore.isAuthenticated) {
     accountService.retrieveAccountFromServer().then((account) => {
       if (account) {

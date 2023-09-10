@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('tests internationalization landing page', async ({ page }) => {
   await page.goto('http://localhost:3000/');
   await page.locator('#theme-toggle').click();
   await expect(

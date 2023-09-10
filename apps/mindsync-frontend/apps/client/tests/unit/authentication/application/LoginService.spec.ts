@@ -21,7 +21,6 @@ describe('login service', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     global.fetch = mockedFetch;
-    mockedFetch.mockReset();
   });
   afterEach(() => {
     mockedFetch.mockReset();
