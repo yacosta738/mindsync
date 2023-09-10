@@ -2,7 +2,7 @@
 kotlin = "1.9.0"
 kotlinCoroutines = "1.7.3"
 kotlin-reflect = "1.9.0"
-springBoot = "3.1.2"
+springBoot = "3.1.3"
 dokka = "1.8.20"
 detekt = "1.23.1"
 arrow = "1.2.0"
@@ -15,7 +15,7 @@ reactor = "3.5.9"
 kotest = "5.6.2"
 rest-assured = "5.3.1"
 cucumber = "7.13.0"
-testcontainers = "1.18.3"
+testcontainers = "1.19.0"
 testcontainers-keycloak = "3.0.0"
 jsonwebtoken = "0.11.5"
 owasp = "8.4.0"
@@ -55,6 +55,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 keycloak-admin-client = { module = "org.keycloak:keycloak-admin-client", version.ref = "keycloak-admin-client" }
+keycloak-spring-boot-starter = { module = "org.keycloak:keycloak-spring-boot-starter", version.ref = "keycloak-admin-client" }
 # Utils
 owasp-depcheck = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp" }
 asciidoctor-gradle = { module = "org.asciidoctor:asciidoctor-gradle-jvm", version.ref = "asciidoctor" }
@@ -85,6 +86,7 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonweb
 
 [bundles]
 spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux", "springdoc-openapi-starter-webflux-ui", "springdoc-openapi-starter-webflux-api"]
+keycloak = ["keycloak-spring-boot-starter", "keycloak-admin-client"]
 arrow = ["arrow-core", "arrow-fx-coroutines"]
 kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
 reflections = ["reflections", "kotlin-reflect"]

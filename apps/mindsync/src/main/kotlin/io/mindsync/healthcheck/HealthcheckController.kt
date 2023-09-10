@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono
  * @created 8/7/23
  */
 @RestController
-@RequestMapping("/health-check")
+@RequestMapping("/api")
 class HealthcheckController {
 
     /**
@@ -29,6 +29,6 @@ class HealthcheckController {
         ApiResponse(responseCode = "200", description = "OK"),
         ApiResponse(responseCode = "500", description = "Internal server error")
     )
-    @GetMapping
+    @GetMapping("/health-check")
     fun healthcheck(): Mono<String> = Mono.just("OK")
 }

@@ -1,15 +1,13 @@
 ---
-import pkg from '../../../package.json' assert {type: 'json'};
-
-const appName = pkg.name.toString() ?? 'MindSync';
+import { t } from 'i18next';
 ---
-<a href="/apps/landing-page/public" class="flex">
-    <img
-        src='/favicon.svg'
-        class="h-8 mr-3"
-        alt={`${appName} Logo`}
-    />
-    <span class="uppercase self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-        {appName}
-    </span>
+<a href="/" class="flex">
+	<img
+		src='/favicon.svg'
+		class="h-8 mr-3"
+		alt={`${t('seo.title')} Logo`}
+	/>
+	<span class="uppercase self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+		{t('seo.title')}
+	</span>
 </a>

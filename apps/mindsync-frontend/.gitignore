@@ -1,30 +1,41 @@
-# build output
-build/
-
-tsconfig.tsbuildinfo
-
-# dependencies
-node_modules/
-
-# logs
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# environment variables
-.env
-.env.production
+**/node_modules/
+**/dist/
+node_modules
+dist
+dist-ssr
+*.local
 
-# macOS-specific files
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 
-# misc.
-.dev*
+# Ignore DevSpace cache and log folder
+.devspace/
 
-node/
-.frontend-gradle-plugin/
-/test-results/
-/playwright-report/
-/playwright/.cache/
+# Ignore Frontend gradle plugin
+.frontend-gradle-plugin
+node
+
+# Ignore Playwright Folder
+**/playwright-report/
+**/test-results/
+
+# Ignore Env Files
+.env

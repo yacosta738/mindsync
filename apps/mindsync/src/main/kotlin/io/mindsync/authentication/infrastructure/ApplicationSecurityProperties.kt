@@ -33,6 +33,13 @@ import org.springframework.validation.annotation.Validated
  *      - adminPassword: The admin password for OAuth2 authentication.
  *      - audience: The list of audiences for OAuth2 authentication.
  *
+ * - [CorsProperties]: Configuration properties for CORS.
+ *     - allowedOrigins: The list of allowed origins for CORS.
+ *     - allowedMethods: The list of allowed methods for CORS.
+ *     - allowedHeaders: The list of allowed headers for CORS.
+ *     - exposedHeaders: The list of exposed headers for CORS.
+ *     - allowCredentials: The flag to indicate whether credentials are allowed for CORS.
+ *     - maxAge: The maximum age for CORS.
  * Constants:
  * - [CONTENT_SECURITY_POLICY]: The default Content Security Policy for the application.
  */
@@ -41,6 +48,7 @@ import org.springframework.validation.annotation.Validated
 @ConfigurationProperties(prefix = "application.security", ignoreUnknownFields = false)
 class ApplicationSecurityProperties(
     val oauth2: OAuth2 = OAuth2(),
+    val cors: CorsProperties = CorsProperties(),
     var contentSecurityPolicy: String = CONTENT_SECURITY_POLICY
 ) {
     companion object {
@@ -56,6 +64,15 @@ class ApplicationSecurityProperties(
             var adminUsername: String = "",
             var adminPassword: String = "",
             var audience: MutableList<String> = ArrayList()
+        )
+
+        data class CorsProperties(
+            var allowedOrigins: MutableList<String> = ArrayList(),
+            var allowedMethods: MutableList<String> = ArrayList(),
+            var allowedHeaders: MutableList<String> = ArrayList(),
+            var exposedHeaders: MutableList<String> = ArrayList(),
+            var allowCredentials: Boolean = false,
+            var maxAge: Long = 0
         )
 
         @Suppress("MaxLineLength")

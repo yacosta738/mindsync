@@ -85,6 +85,10 @@ class KeycloakAuthenticatorRepositoryTest {
         } returns keycloakBuilder
 
         every {
+            keycloakBuilder.grantType(any())
+        } returns keycloakBuilder
+
+        every {
             keycloakBuilder.username(any())
         } returns keycloakBuilder
 

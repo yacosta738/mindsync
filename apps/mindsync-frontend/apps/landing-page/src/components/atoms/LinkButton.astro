@@ -1,13 +1,13 @@
 ---
-const {...attributes} = Astro.props
-const {secondary: ButtonVariant, class: className, href,...attrs} = attributes
-const variant = ButtonVariant? 'secondary-button' : 'primary-button'
+const { ...attributes } = Astro.props
+const { secondary: ButtonVariant, class: className, href, ...attrs } = attributes
+const variant = ButtonVariant ? 'secondary-button' : 'primary-button'
 ---
 
 <a
 	href={href}
-    class=`${variant} ${className}`
-	{...attrs}
+    class:list=`${variant} ${className}`
+    {...attrs}
 >
 	<slot/>
 </a>

@@ -5,6 +5,7 @@ import io.mindsync.common.domain.error.BusinessRuleValidationException
 import io.mindsync.event.domain.EventBroadcaster
 import io.mindsync.event.domain.EventPublisher
 import io.mindsync.users.application.command.RegisterUserCommand
+import io.mindsync.users.application.response.UserResponse
 import io.mindsync.users.domain.ApiDataResponse
 import io.mindsync.users.domain.User
 import io.mindsync.users.domain.UserCreator

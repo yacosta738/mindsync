@@ -40,6 +40,7 @@ class UserAuthenticatorController(private val authenticateUserQueryHandler: Auth
     )
     @PostMapping(LOGIN_ROUTE)
     suspend fun login(@Validated @RequestBody loginRequest: LoginRequest): Mono<ResponseEntity<AccessToken>> {
+        log.debug("Logging a user in")
         val (username, password) = loginRequest
         val authenticateUserQuery = AuthenticateUserQuery(username = username, password = password)
         val accessToken = authenticateUserQueryHandler.handle(authenticateUserQuery)
@@ -47,5 +48,6 @@ class UserAuthenticatorController(private val authenticateUserQueryHandler: Auth
     }
     companion object {
         const val LOGIN_ROUTE = "/login"
+        private val log = org.slf4j.LoggerFactory.getLogger(UserAuthenticatorController::class.java)
     }
 }

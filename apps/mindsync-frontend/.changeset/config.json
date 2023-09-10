@@ -1,6 +1,9 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@1.6.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "yacosta738/mindsync" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "yacosta738/mindsync" }
+  ],
   "commit": false,
   "linked": [],
   "access": "restricted",

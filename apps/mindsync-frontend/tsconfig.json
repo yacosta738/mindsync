@@ -1,0 +1,28 @@
+{
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true
+  },
+  "references": [
+    {
+      "path": "apps/client"
+    },
+    {
+      "path": "apps/landing-page"
+    },
+    {
+      "path": "libs/ui-lib"
+    }
+  ]
+}

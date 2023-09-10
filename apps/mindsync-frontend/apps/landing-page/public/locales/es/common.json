@@ -1,33 +1,32 @@
 {
-    "seo": {
-        "title": "Mindsync",
-        "description": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
-        "ogTitle": "Mindsync",
-        "ogImageAlt": "Mindsync"
+  "seo": {
+    "title": "Mindsync",
+    "description": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
+    "ogTitle": "Mindsync",
+    "ogImageAlt": "Mindsync"
+  },
+  "menus": {
+    "about": "Acerca de",
+    "documentation": "Documentación",
+    "download": "Descargar"
+  },
+  "tooltip-toggle": "Cambiar a modo oscuro",
+  "hero": {
+    "title": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
+    "subtitle": "Con MindSync, podrás dar vida a tus ideas en tiempo récord.",
+    "download": "Descargar",
+    "world-graph": {
+      "title": "Desata el potencial de tu mente con nuestro segundo cerebro digital."
     },
-    "menus": {
-        "about": "Acerca de",
-        "documentation": "Documentación",
-        "download": "Descargar"
-      },
-      "tooltip-toggle": "Cambiar a modo oscuro",
-      "hero": {
-        "title": "Segundo cerebro, notas y gestión del conocimiento para usuarios avanzados.",
-        "subtitle": "Con MindSync, podrás dar vida a tus ideas en tiempo récord.",
-        "download": "Descargar",
-        "world-graph": {
-            "title": "Desata el potencial de tu mente con nuestro segundo cerebro digital."
-        },
-        "app-interface": "Imagen Interfaz de la aplicación"
-      },
-      "items-section":{
-          "title": "Cómo MindSync te ayuda en tu día a día"
-      },
-      "banner-section": {
-        "title": "Trabaja rápido desde cualquier lugar",
-        "subtitle": "Mantente actualizado y avanza en tu trabajo con Mindsync en iOS y Android. Descarga la aplicación hoy.",
-        "apple-store": "Descargar en",
-        "google-play": "Obtener en"
-    }
-
+    "app-interface": "Imagen Interfaz de la aplicación"
+  },
+  "items-section": {
+    "title": "Cómo MindSync te ayuda en tu día a día"
+  },
+  "banner-section": {
+    "title": "Trabaja rápido desde cualquier lugar",
+    "subtitle": "Mantente actualizado y avanza en tu trabajo con Mindsync en iOS y Android. Descarga la aplicación hoy.",
+    "apple-store": "Descargar en",
+    "google-play": "Obtener en"
+  }
 }

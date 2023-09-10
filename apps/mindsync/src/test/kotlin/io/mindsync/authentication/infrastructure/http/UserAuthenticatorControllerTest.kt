@@ -77,6 +77,8 @@ class UserAuthenticatorControllerTest {
             .expectStatus().isUnauthorized
             .expectBody()
             .jsonPath("$.title").isEqualTo("User authentication failed")
+            .jsonPath("$.status").isEqualTo(401)
+            .jsonPath("$.detail").isEqualTo("Invalid account. User probably hasn't verified email.")
 
         // Verify
         coVerify { userAuthenticator.authenticate(any(), any()) }
