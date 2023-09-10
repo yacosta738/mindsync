@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^6.4.0",
     "@vitejs/plugin-vue": "latest",
     "@vue/test-utils": "^2.4.1",
-    "astro-eslint-parser": "^0.14.0",
+    "astro-eslint-parser": "^0.15.0",
     "conventional-changelog-cli": "^3.0.0",
     "eslint": "^8.47.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
