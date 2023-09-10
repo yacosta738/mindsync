@@ -3,8 +3,9 @@ package io.mindsync.authentication.application
 import io.kotest.common.runBlocking
 import io.mindsync.authentication.application.query.RefreshTokenQuery
 import io.mindsync.authentication.domain.RefreshTokenManager
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import kotlin.test.Test
 
 class RefreshTokenQueryHandlerTest {
     private val refreshTokenManager: RefreshTokenManager = InMemoryUserAuthenticatorManager()

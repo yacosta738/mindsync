@@ -81,8 +81,9 @@ class SecurityConfiguration(
     }
 
     /**
-     * Returns a [CorsConfigurationSource] object that is configured based on the properties defined in the applicationSecurityProperties.
-     * This method is annotated with @Bean, indicating that it should be treated as a bean and managed by Spring framework.
+     * Returns a [CorsConfigurationSource] object that is configured based on the properties defined in
+     * the applicationSecurityProperties. This method is annotated with @Bean, indicating that it should be
+     * treated as a bean and managed by Spring framework.
      *
      * @return A [CorsConfigurationSource] object that is configured based on the applicationSecurityProperties.
      */

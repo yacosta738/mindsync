@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { Ref, ref } from 'vue';
+import { type Ref, ref } from 'vue';
 
 const route = useRoute();
-const errorMessage: Ref<string> = ref(null);
+const errorMessage: Ref<string | null> = ref('');
 const error403: Ref<boolean> = ref(false);
 const error404: Ref<boolean> = ref(false);
 if (route.meta) {

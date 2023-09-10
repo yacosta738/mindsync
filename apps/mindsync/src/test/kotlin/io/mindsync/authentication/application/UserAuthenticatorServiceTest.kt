@@ -23,7 +23,9 @@ private const val USER = "user"
 @OptIn(ExperimentalCoroutinesApi::class)
 class UserAuthenticatorServiceTest {
     private val inMemoryUserAuthenticatorManager = InMemoryUserAuthenticatorManager()
-    private val userAuthenticatorService: UserAuthenticatorService = UserAuthenticatorService(inMemoryUserAuthenticatorManager)
+    private val userAuthenticatorService: UserAuthenticatorService = UserAuthenticatorService(
+        inMemoryUserAuthenticatorManager
+    )
 
     @BeforeEach
     fun setUp() {

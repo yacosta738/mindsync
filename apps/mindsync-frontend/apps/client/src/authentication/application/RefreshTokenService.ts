@@ -27,7 +27,10 @@ export default class RefreshTokenService {
         return;
       }
       const accessToken = await response.json();
-      await this.authStore.setAccessToken(accessToken);
+      await this.authStore.setAccessToken(
+        accessToken,
+        this.authStore.sessionActive
+      );
     }
   }
 

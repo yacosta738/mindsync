@@ -13,7 +13,6 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import net.datafaker.Faker
-import org.junit.jupiter.api.Assertions.*
 import org.springframework.test.web.reactive.server.WebTestClient
 import kotlin.test.Test
 

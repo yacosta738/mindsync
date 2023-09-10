@@ -62,7 +62,6 @@ abstract class InfrastructureTestContainers {
             null
         }
 
-
     companion object {
         private val log = LoggerFactory.getLogger(InfrastructureTestContainers::class.java)
         private const val ADMIN_USER: String = "admin"

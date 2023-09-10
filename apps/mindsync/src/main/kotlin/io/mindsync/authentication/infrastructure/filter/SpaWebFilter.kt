@@ -6,7 +6,8 @@ import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
 /**
- * [SpaWebFilter] is a filter that forwards any unmapped paths (except those containing a period) to the client `index.html`.
+ * [SpaWebFilter] is a filter that forwards any unmapped paths (except those containing a period)
+ * to the client `index.html`.
  */
 class SpaWebFilter(
     private val excludedPrefixes: List<String> = listOf("/api", "/management", "/v3/api-docs", "/login", "/oauth2")

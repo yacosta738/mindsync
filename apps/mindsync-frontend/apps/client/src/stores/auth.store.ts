@@ -4,6 +4,7 @@ import type { AccessToken } from '@/authentication/domain/AccessToken';
 import type { SecureTokenRepository } from '@/authentication/infrastructure/AuthTokenStorage';
 import { OAuthTokenManager } from '@/authentication/infrastructure/AuthTokenStorage';
 import type User from '@/authentication/domain/User';
+import { state } from 'vue-tsc/out/shared';
 
 export type AuthStore = ReturnType<typeof useAuthStore>;
 
@@ -23,7 +24,7 @@ const storeToken = async (accessToken: AccessToken, rememberMe = true) => {
   }
 };
 
-const getStoredToken = async (): Promise<AccessToken | null> => {
+const getStoredToken = (): AccessToken | null => {
   const token =
     localStorageTokenManager.get() || sessionStorageTokenManager.get();
   if (token) {
@@ -40,7 +41,7 @@ export interface AccountStateStorable {
 }
 
 export const defaultAccountState: AccountStateStorable = {
-  token: await getStoredToken(),
+  token: getStoredToken(),
   rememberMe: false,
   userIdentity: null,
   returnUrl: '/',
@@ -64,10 +65,7 @@ export const useAuthStore = defineStore({
     sessionActive: (state) => state.rememberMe,
   },
   actions: {
-    async setAccessToken(
-      accessToken: AccessToken,
-      rememberMe = this.sessionActive
-    ) {
+    async setAccessToken(accessToken: AccessToken, rememberMe = false) {
       try {
         // update pinia state
         this.token = accessToken;

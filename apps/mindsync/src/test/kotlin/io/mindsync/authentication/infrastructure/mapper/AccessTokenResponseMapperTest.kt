@@ -2,9 +2,10 @@ package io.mindsync.authentication.infrastructure.mapper
 
 import io.mindsync.authentication.infrastructure.mapper.AccessTokenResponseMapper.toAccessToken
 import net.datafaker.Faker
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.keycloak.representations.AccessTokenResponse
+import kotlin.test.Test
 
 class AccessTokenResponseMapperTest {
 

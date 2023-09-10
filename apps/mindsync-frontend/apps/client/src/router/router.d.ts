@@ -8,6 +8,7 @@ declare module 'vue-router' {
     // is optional
     isAdmin?: boolean;
     isPublic?: boolean;
+    errorMessage?: string;
     error403?: boolean;
     error404?: boolean;
     authorities?: string[];

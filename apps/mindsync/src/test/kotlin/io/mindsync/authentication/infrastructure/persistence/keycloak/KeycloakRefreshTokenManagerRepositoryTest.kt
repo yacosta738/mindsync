@@ -29,6 +29,7 @@ private const val CLIENT_ID = "client"
 private const val CLIENT_SECRET = "secret"
 
 @UnitTest
+@Suppress("MaxLineLength")
 class KeycloakRefreshTokenManagerRepositoryTest {
 
     private val faker = Faker()
@@ -108,5 +109,4 @@ class KeycloakRefreshTokenManagerRepositoryTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.statusCode)
     }
-
 }

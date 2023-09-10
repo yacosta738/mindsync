@@ -21,7 +21,8 @@ class AccountResourceService {
      * @param authToken The authentication token. Must be an instance of AbstractAuthenticationToken.
      * @return A Mono containing the user account information as a UserResponse object.
      *         The UserResponse object contains the username, email, firstname, lastname, and authorities of the user.
-     * @throws IllegalArgumentException if the authentication token is not an instance of OAuth2AuthenticationToken or JwtAuthenticationToken.
+     * @throws IllegalArgumentException if the authentication token is not an instance of OAuth2AuthenticationToken
+     * or JwtAuthenticationToken.
      */
     fun getAccount(authToken: AbstractAuthenticationToken): Mono<UserResponse> {
         log.debug("Getting user account information")
