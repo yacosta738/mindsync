@@ -11,7 +11,6 @@ describe('xsrf token store', () => {
   });
   afterEach(() => {
     mockedFetch.mockReset();
-    delete globalThis.fetch;
   });
 
   it('should init and fetch the cookie from the server', async () => {
@@ -28,7 +27,6 @@ describe('xsrf token store', () => {
       credentials: 'include', // Enable cookies in the request
     });
     const xsrfToken = xsrfTokenStore.securityXsrfToken;
-    console.log(xsrfToken);
     expect(xsrfToken).toBe(token);
   });
 });

@@ -10,7 +10,7 @@ export default class RefreshTokenService {
   async refreshToken() {
     const refreshToken = this.authStore.accessToken?.refreshToken;
 
-    if (refreshToken) {
+    if (refreshToken && refreshToken !== '') {
       const headers = this.buildHeaders();
       const options: RequestInit = {
         method: 'POST',
@@ -31,6 +31,8 @@ export default class RefreshTokenService {
         accessToken,
         this.authStore.sessionActive
       );
+    } else {
+      await this.authStore.logout();
     }
   }
 
