@@ -17,10 +17,31 @@ const accountService = new AccountService(authStore, refreshTokenService);
 provide('accountService', accountService);
 
 const layout: Component | string = shallowRef('div');
-router.afterEach((to) => {
+router.beforeResolve(async (to, from, next) => {
   layout.value = Layouts[to.meta.layout] || 'div';
+  const isPublicRoute = to.matched.some((record) => record.meta.isPublic);
+  if (isPublicRoute) {
+    next();
+    return;
+  }
+  if (!authStore.isAuthenticated) {
+    await authStore.authenticate(to.path);
+  } else {
+    accountService.retrieveAccountFromServer().then((account) => {
+      if (account) {
+        next();
+      } else {
+        authStore.authenticate(to.path);
+      }
+    });
+  }
+  if (to.meta?.authorities && to.meta.authorities.length > 0) {
+    if (!(await authStore.hasAnyAuthority(to.meta.authorities))) {
+      await router.push({ name: 'forbidden' });
+    }
+  }
+  next();
 });
-
 provide('app:layout', layout);
 
 onMounted(() => {
@@ -34,30 +55,6 @@ onMounted(() => {
       }
     });
   }
-});
-router.beforeResolve(async (to, from, next) => {
-  const isPublicRoute = to.matched.some((record) => record.meta.isPublic);
-  if (isPublicRoute) {
-    next();
-    return;
-  }
-  if (!authStore.isAuthenticated) {
-    await authStore.authenticate(to.fullPath);
-  } else {
-    accountService.retrieveAccountFromServer().then((account) => {
-      if (account) {
-        next();
-      } else {
-        authStore.authenticate(to.fullPath);
-      }
-    });
-  }
-  if (to.meta?.authorities && to.meta.authorities.length > 0) {
-    if (!(await authStore.hasAnyAuthority(to.meta.authorities))) {
-      await router.push({ name: 'forbidden' });
-    }
-  }
-  next();
 });
 </script>
 

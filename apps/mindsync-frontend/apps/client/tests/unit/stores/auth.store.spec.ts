@@ -4,6 +4,7 @@ import { AccessToken } from '../../../src/authentication/domain/AccessToken';
 import { useAuthStore } from '../../../src/stores';
 import User from '../../../src/authentication/domain/User';
 import { Authority } from '../../../src/authentication/domain/Authority';
+import { createMockUser } from '../UserMocks';
 
 const accessToken: AccessToken = {
   token: 'test',
@@ -25,14 +26,14 @@ describe('auth store', () => {
     const authStore = useAuthStore();
     await authStore.setAccessToken(accessToken);
     const storedToken = authStore.accessToken;
-    expect(storedToken.token).toBe(accessToken.token);
-    expect(storedToken.expiresIn).toBe(accessToken.expiresIn);
-    expect(storedToken.refreshToken).toBe(accessToken.refreshToken);
-    expect(storedToken.refreshExpiresIn).toBe(accessToken.refreshExpiresIn);
-    expect(storedToken.tokenType).toBe(accessToken.tokenType);
-    expect(storedToken.notBeforePolicy).toBe(accessToken.notBeforePolicy);
-    expect(storedToken.sessionState).toBe(accessToken.sessionState);
-    expect(storedToken.scope).toBe(accessToken.scope);
+    expect(storedToken?.token).toBe(accessToken.token);
+    expect(storedToken?.expiresIn).toBe(accessToken.expiresIn);
+    expect(storedToken?.refreshToken).toBe(accessToken.refreshToken);
+    expect(storedToken?.refreshExpiresIn).toBe(accessToken.refreshExpiresIn);
+    expect(storedToken?.tokenType).toBe(accessToken.tokenType);
+    expect(storedToken?.notBeforePolicy).toBe(accessToken.notBeforePolicy);
+    expect(storedToken?.sessionState).toBe(accessToken.sessionState);
+    expect(storedToken?.scope).toBe(accessToken.scope);
   });
 
   it('should set identity', async () => {
@@ -41,18 +42,18 @@ describe('auth store', () => {
       id: 'test',
       username: 'test',
       email: 'test',
-      firstName: 'test',
-      lastName: 'test',
+      firstname: 'test',
+      lastname: 'test',
       authorities: [Authority.USER],
     };
     await authStore.setIdentity(user);
     const storedUser = authStore.userIdentity;
-    expect(storedUser.id).toBe(user.id);
-    expect(storedUser.username).toBe(user.username);
-    expect(storedUser.email).toBe(user.email);
-    expect(storedUser.firstName).toBe(user.firstName);
-    expect(storedUser.lastName).toBe(user.lastName);
-    storedUser.authorities.forEach((authority, index) => {
+    expect(storedUser?.id).toBe(user.id);
+    expect(storedUser?.username).toBe(user.username);
+    expect(storedUser?.email).toBe(user.email);
+    expect(storedUser?.firstname).toBe(user.firstname);
+    expect(storedUser?.lastname).toBe(user.lastname);
+    storedUser?.authorities.forEach((authority: Authority, index: number) => {
       expect(authority).toBe(user.authorities[index]);
     });
   });
@@ -63,8 +64,8 @@ describe('auth store', () => {
       id: 'test',
       username: 'test',
       email: 'test',
-      firstName: 'test',
-      lastName: 'test',
+      firstname: 'test',
+      lastname: 'test',
       authorities: [Authority.USER],
     };
     await authStore.setIdentity(user);
@@ -78,8 +79,8 @@ describe('auth store', () => {
       id: 'test',
       username: 'test',
       email: 'test',
-      firstName: 'test',
-      lastName: 'test',
+      firstname: 'test',
+      lastname: 'test',
       authorities: [Authority.USER],
     };
     await authStore.setIdentity(user);
@@ -97,6 +98,8 @@ describe('auth store', () => {
 
   it('should logout user', async () => {
     const authStore = useAuthStore();
+    await authStore.setAccessToken(accessToken);
+    await authStore.setIdentity(createMockUser());
     await authStore.logout();
     expect(authStore.isAuthenticated).toBe(false);
     expect(authStore.accessToken).toBe(null);

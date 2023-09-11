@@ -1,9 +1,13 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import LayoutStacked from '@/components/templates/LayoutStacked.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 describe('LayoutStacked', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
   it('renders properly', () => {
     const wrapper = mount(LayoutStacked, {
       slots: {

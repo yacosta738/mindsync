@@ -4,7 +4,6 @@ import type { AccessToken } from '@/authentication/domain/AccessToken';
 import type { SecureTokenRepository } from '@/authentication/infrastructure/AuthTokenStorage';
 import { OAuthTokenManager } from '@/authentication/infrastructure/AuthTokenStorage';
 import type User from '@/authentication/domain/User';
-import { state } from 'vue-tsc/out/shared';
 
 export type AuthStore = ReturnType<typeof useAuthStore>;
 
@@ -52,8 +51,8 @@ export const useAuthStore = defineStore({
     ...defaultAccountState,
   }),
   getters: {
-    account: (state) => state.userIdentity,
-    accessToken: (state) => state.token,
+    account: (state): User | null | undefined => state.userIdentity,
+    accessToken: (state): AccessToken | null | undefined => state.token,
     url: (state) => state.returnUrl,
     isAuthenticated: (state) => !!state.token,
     publicApiRoutes: () =>
@@ -111,11 +110,11 @@ export const useAuthStore = defineStore({
     },
     async logout() {
       try {
+        localStorageTokenManager.clear();
+        sessionStorageTokenManager.clear();
         this.token = null;
         this.userIdentity = null;
         this.returnUrl = '/';
-        localStorageTokenManager.clear();
-        sessionStorageTokenManager.clear();
         await router.push({ name: 'login' });
       } catch (error) {
         console.error(error);

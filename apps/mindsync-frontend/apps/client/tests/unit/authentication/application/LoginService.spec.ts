@@ -24,7 +24,6 @@ describe('login service', () => {
   });
   afterEach(() => {
     mockedFetch.mockReset();
-    delete globalThis.fetch;
   });
 
   it('should login and store in sessionStore', async () => {
@@ -40,7 +39,7 @@ describe('login service', () => {
       body: JSON.stringify(loginRequest),
       headers: headers,
     });
-    const accessToken = authStore.accessToken;
+    const accessToken = authStore.accessToken as AccessToken;
     validateAccessTokenAttributes(accessToken);
   });
 
@@ -57,7 +56,7 @@ describe('login service', () => {
       body: JSON.stringify(loginRequest),
       headers: headers,
     });
-    const accessToken = authStore.accessToken;
+    const accessToken = authStore.accessToken as AccessToken;
     validateAccessTokenAttributes(accessToken);
   });
 

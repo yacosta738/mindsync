@@ -25,7 +25,6 @@ describe('account service', () => {
   });
   afterEach(() => {
     mockedFetch.mockReset();
-    delete globalThis.fetch;
   });
 
   it('should retrieve account from server', async () => {
@@ -43,7 +42,7 @@ describe('account service', () => {
     expect(mockedFetch).toHaveBeenCalledWith('api/account', {
       headers: headers,
     });
-    const userIdentity = authStore.userIdentity;
+    const userIdentity = authStore.userIdentity as User;
     compareUserAttributes(user);
     compareUserAttributes(userIdentity);
   });
@@ -69,7 +68,7 @@ describe('account service', () => {
       body: JSON.stringify({ refreshToken: mockAccessToken.refreshToken }),
       headers: headers,
     });
-    const userIdentity = authStore.userIdentity;
+    const userIdentity = authStore.userIdentity as User;
     compareUserAttributes(user);
     compareUserAttributes(userIdentity);
   });

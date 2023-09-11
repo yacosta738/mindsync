@@ -1,9 +1,13 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import NavBarStacked from '@/components/organisms/NavBarStacked.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 describe('NavBarStacked', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
   it('renders properly', () => {
     const wrapper = mount(NavBarStacked);
     const componentText = wrapper.text();

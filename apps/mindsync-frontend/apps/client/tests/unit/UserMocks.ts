@@ -8,8 +8,8 @@ export const compareUserAttributes = (
     id: 'test',
     username: 'test',
     email: 'test@gmail.com',
-    firstName: 'test',
-    lastName: 'test',
+    firstname: 'test',
+    lastname: 'test',
     authorities: [Authority.USER],
   }
 ) => {
@@ -17,8 +17,8 @@ export const compareUserAttributes = (
   expect(primaryUser?.id).toBe(comparisonUser.id);
   expect(primaryUser?.username).toBe(comparisonUser.username);
   expect(primaryUser?.email).toBe(comparisonUser.email);
-  expect(primaryUser?.firstName).toBe(comparisonUser.firstName);
-  expect(primaryUser?.lastName).toBe(comparisonUser.lastName);
+  expect(primaryUser?.firstname).toBe(comparisonUser.firstname);
+  expect(primaryUser?.lastname).toBe(comparisonUser.lastname);
   expect(primaryUser?.authorities).toBeDefined();
   expect(primaryUser?.authorities.length).toBe(
     comparisonUser.authorities.length
@@ -32,9 +32,9 @@ export const createMockUser = (
   id: string = 'test',
   username: string = 'test',
   email: string = 'test@gmail.com',
-  firstName: string = 'test',
-  lastName: string = 'test',
+  firstname: string = 'test',
+  lastname: string = 'test',
   authorities: Authority[] = [Authority.USER]
 ): User => {
-  return { id, username, email, firstName, lastName, authorities };
+  return { id, username, email, firstname, lastname, authorities };
 };

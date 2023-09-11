@@ -8,6 +8,7 @@ import {
   createMockAccessToken,
   validateAccessTokenAttributes,
 } from '../../AccessTokenMocks';
+import { flushPromises } from '@vue/test-utils';
 
 const mockAccessToken: AccessToken = createMockAccessToken();
 const mockedRefreshAccessToken = {
@@ -28,7 +29,6 @@ describe('refresh token service', () => {
   });
   afterEach(() => {
     mockedFetch.mockReset();
-    delete globalThis.fetch;
   });
 
   it('should refresh token and store in sessionStore', async () => {
@@ -47,7 +47,7 @@ describe('refresh token service', () => {
       body: JSON.stringify(refreshTokenRequest),
       headers: headers,
     });
-    const accessToken = authStore.accessToken;
+    const accessToken = authStore.accessToken as AccessToken;
     validateAccessTokenAttributes(accessToken, mockedRefreshAccessToken);
   });
 
@@ -69,17 +69,22 @@ describe('refresh token service', () => {
       body: JSON.stringify(refreshTokenRequest),
       headers: headers,
     });
-    const accessToken = authStore.accessToken;
+    const accessToken = authStore.accessToken as AccessToken;
     validateAccessTokenAttributes(accessToken, mockedRefreshAccessToken);
   });
 
   it('should not refresh token if refreshToken is not defined', async () => {
     const authStore = useAuthStore();
-    await authStore.setAccessToken(null);
+    await authStore.setAccessToken({
+      ...mockAccessToken,
+      token: '',
+      refreshToken: '',
+    });
     const refreshTokenService: RefreshTokenService = new RefreshTokenService(
       authStore
     );
     await refreshTokenService.refreshToken();
+    await flushPromises();
     expect(mockedFetch).not.toHaveBeenCalled();
     const accessToken = authStore.accessToken;
     expect(accessToken).toBeNull();

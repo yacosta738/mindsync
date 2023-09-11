@@ -21,6 +21,17 @@ const mockAccessToken: AccessToken = createMockAccessToken();
 const user = createMockUser();
 let headers: Headers;
 
+const emptyUserIdentity = (): User => {
+  return {
+    id: '',
+    username: '',
+    email: '',
+    firstname: '',
+    lastname: '',
+    authorities: [],
+  };
+};
+
 describe('Login View Component', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
@@ -29,7 +40,7 @@ describe('Login View Component', () => {
     global.fetch = mockedFetch;
     mockedFetch.mockReset();
   });
-  it('should render the component correctly', () => {
+  it('should render the component correctly', async () => {
     const authStore = useAuthStore();
     loginService = new LoginService(authStore);
     const refreshTokenService: RefreshTokenService = new RefreshTokenService(
@@ -45,10 +56,9 @@ describe('Login View Component', () => {
         },
       },
     });
-    wrapper.vm.$nextTick(() => {
-      expect(wrapper.find('.bg-gray-50').exists).toBeTruthy();
-      expect(wrapper.find('h1').text()).toBe('Sign in to your account');
-    });
+    await nextTick();
+    expect(wrapper.find('.bg-gray-50').exists).toBeTruthy();
+    expect(wrapper.find('h1').text()).toBe('Sign in to your account');
   });
 
   it('should validate the email field', async () => {
@@ -113,7 +123,7 @@ describe('Login View Component', () => {
     expect(wrapper.find('#password-box').classes()).toContain('error');
   });
 
-  it('should call the login service when the form is submitted', () => {
+  it('should call the login service when the form is submitted', async () => {
     mockedFetch.mockResolvedValue(
       createAFetchMockResponse(200, mockAccessToken)
     );
@@ -132,21 +142,20 @@ describe('Login View Component', () => {
         },
       },
     });
-    wrapper.vm.$nextTick(() => {
-      const loginServiceSpy = vi.spyOn(loginService, 'login');
-      const loginRequest: LoginRequest = {
-        username: user.email,
-        password: '123456',
-      };
-      wrapper.find('#email').setValue(loginRequest.username);
-      wrapper.find('#password').setValue(loginRequest.password);
-      wrapper.find('form').trigger('submit');
-      expect(loginServiceSpy).toHaveBeenCalled();
-      expect(mockedFetch).toHaveBeenCalledWith('api/login', {
-        method: 'POST',
-        body: JSON.stringify(loginRequest),
-        headers: headers,
-      });
+    await nextTick();
+    const loginServiceSpy = vi.spyOn(loginService, 'login');
+    const loginRequest: LoginRequest = {
+      username: user.email,
+      password: '123456',
+    };
+    await wrapper.find('#email').setValue(loginRequest.username);
+    await wrapper.find('#password').setValue(loginRequest.password);
+    await wrapper.find('form').trigger('submit');
+    expect(loginServiceSpy).toHaveBeenCalled();
+    expect(mockedFetch).toHaveBeenCalledWith('api/login', {
+      method: 'POST',
+      body: JSON.stringify(loginRequest),
+      headers: headers,
     });
   });
 
@@ -172,14 +181,7 @@ describe('Login View Component', () => {
     await nextTick();
     const authenticated = authStore.isAuthenticated;
     expect(authenticated).toBeTruthy();
-    const userIdentity: User = authStore.account ?? {
-      id: '',
-      username: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      authorities: [],
-    };
+    const userIdentity: User = authStore.account ?? emptyUserIdentity();
     compareUserAttributes(userIdentity, user);
     headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
     expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {
@@ -221,14 +223,7 @@ describe('Login View Component', () => {
     const authenticated = authStore.isAuthenticated;
     expect(authenticated).toBeTruthy();
 
-    const userIdentity: User = authStore.account ?? {
-      id: '',
-      username: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      authorities: [],
-    };
+    const userIdentity: User = authStore.account ?? emptyUserIdentity();
     compareUserAttributes(userIdentity, user);
     headers.append('Authorization', `Bearer ${mockAccessToken.token}`);
     expect(mockedFetch).toHaveBeenLastCalledWith('api/account', {

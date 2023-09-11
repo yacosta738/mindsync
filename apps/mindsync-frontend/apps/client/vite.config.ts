@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
-import { defineConfig, loadEnv, UserConfigExport } from 'vite';
+import { defineConfig, loadEnv, UserConfig } from 'vite';
 
 export const defineAppConfig = (
   targetUrl: string = `${process.env.VITE_API_URL}/api`
@@ -45,7 +45,7 @@ export const defineAppConfig = (
   });
 
 // https://vitejs.dev/config/
-export default ({ mode }: { mode: string }): UserConfigExport => {
+export default ({ mode }: { mode: string }): UserConfig => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
   return defineAppConfig(`${process.env.VITE_API_URL}/api`);
 };
