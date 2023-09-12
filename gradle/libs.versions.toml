@@ -5,7 +5,6 @@ kotlin-reflect = "1.9.0"
 springBoot = "3.1.3"
 dokka = "1.8.20"
 detekt = "1.23.1"
-arrow = "1.2.0"
 sonarqubeGradlePlugin = "4.3.1.3277"
 jacoco = "0.8.10"
 mockk = "1.13.7"
@@ -30,8 +29,6 @@ reflections = "0.10.2"
 
 [libraries]
 # project dependencies
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
-arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 
 # buildSrc dependencies (plugins)
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -87,7 +84,6 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonweb
 [bundles]
 spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux", "springdoc-openapi-starter-webflux-ui", "springdoc-openapi-starter-webflux-api"]
 keycloak = ["keycloak-spring-boot-starter", "keycloak-admin-client"]
-arrow = ["arrow-core", "arrow-fx-coroutines"]
 kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
 reflections = ["reflections", "kotlin-reflect"]
 junit = ["junit-jupiter-api", "junit-jupiter-engine"]
