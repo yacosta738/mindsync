@@ -226,3 +226,4 @@ gradle-app.setting
 
 !/infra/neo4j/.gitkeep
 /infra/neo4j/
+/node_modules/
