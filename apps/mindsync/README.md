@@ -49,9 +49,9 @@ To run the MindSync Backend Application, follow these steps:
        ```shell
            make up start-backend-app
         ```
-3. The application will be available at `http://localhost:8080`.
-4. You can access the Swagger UI at `http://localhost:8080/swagger-ui.html`.
-5. You can access the Neo4j Browser at `http://localhost:7474/browser/`.
+3. The application will be available at [http://localhost:8080](http://localhost:8080).
+4. You can access the Swagger UI at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).
+5. You can access the Neo4j Browser at [http://localhost:7474/browser/](http://localhost:7474/browser/).
 
 ### 🏗️ Building the Application
 
@@ -79,8 +79,8 @@ To build the MindSync Backend Application, follow these steps:
     ```shell
     docker-compose up
     ```
-6. The application will be available at `http://localhost:8080`.
-7. You can access the Swagger UI at `http://localhost:8080/swagger-ui.html`.
+6. The application will be available at [http://localhost:8080](http://localhost:8080).
+7. You can access the Swagger UI at [http://localhost:8080/api-docs](http://localhost:8080/api-docs).
 
 ### 🧪 Testing the Application
 

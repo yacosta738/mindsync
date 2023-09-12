@@ -22,7 +22,7 @@ services:
         networks:
             - local-mindsync
     redis:
-        image: redis:7.0.12
+        image: redis:${REDIS_VERSION}
         container_name: redis
         ports:
             - "6379:6379"
@@ -61,6 +61,7 @@ services:
     keycloak:
         depends_on:
             - postgres
+        image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
         container_name: keycloak
         command: [ 'start-dev --import-realm' ]
         volumes:
@@ -78,7 +79,6 @@ services:
             KC_HTTPS_PORT: 9443
             KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
             KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-        image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
         ports:
             - "7080:9080"
             - "7443:9443"
