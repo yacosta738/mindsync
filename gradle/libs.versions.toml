@@ -24,7 +24,7 @@ gradle-git-properties = "2.4.1"
 frontend-gradle-plugin = "8.0.0"
 buildtools-native = "0.9.26"
 moshi = "1.15.0"
-keycloak-admin-client = "22.0.2"
+keycloak-admin-client = "22.0.3"
 springdoc = "2.2.0"
 reflections = "0.10.2"
 
