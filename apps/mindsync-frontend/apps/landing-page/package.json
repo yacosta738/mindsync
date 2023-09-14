@@ -32,7 +32,8 @@
         "start": "astro dev",
         "test": "echo 🧪 Testing MINDSYNC LANDING PAGE && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
         "test:unit": "echo 🧪 Unit Tests: Coming Soon!",
-        "test:e2e": "echo 🧪 E2E Tests && npx playwright test"
+        "test:e2e": "echo 🧪 E2E Tests && playwright test",
+        "test:e2e:ui": "echo 🧪 E2E Tests (UI - watch mode) && playwright test --ui"
     },
     "dependencies": {
         "@astrojs/rss": "3.0.0",
