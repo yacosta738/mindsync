@@ -32,7 +32,7 @@
         "start": "astro dev",
         "test": "echo 🧪 Testing MINDSYNC LANDING PAGE && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
         "test:unit": "echo 🧪 Unit Tests: Coming Soon!",
-        "test:e2e": "echo \uD83E\uDDEA E2E Tests && if [ -n \"$CI\" ]; then playwright test --shard ${{ matrix.shard }}; else playwright test; fi"
+        "test:e2e": "echo 🧪 E2E Tests && npx playwright test"
     },
     "dependencies": {
         "@astrojs/rss": "3.0.0",
@@ -40,7 +40,7 @@
         "@faker-js/faker": "^8.0.2",
         "@fontsource-variable/space-grotesk": "^5.0.8",
         "apexcharts": "^3.42.0",
-        "astro": "^3.0.13",
+        "astro": "^3.1.0",
         "astro-i18next": "1.0.0-beta.21",
         "astro-icon": "^0.8.1",
         "astro-seo": "0.8.0",
