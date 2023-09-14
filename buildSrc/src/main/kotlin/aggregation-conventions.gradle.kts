@@ -1,4 +1,3 @@
-
 import io.gitlab.arturbosch.detekt.Detekt
 import org.owasp.dependencycheck.reporting.ReportGenerator
 import org.sonarqube.gradle.SonarTask
@@ -39,7 +38,7 @@ subprojects {
     }
 
     if (this.name != "documentation") {
-        val reportsDir = this.buildDir.resolve("reports/detekt/detekt.xml").absolutePath
+        val reportsDir = this.layout.buildDirectory.dir("reports/detekt").get().asFile.absolutePath
         val baseDir = this.projectDir
 
         val sonarTestSources = mutableListOf<String>()
@@ -77,8 +76,5 @@ configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     scanConfigurations = configurations.names
         .filter { validConfigurations.contains(it) }
         .toList()
-
-    outputDirectory = buildDir
-        .resolve("reports")
-        .resolve("owasp").path
+    outputDirectory = layout.buildDirectory.dir("reports/owasp").get().asFile.absolutePath
 }
