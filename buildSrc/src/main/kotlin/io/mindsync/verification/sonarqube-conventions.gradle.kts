@@ -34,7 +34,7 @@ subprojects {
                 property(
                     "sonar.coverage.jacoco.xmlReportPaths",
                     // current project build dir
-                    buildDir.resolve("reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml")
+                    layout.buildDirectory.file("reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml").get().asFile.absolutePath
                 )
             }
         }
