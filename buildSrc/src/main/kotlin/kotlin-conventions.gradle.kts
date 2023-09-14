@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import io.gitlab.arturbosch.detekt.Detekt
 import io.mindsync.gradle.constant.JDK_VERSION
 import io.mindsync.gradle.constant.KOTLIN_VERSION
 import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
@@ -13,7 +12,7 @@ plugins {
     kotlin("jvm")
 
     // A tool to detect kotlin problems. It's nice, give it a try!
-    id("io.gitlab.arturbosch.detekt")
+    id("detekt-conventions")
 }
 
 val embeddedMajorAndMinorKotlinVersion = project.getKotlinPluginVersion().substringBeforeLast(".")
@@ -83,11 +82,4 @@ dependencies {
 
     // Use the Kotlin reflection library.
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-    add("detektPlugins", libs.findLibrary("detekt-formatting").get())
-}
-
-tasks.withType<Detekt>().configureEach {
-    // Target version of the generated JVM bytecode. It is used for type resolution.
-    this.jvmTarget = JDK_VERSION
 }
