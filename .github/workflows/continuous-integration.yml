@@ -107,7 +107,7 @@ jobs:
                 with:
                     node-version: 18
             -   name: 🫧 Install dependencies
-                run: cd apps/mindsync-frontend && npm ci
+                run: npm ci
 
             -   name: ⇩ Download blob reports from GitHub Actions Artifacts
                 uses: actions/download-artifact@v3
