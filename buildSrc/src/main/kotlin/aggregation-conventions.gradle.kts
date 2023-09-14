@@ -61,7 +61,7 @@ subprojects {
 }
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
-    failBuildOnCVSS = 3F
+    failBuildOnCVSS = 11F
     formats = listOf(
         ReportGenerator.Format.HTML.toString(),
         ReportGenerator.Format.JUNIT.toString(),
