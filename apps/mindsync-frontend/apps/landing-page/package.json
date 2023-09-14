@@ -1,60 +1,60 @@
 {
-  "name": "mindsync-landing-page",
-  "version": "0.0.1",
-  "private": true,
-  "description": "MindSync is the take note of the future. It's a note taking app that uses AI to help you take notes.",
-  "keywords": [
-    "tailwind",
-    "tailwind css",
-    "flowbite",
-    "flowbite components"
-  ],
-  "homepage": "https://mindsync.com",
-  "bugs": "https://github.com/yacosta738/mindsync/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yacosta738/mindsync.git"
-  },
-  "license": "GPL-3.0",
-  "author": "MindSync Inc.",
-  "contributors": [
-    "Yuniel Acosta <https://twitter.com/yacosta738>"
-  ],
-  "type": "module",
-  "scripts": {
-    "astro": "astro",
-    "build": "astro build",
-    "check": "echo ✔︎ Checking Landing Page && pnpm run test",
-    "clean": "rm -rf dist",
-    "dev": "astro dev",
-    "preview": "astro preview",
-    "i18n:generate": "astro-i18next generate",
-    "start": "astro dev",
-    "test": "echo 🧪 Testing MINDSYNC LANDING PAGE && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
-    "test:unit": "echo 🧪 Unit Tests: Coming Soon!",
-    "test:e2e": "echo 🧪 E2E Tests && playwright test"
-  },
-  "dependencies": {
-    "@astrojs/rss": "3.0.0",
-    "@astrojs/sitemap": "3.0.0",
-    "@faker-js/faker": "^8.0.2",
-    "@fontsource-variable/space-grotesk": "^5.0.8",
-    "apexcharts": "^3.42.0",
-    "astro": "^3.0.12",
-    "astro-i18next": "1.0.0-beta.21",
-    "astro-icon": "^0.8.1",
-    "astro-seo": "0.8.0",
-    "sharp": "^0.32.5",
-    "i18next": "^22.5.1",
-    "shiki": "^0.14.4"
-  },
-  "devDependencies": {
-    "@astrojs/tailwind": "^5.0.0",
-    "@mindsync/tailwind-config": "workspace:*",
-    "flowbite": "^1.8.1",
-    "flowbite-typography": "^1.0.3",
-    "@playwright/test": "^1.37.1",
-    "i18next-fs-backend": "2.1.5"
-  },
-  "packageManager": "pnpm@8.7.5"
+    "name": "mindsync-landing-page",
+    "version": "0.0.1",
+    "private": true,
+    "description": "MindSync is the take note of the future. It's a note taking app that uses AI to help you take notes.",
+    "keywords": [
+        "tailwind",
+        "tailwind css",
+        "flowbite",
+        "flowbite components"
+    ],
+    "homepage": "https://mindsync.com",
+    "bugs": "https://github.com/yacosta738/mindsync/issues",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yacosta738/mindsync.git"
+    },
+    "license": "GPL-3.0",
+    "author": "MindSync Inc.",
+    "contributors": [
+        "Yuniel Acosta <https://twitter.com/yacosta738>"
+    ],
+    "type": "module",
+    "scripts": {
+        "astro": "astro",
+        "build": "astro build",
+        "check": "echo ✔︎ Checking Landing Page && pnpm run test",
+        "clean": "rm -rf dist",
+        "dev": "astro dev",
+        "preview": "astro preview",
+        "i18n:generate": "astro-i18next generate",
+        "start": "astro dev",
+        "test": "echo 🧪 Testing MINDSYNC LANDING PAGE && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
+        "test:unit": "echo 🧪 Unit Tests: Coming Soon!",
+        "test:e2e": "echo \uD83E\uDDEA E2E Tests && if [ -n \"$CI\" ]; then playwright test --shard ${{ matrix.shard }}; else playwright test; fi"
+    },
+    "dependencies": {
+        "@astrojs/rss": "3.0.0",
+        "@astrojs/sitemap": "3.0.0",
+        "@faker-js/faker": "^8.0.2",
+        "@fontsource-variable/space-grotesk": "^5.0.8",
+        "apexcharts": "^3.42.0",
+        "astro": "^3.0.12",
+        "astro-i18next": "1.0.0-beta.21",
+        "astro-icon": "^0.8.1",
+        "astro-seo": "0.8.0",
+        "sharp": "^0.32.5",
+        "i18next": "^22.5.1",
+        "shiki": "^0.14.4"
+    },
+    "devDependencies": {
+        "@astrojs/tailwind": "^5.0.0",
+        "@mindsync/tailwind-config": "workspace:*",
+        "flowbite": "^1.8.1",
+        "flowbite-typography": "^1.0.3",
+        "@playwright/test": "^1.37.1",
+        "i18next-fs-backend": "2.1.5"
+    },
+    "packageManager": "pnpm@8.7.5"
 }

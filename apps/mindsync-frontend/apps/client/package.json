@@ -12,7 +12,7 @@
         "test": "echo 🧪 Testing MINDSYNC APP && npx -y concurrently \"pnpm run test:unit\" \"pnpm run test:e2e\"",
         "test:unit": "vitest run",
         "test:unit:watch": "vitest watch",
-        "test:e2e": "echo 🧪 E2E Tests && playwright test",
+        "test:e2e": "echo \uD83E\uDDEA E2E Tests && if [ -n \"$CI\" ]; then playwright test --shard ${{ matrix.shard }}; else playwright test; fi",
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
         "format": "prettier --write src/"
