@@ -31,8 +31,7 @@ tasks.register("aggregateReports") {
     dependsOn(detektReportTask)
 
     doLast {
-        val targetDir = buildDir.resolve("documentation").toPath()
-
+        val targetDir = layout.buildDirectory.dir("documentation").get().asFile.toPath()
         copy {
             into(targetDir.resolve("dokka"))
             from(dokkaHtmlMultiModuleTask.map { task -> task.outputDirectory })
@@ -62,7 +61,7 @@ tasks.register("aggregateDocumentation") {
         .forEach { dependsOn(it) }
 
     doLast {
-        val targetDir = buildDir.resolve("documentation").toPath()
+        val targetDir = layout.buildDirectory.dir("documentation").get().asFile.toPath()
 
         copy {
             into(targetDir.resolve("owasp"))

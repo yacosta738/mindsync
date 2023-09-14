@@ -1,4 +1,5 @@
 [versions]
+
 kotlin = "1.9.0"
 kotlinCoroutines = "1.7.3"
 kotlin-reflect = "1.9.0"
@@ -82,6 +83,7 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonweb
 
 
 [bundles]
+
 spring-boot = ["spring-boot-starter", "spring-boot-starter-webflux", "springdoc-openapi-starter-webflux-ui", "springdoc-openapi-starter-webflux-api"]
 keycloak = ["keycloak-spring-boot-starter", "keycloak-admin-client"]
 kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-reactor", "kotlinx-coroutines-reactive", "kotlinx-coroutines-jdk8"]
@@ -93,6 +95,11 @@ tetscontainers = ["testcontainers", "testcontainers-junit-jupiter", "testcontain
 jjwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
 
 [plugins]
+
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-js = { id = "org.jetbrains.kotlin.js", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 detekt-gradle = { id = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 frontend-gradle-plugin = { id = "org.siouan.frontend-jdk17", version.ref = "frontend-gradle-plugin" }
 buildtools-native = { id = "org.graalvm.buildtools.native", version.ref = "buildtools-native" }
