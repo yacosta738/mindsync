@@ -12,7 +12,8 @@ mockk = "1.13.7"
 junit = "5.9.3"
 datafaker = "2.0.1"
 reactor = "3.5.9"
-kotest = "5.6.2"
+kotest = "5.7.2"
+kotest-testcontainers = "2.0.2"
 rest-assured = "5.3.1"
 cucumber = "7.14.0"
 testcontainers = "1.19.0"
@@ -68,6 +69,7 @@ reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "react
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-testcontainers = { module = "io.kotest.extensions:kotest-extensions-testcontainers", version.ref = "kotest-testcontainers" }
 rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
 rest-assured-json-path = { module = "io.rest-assured:json-path", version.ref = "rest-assured" }
 rest-assured-xml-path = { module = "io.rest-assured:xml-path", version.ref = "rest-assured" }
@@ -100,6 +102,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-js = { id = "org.jetbrains.kotlin.js", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 detekt-gradle = { id = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 frontend-gradle-plugin = { id = "org.siouan.frontend-jdk17", version.ref = "frontend-gradle-plugin" }
 buildtools-native = { id = "org.graalvm.buildtools.native", version.ref = "buildtools-native" }

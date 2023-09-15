@@ -1,6 +1,6 @@
 package io.mindsync.authentication.application
 
-import io.kotest.common.concurrentHashMap
+import com.google.common.collect.Maps
 import io.mindsync.authentication.domain.AccessToken
 import io.mindsync.authentication.domain.RefreshToken
 import io.mindsync.authentication.domain.RefreshTokenManager
@@ -10,12 +10,13 @@ import io.mindsync.users.domain.Credential
 import io.mindsync.users.domain.exceptions.UserAuthenticationException
 
 /**
- * InMemoryUserAuthenticator is a class that implements the [UserAuthenticator] interface.
+ * InMemoryUserAuthenticator is a class that implements the [UserAuthenticator] and [RefreshTokenManager] interfaces.
  * It provides the functionality to authenticate a user with a given username and password.
+ * It also provides the functionality to refresh the access token of a user with a given refresh token.
  * @created 2/8/23
  */
 class InMemoryUserAuthenticatorManager(
-    private val database: MutableMap<String, String> = concurrentHashMap()
+    private val database: MutableMap<String, String> = Maps.newConcurrentMap()
 ) : UserAuthenticator, RefreshTokenManager {
     /**
      * Login a user with the given username and password.
