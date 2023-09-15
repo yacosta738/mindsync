@@ -20,7 +20,7 @@
   "scripts": {
     "update-deps": "pnpm update -i -r --latest",
     "preinstall": "only-allow pnpm",
-    "setup": "pnpm install",
+    "setup": "pnpm install && pnpm exec playwright install",
     "dev": "pnpm --recursive --parallel --stream run dev",
     "start": "pnpm --recursive --parallel --stream run start",
     "changelog": "echo 'generate master changelog' && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
