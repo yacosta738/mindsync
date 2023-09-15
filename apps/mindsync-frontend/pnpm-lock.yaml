@@ -242,8 +242,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3(tailwindcss@3.3.3)
       i18next-fs-backend:
-        specifier: 2.1.5
-        version: 2.1.5
+        specifier: 2.2.0
+        version: 2.2.0
 
   libs/tailwind-config:
     dependencies:
@@ -2446,7 +2446,7 @@ packages:
       astro: 3.1.0(@types/node@20.6.0)
       i18next: 22.5.1
       i18next-browser-languagedetector: 7.1.0
-      i18next-fs-backend: 2.1.5
+      i18next-fs-backend: 2.2.0
       i18next-http-backend: 2.2.1
       iso-639-1: 2.1.15
       locale-emoji: 0.3.0
@@ -5489,8 +5489,8 @@ packages:
       '@babel/runtime': 7.22.10
     dev: false
 
-  /i18next-fs-backend@2.1.5:
-    resolution: {integrity: sha512-7fgSH8nVhXSBYPHR/W3tEXXhcnwHwNiND4Dfx9knzPzdsWTUTL/TdDVV+DY0dL0asHKLbdoJaXS4LdVW6R8MVQ==}
+  /i18next-fs-backend@2.2.0:
+    resolution: {integrity: sha512-VOPHhdDX0M/csRqEw+9Ectpf6wvTIg1MZDfAHxc3JKnAlJz7fcZSAKAeyDohOq0xuLx57esYpJopIvBaRb0Bag==}
 
   /i18next-http-backend@2.2.1:
     resolution: {integrity: sha512-ZXIdn/8NJIBJ0X4hzXfc3STYxKrCKh1fYjji9HPyIpEJfvTvy8/ZlTl8RuTizzCPj2ZcWrfaecyOMKs6bQ7u5A==}
